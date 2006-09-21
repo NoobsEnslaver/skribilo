@@ -28,7 +28,8 @@
 
   :use-module (skribilo utils syntax)
   :autoload (srfi srfi-1)     (find filter)
-  :autoload (skribilo engine) (engine? engine-ident? default-engine))
+  :autoload (skribilo engine) (engine-class? engine-ident
+			       default-engine-class))
 
 
 (use-modules (skribilo debug)
@@ -133,13 +134,13 @@
   (let ((e (or (if (and (list? engine) (not (keyword? (car engine))))
 		   (car engine)
 		   #f)
-	       (default-engine))))
+	       (default-engine-class))))
 
     (cond
       ((and (not (symbol? markup)) (not (eq? markup #t)))
        (skribe-error 'markup-writer "illegal markup" markup))
-      ((not (engine? e))
-	  (skribe-error 'markup-writer "illegal engine" e))
+      ((not (engine-class? e))
+       (skribe-error 'markup-writer "illegal engine class" e))
       ((and (not predicate)
 	    (not class)
 	    (null? options)
@@ -152,8 +153,9 @@
 	     (ac (if (eq? action 'unspecified)
 		     (lambda (n e) (output (markup-body n) e))
 		     action)))
-	 (engine-add-writer! e markup m predicate
-			     options before ac after class validate))))))
+	 (engine-class-add-writer! e markup m predicate
+				   options before ac after
+				   class validate))))))
 
 
 
@@ -162,8 +164,8 @@
 ;;;
 
 (define (lookup-markup-writer node e)
-  ;; Find the writer that applies best to NODE.  See also `markup-writer-get'
-  ;; and `markup-writer-get*'.
+  ;; Find the writer that applies best to NODE.  E should be an engine class.
+  ;; See also `markup-writer-get' and `markup-writer-get*'.
 
   (define (matching-writer writers)
     (find (lambda (w)
@@ -179,14 +181,14 @@
 
     (or (matching-writer node-writers)
 	(matching-writer (slot-ref e 'free-writers))
-	(and (engine? delegate)
+	(and (engine-class? delegate)
 	     (lookup-markup-writer node delegate)))))
 
 
 (define* (markup-writer-get markup :optional engine :key (class #f) (pred #f))
-  ;; Get a markup writer for MARKUP (a symbol) in ENGINE, with class CLASS
-  ;; and user predicate PRED.  [FIXME: Useless since PRED is a procedure and
-  ;; therefore not comparable?]
+  ;; Get a markup writer for MARKUP (a symbol) in engine class ENGINE, with
+  ;; class CLASS and user predicate PRED.  [FIXME: Useless since PRED is a
+  ;; procedure and therefore not comparable?]
 
   (define (matching-writer writers)
     (find (lambda (w)
@@ -195,19 +197,19 @@
 		     (eq? (slot-ref w 'upred) pred))))
 	  writers))
 
-  (let ((e (or engine (default-engine))))
+  (let ((e (or engine (default-engine-class))))
     (cond
       ((not (symbol? markup))
        (skribe-error 'markup-writer-get "illegal symbol" markup))
-      ((not (engine? e))
-       (skribe-error 'markup-writer-get "illegal engine" e))
+      ((not (engine-class? e))
+       (skribe-error 'markup-writer-get "illegal engine class" e))
       (else
        (let* ((writers (slot-ref e 'writers))
 	      (markup-writers (hashq-ref writers markup '()))
 	      (delegate (slot-ref e 'delegate)))
 
 	 (or (matching-writer markup-writers)
-	     (and (engine? delegate)
+	     (and (engine-class? delegate)
 		  (markup-writer-get markup delegate
 				     :class class :pred pred))))))))
 
@@ -222,19 +224,19 @@
 		  (equal? (writer-class w) class)))
 	    writers))
 
-  (let ((e (or engine (default-engine))))
+  (let ((e (or engine (default-engine-class))))
     (cond
       ((not (symbol? markup))
        (skribe-error 'markup-writer "illegal symbol" markup))
-      ((not (engine? e))
-       (skribe-error 'markup-writer "illegal engine" e))
+      ((not (engine-class? e))
+       (skribe-error 'markup-writer "illegal engine class" e))
       (else
        (let* ((writers (slot-ref e 'writers))
 	      (markup-writers (hashq-ref writers markup '()))
 	      (delegate (slot-ref e 'delegate)))
 
 	 (append (matching-writers writers)
-		 (if (engine? delegate)
+		 (if (engine-class? delegate)
 		     (markup-writer-get* markup delegate :class class)
 		     '())))))))
 

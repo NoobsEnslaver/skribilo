@@ -2,6 +2,25 @@
 # arch-tag: automatic-ChangeLog--lcourtes@laas.fr--2005-mobile/skribilo--devel--1.2
 #
 
+2006-09-14 17:31:46 GMT	Ludovic Courtes <ludovic.courtes@laas.fr>	patch-75
+
+    Summary:
+      Adding missing patch logs from `lcourtes@laas.fr--2005-libre'.
+    Revision:
+      skribilo--devel--1.2--patch-75
+
+
+    modified files:
+     ChangeLog
+
+    new patches:
+     lcourtes@laas.fr--2005-libre/skribilo--devo--1.2--patch-55
+     lcourtes@laas.fr--2005-libre/skribilo--devo--1.2--patch-56
+     lcourtes@laas.fr--2005-libre/skribilo--devo--1.2--patch-57
+     lcourtes@laas.fr--2005-libre/skribilo--devo--1.2--patch-58
+     lcourtes@laas.fr--2005-libre/skribilo--devo--1.2--patch-59
+
+
 2006-09-04 09:15:58 GMT	Ludovic Courtes <ludovic.courtes@laas.fr>	patch-74
 
     Summary:

@@ -38,11 +38,11 @@
 ;;; Helper functions.
 ;;;
 
-(let ((lout (find-engine 'lout)))
-   (if lout
-       (engine-custom-set! lout 'includes
-	  (string-append (engine-custom lout 'includes)
-			 "\n@SysInclude { pie } # Pie Charts\n"))))
+(when-engine-is-instantiated (lookup-engine-class 'lout)
+  (lambda (lout class)
+    (engine-custom-set! lout 'includes
+			(string-append (engine-custom lout 'includes)
+				       "\n@SysInclude { pie }\n"))))
 
 
 
@@ -50,7 +50,7 @@
 ;;; Writers.
 ;;;
 
-(markup-writer 'pie (find-engine 'lout)
+(markup-writer 'pie (lookup-engine-class 'lout)
    :before (lambda (node engine)
 	      (let* ((weights (map (lambda (slice)
 				     (markup-option slice :weight))
@@ -102,7 +102,7 @@
 		 (display "{\n")))
    :after "\n} # @Pie\n")
 
-(markup-writer 'slice (find-engine 'lout)
+(markup-writer 'slice (lookup-engine-class 'lout)
    :options '(:weight :detach? :color)
    :action (lambda (node engine)
 	     (display "  @Slice\n")
@@ -120,7 +120,7 @@
 	     (output (markup-body node) engine)
 	     (display " }\n")))
 
-(markup-writer 'sliceweight (find-engine 'base)
+(markup-writer 'sliceweight (lookup-engine-class 'base)
    ;; This writer should work for every engine, provided the `pie' markup has
    ;; a proper `&total-weight' option.
    :action (lambda (node engine)

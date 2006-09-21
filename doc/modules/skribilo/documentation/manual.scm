@@ -27,7 +27,6 @@
   :use-module (skribilo resolve)
   :use-module (skribilo output)
   :use-module (skribilo utils keywords)
-  :use-module (skribilo utils compat)
   :use-module (skribilo utils syntax) ;; `when'
 
   :use-module (skribilo documentation env)
@@ -52,7 +51,7 @@
 ;*---------------------------------------------------------------------*/
 ;*    Base configuration                                               */
 ;*---------------------------------------------------------------------*/
-(let ((be (find-engine 'base)))
+(let ((be (lookup-engine-class 'base)))
    (markup-writer 'example be
       :options '(:legend :number)
       :action (lambda (n e)
@@ -95,7 +94,7 @@
 ;*---------------------------------------------------------------------*/
 ;*    Html configuration                                               */
 ;*---------------------------------------------------------------------*/
-(let* ((he (find-engine 'html))
+(let* ((he (lookup-engine-class 'html))
        (bd (markup-writer-get 'bold he)))
    (markup-writer 'bold he
 		  :class 'api-proto-ident
@@ -108,7 +107,7 @@
 ;*---------------------------------------------------------------------*/
 ;*    LaTeX                                                            */
 ;*---------------------------------------------------------------------*/
-(let* ((le (find-engine 'latex))
+(let* ((le (lookup-engine-class 'latex))
        (opckg (engine-custom le 'usepackage))
        (lpckg "\\usepackage{fullpage}\n\\usepackage{eurosym}\n")
        (npckg (if (string? opckg)
@@ -190,7 +189,7 @@
 (define-markup (example #!rest opts #!key legend class)
    (new container
       (markup 'example)
-      (ident (symbol->string (gensym 'example)))
+      (ident (symbol->string (gensym "example")))
       (class class)
       (required-options '(:legend :number))
       (options `((:number

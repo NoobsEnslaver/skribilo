@@ -22,7 +22,8 @@
 (define-module (skribilo biblio bibtex)
   :autoload   (skribilo utils strings) (make-string-replace)
   :autoload   (skribilo ast)           (markup-option ast->string)
-  :autoload   (skribilo engine)        (engine-filter find-engine)
+  :autoload   (skribilo engine)        (engine-class-filter
+					lookup-engine-class)
   :use-module (skribilo biblio author)
   :use-module (srfi srfi-39)
   :export     (print-as-bibtex-entry))
@@ -60,8 +61,8 @@
 	    (markup-ident entry))
     (for-each (lambda (opt)
 		(let* ((o (show-option opt))
-		       (tex-filter (engine-filter
-				    (find-engine 'latex)))
+		       (tex-filter (engine-class-filter
+				    (lookup-engine-class 'latex)))
 		       (filter (lambda (n)
 				 (tex-filter (ast->string n))))
 		       (id (lambda (a) a)))

@@ -29,7 +29,7 @@
 ;*    extension                                                        */
 ;*---------------------------------------------------------------------*/
 (define-markup (extension #!rest opt 
-			  #!key (ident (symbol->string (gensym 'extension)))
+			  #!key (ident (symbol->string (gensym "extension")))
 			  (class "extension")
 			  title html-title ending author description 
 			  (env '()))

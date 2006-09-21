@@ -127,7 +127,7 @@
 
      (next-method)
 
-     (let ((w (lookup-markup-writer node e)))
+     (let ((w (lookup-markup-writer node (engine-class e))))
        (when (writer? w)
 	 (check-required-options node w e)
 	 (when (pair? (writer-options w))

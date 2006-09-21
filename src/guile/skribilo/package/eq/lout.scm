@@ -37,14 +37,13 @@
 ;;; Initialization.
 ;;;
 
-(let ((lout (find-engine 'lout)))
-  (if (not lout)
-      (skribe-error 'eq "Lout engine not found" lout)
-      (let ((includes (engine-custom lout 'includes)))
-	;; Append the `eq' include file
-	(engine-custom-set! lout 'includes
-			    (string-append includes "\n"
-					   "@SysInclude { eq }\n")))))
+(when-engine-is-instantiated (lookup-engine-class 'lout)
+  (lambda (lout class)
+    (let ((includes (engine-custom lout 'includes)))
+      ;; Append the `eq' include file
+      (engine-custom-set! lout 'includes
+			  (string-append includes "\n"
+					 "@SysInclude { eq }\n")))))
 
 
 ;;;
@@ -52,7 +51,7 @@
 ;;;
 
 
-(markup-writer 'eq (find-engine 'lout)
+(markup-writer 'eq (lookup-engine-class 'lout)
    :options '(:inline?)
    :before "{ "
    :action (lambda (node engine)
@@ -81,7 +80,7 @@
 	 (close-par `(if need-paren? "{ @VScale ) }" "")))
 
     `(markup-writer ',(symbol-append 'eq: sym)
-		    (find-engine 'lout)
+		    (lookup-engine-class 'lout)
 		    :action (lambda (node engine)
 			      (let loop ((operands (markup-body node)))
 				(if (null? operands)
@@ -132,7 +131,7 @@
 (simple-lout-markup-writer >=)
 
 (define-macro (binary-lout-markup-writer sym lout-name)
-  `(markup-writer ',(symbol-append 'eq: sym) (find-engine 'lout)
+  `(markup-writer ',(symbol-append 'eq: sym) (lookup-engine-class 'lout)
      :action (lambda (node engine)
 	       (let ((body (markup-body node)))
 		 (if (= (length body) 2)
@@ -154,7 +153,7 @@
 (binary-lout-markup-writer in "element")
 (binary-lout-markup-writer notin "notelement")
 
-(markup-writer 'eq:apply (find-engine 'lout)
+(markup-writer 'eq:apply (lookup-engine-class 'lout)
    :action (lambda (node engine)
 	     (let ((func (car (markup-body node))))
 	       (output func engine)
@@ -176,7 +175,7 @@
 ;;;
 
 (define-macro (range-lout-markup-writer sym lout-name)
-  `(markup-writer ',(symbol-append 'eq: sym) (find-engine 'lout)
+  `(markup-writer ',(symbol-append 'eq: sym) (lookup-engine-class 'lout)
       :action (lambda (node engine)
 		(let ((from (markup-option node :from))
 		      (to (markup-option node :to))
@@ -193,7 +192,7 @@
 (range-lout-markup-writer sum "sum")
 (range-lout-markup-writer product "prod")
 
-(markup-writer 'eq:script (find-engine 'lout)
+(markup-writer 'eq:script (lookup-engine-class 'lout)
    :action (lambda (node engine)
 	     (let ((body (markup-body node))
 		   (sup (markup-option node :sup))

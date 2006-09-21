@@ -27,7 +27,6 @@
   :use-module (skribilo output)
   :use-module (skribilo lib) ;; `define-markup'
   :use-module (skribilo utils keywords)
-  :use-module (skribilo utils compat)
   :use-module (skribilo utils syntax) ;; `%skribilo-module-reader'
 
   :use-module (skribilo package base)
@@ -44,7 +43,7 @@
 ;*---------------------------------------------------------------------*/
 ;*    Html configuration                                               */
 ;*---------------------------------------------------------------------*/
-(let* ((he (find-engine 'html))
+(let* ((he (lookup-engine-class 'html))
        (tro (markup-writer-get 'tr he)))
    (markup-writer 'tr he
       :class 'api-table-header
@@ -71,7 +70,7 @@
 ;*---------------------------------------------------------------------*/
 ;*    LaTeX configuration                                              */
 ;*---------------------------------------------------------------------*/
-(let* ((le (find-engine 'latex))
+(let* ((le (lookup-engine-class 'latex))
        (tro (markup-writer-get 'tr le)))
    (markup-writer 'tr le
       :class 'api-table-prototype
@@ -93,8 +92,8 @@
 (define* (api-search-definition id file pred :optional (skribe-source? #t))
    ;; If SKRIBE-SOURCE? is true, then assume Skribe syntax.  Otherwise, use
    ;; the ``Skribilo module syntax''.
-   (let* ((path (append %load-path (skribe-path)))
-	  (f (find-file/path file path))
+   (let* ((path %load-path)
+	  (f (search-path path file))
 	  (read (if skribe-source? (make-reader 'skribe)
 		    %skribilo-module-reader)))
       (if (not (string? f))
@@ -371,7 +370,7 @@
    (define (opt-engine-support opt)
       ;; find the engines providing a writer for id
       (map (lambda (e)
-	      (let* ((id (engine-ident e))
+	      (let* ((id (engine-class-ident e))
 		     (s (symbol->string id)))
 		 (if (engine-format? "latex")
 		     (list s " ")

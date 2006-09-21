@@ -257,16 +257,16 @@
 (format (current-error-port) "Slides initializing...~%")
 
 ;; Register specific implementations for lazy loading.
-(when-engine-is-loaded 'base
+(when-engine-class-is-loaded 'base
   (lambda ()
     (resolve-module '(skribilo package slide base))))
-(when-engine-is-loaded 'latex
+(when-engine-class-is-loaded 'latex
   (lambda ()
     (resolve-module '(skribilo package slide latex))))
-(when-engine-is-loaded 'html
+(when-engine-class-is-loaded 'html
   (lambda ()
     (resolve-module '(skribilo package slide html))))
-(when-engine-is-loaded 'lout
+(when-engine-class-is-loaded 'lout
   (lambda ()
     (resolve-module '(skribilo package slide lout))))
 
