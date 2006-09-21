@@ -40,7 +40,7 @@
 ;;;
 ;;; Simple markups.
 ;;;
-(let ((be (find-engine 'base)))
+(let ((be (lookup-engine-class 'base)))
 
    ;; slide-pause
    (markup-writer 'slide-pause be
@@ -164,7 +164,7 @@
             engine)))
 
 
-(markup-writer 'slide-topic (find-engine 'base)
+(markup-writer 'slide-topic (lookup-engine-class 'base)
    :options '(:title :outline? :class :ident)
    :action (lambda (n e)
 	      (if (markup-option n :outline?)
@@ -172,7 +172,7 @@
 
 	      (output (markup-body n) e)))
 
-(markup-writer 'slide-subtopic (find-engine 'base)
+(markup-writer 'slide-subtopic (lookup-engine-class 'base)
    ;; FIXME: Largely untested.
    :options '(:title :outline? :class :ident)
    :action (lambda (n e)

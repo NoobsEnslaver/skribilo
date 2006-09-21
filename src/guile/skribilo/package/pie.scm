@@ -251,7 +251,7 @@ the string \"hello\".  Implement `sliceweight' markups too."
 		     "\n")
 		   `("colors: " ,@colors "\n")))))
 
-(markup-writer 'pie (find-engine 'base)
+(markup-writer 'pie (lookup-engine-class 'base)
   :action (lambda (node engine)
 	    (let* ((fmt (select-output-format engine))
 		   (pie-file (string-append (markup-ident node) "."
@@ -291,12 +291,12 @@ the string \"hello\".  Implement `sliceweight' markups too."
 				   "A Pie Chart"))
 			engine))))
 
-(markup-writer 'slice (find-engine 'base)
+(markup-writer 'slice (lookup-engine-class 'base)
   :action (lambda (node engine)
 	    ;; Nothing to do here
 	    (error "slice: this writer should never be invoked")))
 
-(markup-writer 'sliceweight (find-engine 'base)
+(markup-writer 'sliceweight (lookup-engine-class 'base)
   :action (lambda (node engine)
 	    ;; Nothing to do here.
 	    (error "sliceweight: this writer should never be invoked")))
@@ -306,7 +306,7 @@ the string \"hello\".  Implement `sliceweight' markups too."
 ;;; Initialization.
 ;;;
 
-(when-engine-is-loaded 'lout
+(when-engine-class-is-loaded 'lout
   (lambda ()
     (resolve-module '(skribilo package pie lout))))
 

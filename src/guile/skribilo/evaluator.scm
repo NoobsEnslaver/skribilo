@@ -27,7 +27,8 @@
   :autoload (skribilo location)   (<location>)
   :autoload (skribilo ast)        (ast? markup?)
   :autoload (skribilo engine)     (*current-engine*
-				   engine? find-engine engine-ident)
+				   engine? lookup-engine-class
+				   engine-ident)
   :autoload (skribilo reader)     (*document-reader*)
 
   :autoload (skribilo verify)     (verify)
@@ -99,7 +100,9 @@
      (debug-item "engine=" engine)
      (debug-item "reader=" reader)
 
-     (let ((e (if (symbol? engine) (find-engine engine) engine)))
+     (let ((e (if (symbol? engine)
+		  (make-engine (lookup-engine-class engine))
+		  engine)))
        (debug-item "e=" e)
        (if (not (engine? e))
 	   (skribe-error 'evaluate-document-from-port "cannot find engine" engine)

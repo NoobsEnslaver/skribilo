@@ -258,7 +258,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 ;;;
 
 
-(markup-writer 'eq (find-engine 'base)
+(markup-writer 'eq (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     ;; The `:renderer' option should be a symbol (naming an engine
 	     ;; class) or an engine or engine class.  This allows the use of
@@ -276,7 +276,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 			 (let ((lout-code
 				(with-output-to-string
 				  (lambda ()
-				    (output node (find-engine 'lout))))))
+				    (output node (lookup-engine-class 'lout))))))
 			   (output (lout-illustration
 				    :ident (markup-ident node)
 				    lout-code)
@@ -292,7 +292,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
   ;; Note: The text-only rendering is less ambiguous if we parenthesize
   ;; without taking operator precedence into account.
   (let ((precedence (operator-precedence op)))
-    `(markup-writer ',(symbol-append 'eq: op) (find-engine 'base)
+    `(markup-writer ',(symbol-append 'eq: op) (lookup-engine-class 'base)
        :action (lambda (node engine)
 		  (let loop ((operands (markup-body node)))
 		   (if (null? operands)
@@ -334,14 +334,14 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 (simple-markup-writer >= (symbol "ge"))
 (simple-markup-writer <= (symbol "le"))
 
-(markup-writer 'eq:sqrt (find-engine 'base)
+(markup-writer 'eq:sqrt (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     (display "sqrt(")
 	     (output (markup-body node) engine)
 	     (display ")")))
 
 (define-macro (simple-binary-markup-writer op obj)
-  `(markup-writer ',(symbol-append 'eq: op) (find-engine 'base)
+  `(markup-writer ',(symbol-append 'eq: op) (lookup-engine-class 'base)
      :action (lambda (node engine)
 	       (let ((body (markup-body node)))
 		 (if (= (length body) 2)
@@ -358,7 +358,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 				   "wrong argument type"
 				   body))))))
 
-(markup-writer 'eq:expt (find-engine 'base)
+(markup-writer 'eq:expt (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     (let ((body (markup-body node)))
 		 (if (= (length body) 2)
@@ -372,7 +372,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 (simple-binary-markup-writer in    (symbol "in"))
 (simple-binary-markup-writer notin (symbol "notin"))
 
-(markup-writer 'eq:apply (find-engine 'base)
+(markup-writer 'eq:apply (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     (let ((func (car (markup-body node))))
 	       (output func engine)
@@ -387,7 +387,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 		       (loop (cdr operands)))))
 	       (display ")"))))
 
-(markup-writer 'eq:sum (find-engine 'base)
+(markup-writer 'eq:sum (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     (let ((from (markup-option node :from))
 		   (to (markup-option node :to)))
@@ -400,7 +400,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 	       (output (markup-body node) engine)
 	       (display ")"))))
 
-(markup-writer 'eq:prod (find-engine 'base)
+(markup-writer 'eq:prod (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     (let ((from (markup-option node :from))
 		   (to (markup-option node :to)))
@@ -413,7 +413,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 	       (output (markup-body node) engine)
 	       (display ")"))))
 
-(markup-writer 'eq:script (find-engine 'base)
+(markup-writer 'eq:script (lookup-engine-class 'base)
    :action (lambda (node engine)
 	     (let ((body (markup-body node))
 		   (sup* (markup-option node :sup))
@@ -429,7 +429,7 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 ;;; Initialization.
 ;;;
 
-(when-engine-is-loaded 'lout
+(when-engine-class-is-loaded 'lout
   (lambda ()
     (resolve-module '(skribilo package eq lout))))
 

@@ -35,6 +35,8 @@
   :autoload   (skribilo lib)       (type-name)
   :autoload   (skribilo resolve)   (*document-being-resolved*)
   :autoload   (skribilo output)    (*document-being-output*)
+  :use-module ((skribilo engine)   :renamer (symbol-prefix-proc 'orig:))
+  :use-module ((skribilo writer)   :renamer (symbol-prefix-proc 'orig:))
   :use-module (skribilo debug)
 
   :re-export (file-size)  ;; re-exported from `(skribilo utils files)'
@@ -142,6 +144,7 @@
     ("acmproc.skr"      . (skribilo package acmproc))))
 
 (define*-public (skribe-load file :rest args)
+  ;; FIXME: Convert the `:engine' arg to an engine class.
   (guard (c ((file-search-error? c)
 	     ;; Regular file loading failed.  Try built-ins.
 	     (let ((mod-name (assoc-ref %skribe-known-files file)))
@@ -178,6 +181,131 @@
       (set! %skribe-reader (make-reader 'skribe)))
   (%skribe-reader port))
 
+
+;;;
+;;; Engines and engine classes.
+;;;
+
+(define %per-class-current-engines
+  (make-hash-table))
+
+(define (engine-class-singleton class)
+  (let ((e (hashq-ref %per-class-current-engines class)))
+    (if e
+	e
+	(let ((e (orig:make-engine class)))
+	  (format (current-error-port) "e: ~a~%" e)
+	  (hashq-set! %per-class-current-engines class e)
+	  e))))
+
+(define-public (find-engine class-name)
+  ;; The old `find-engine' gave the illusion of a single instance per engine
+  ;; class.
+  (let ((class (false-if-exception (orig:lookup-engine-class class-name))))
+    (if class
+	(engine-class-singleton class)
+	#f)))
+
+(define (make-engine-compat-proc wrapped-engine-class-proc)
+  (lambda (e)
+    (if (orig:engine? e)
+	(wrapped-engine-class-proc (orig:engine-class e))
+	(wrapped-engine-class-proc e))))
+
+(define-public engine?
+  (make-engine-compat-proc orig:engine-class?))
+(define engine-format
+  (make-engine-compat-proc orig:engine-class-format))
+(define-public engine-customs
+  (make-engine-compat-proc orig:engine-class-customs))
+(define-public engine-filter
+  (make-engine-compat-proc orig:engine-class-filter))
+(define-public engine-symbol-table
+  (make-engine-compat-proc orig:engine-class-symbol-table))
+
+(define-public (make-engine first-arg . args)
+  ;; The old-style `make-engine' should translate to a `make-engine-class'.
+  ;; Its `:delegate' argument should be an engine class rather than an
+  ;; engine.
+
+  (define (rewrite-delegate-arg args)
+    (let loop ((args args)
+	       (result '()))
+      (if (null? args)
+	  (reverse! result)
+	  (let ((arg (car args)))
+	    (if (eq? arg :delegate)
+		(let ((delegate (cadr args)))
+		  (loop (cddr args)
+			(cons* :delegate
+			       (if (orig:engine? delegate)
+				   (orig:engine-class delegate)
+				   delegate)
+			       result)))
+		(loop (cdr args) (cons arg result)))))))
+
+  (if (symbol? first-arg)
+      (apply orig:make-engine-class first-arg (rewrite-delegate-arg args))
+      (apply orig:make-engine-class first-arg args)))
+
+(define-public (markup-writer markup . args)
+  ;; In old-style `markup-writer', the first arg could (optionally) be an
+  ;; engine.  Now, this must be (optionally) an engine class instead of an
+  ;; engine.
+  (if (null? args)
+      (apply orig:markup-writer markup args)
+      (let loop ((first-arg (car args)))
+	(if (orig:engine? first-arg)
+	    (loop (orig:engine-class first-arg))
+	    (apply orig:markup-writer markup first-arg (cdr args))))))
+
+
+(define (ensure-engine engine-or-class)
+  (cond ((orig:engine-class? engine-or-class)
+	 (engine-class-singleton engine-or-class))
+	(else engine-or-class)))
+
+(define %default-engines '())
+
+(define-public (default-engine)
+  (ensure-engine
+   (if (null? %default-engines)
+       (let* ((class  (orig:default-engine-class))
+	      (engine (find-engine (orig:engine-class-ident class))))
+	 (set! %default-engine (list engine))
+	 engine)
+       (car %default-engines))))
+
+(define-public (default-engine-set! e)
+  (let ((e (ensure-engine e)))
+    (format (current-error-port) "DEFAULT-ENGINE-SET! ~a~%" e)
+    (if (null? %default-engines)
+	(set! %default-engines (list e))
+	(set-car! %default-engines e))
+    e))
+
+(define-public (push-default-engine e)
+  (let ((e (ensure-engine e)))
+    (set! %default-engines (cons e %default-engines))
+    e))
+
+(define-public (pop-default-engine)
+  (ensure-engine
+   (if (null? %default-engines)
+       (skribe-error 'pop-default-engine "empty stack" '())
+       (let ((e (car %default-engines)))
+	 (set! %default-engines (cdr %default-engines))
+	 e))))
+
+(define-public (copy-engine ident e . args)
+  (cond ((engine? e)
+	 (orig:copy-engine e))
+	(else
+	 (apply orig:copy-engine-class ident e args))))
+
+(define-public engine-custom      orig:engine-custom)
+(define-public engine-custom-set! orig:engine-custom-set!)
+(define-public engine-format?     orig:engine-format?)
 
 
 ;;;

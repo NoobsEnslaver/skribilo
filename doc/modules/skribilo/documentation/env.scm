@@ -44,4 +44,5 @@
 (define-public *disp-color* "#ccffcc")
 (define-public *header-color* "#cccccc")
 
-(define-public *api-engines* (map find-engine '(html latex xml)))
+(define-public *api-engines* (map lookup-engine-class
+				  '(html lout latex xml)))

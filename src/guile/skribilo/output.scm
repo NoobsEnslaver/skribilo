@@ -222,7 +222,7 @@
 
 
 (define-method (out (node <markup>) e)
-  (let ((w (lookup-markup-writer node e)))
+  (let ((w (lookup-markup-writer node (engine-class e))))
     (if (writer? w)
 	(%out/writer node e w)
 	(output (slot-ref node 'body) e))))

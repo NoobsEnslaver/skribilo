@@ -1,6 +1,7 @@
 ;;; base.scm  --  BASE Skribe engine
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
+;;; Copyright 2006  Ludovic Courtès <ludovic.courtes@laas.fr>
 ;;;
 ;;;
 ;;; This program is free software; you can redistribute it and/or modify
@@ -18,14 +19,26 @@
 ;;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;;; USA.
 
-(define-skribe-module (skribilo engine base))
+(define-module (skribilo engine base)
+  :use-module (skribilo ast)
+  :use-module (skribilo engine)
+  :use-module (skribilo writer)
+  :autoload   (skribilo output) (output)
+  :use-module (skribilo evaluator)
 
+  ;; syntactic sugar
+  :use-module (skribilo reader)
+  :use-module (skribilo utils syntax))
+
+(fluid-set! current-reader (make-reader 'skribe))
+
+
 ;*---------------------------------------------------------------------*/
 ;*    base-engine ...                                                  */
 ;*---------------------------------------------------------------------*/
 (define base-engine
-   (default-engine-set!
-      (make-engine 'base
+   (default-engine-class-set!
+      (make-engine-class 'base
 		   :version 'plain
 		   :symbol-table '(("iexcl" "!")
 				   ("cent" "c")
@@ -166,7 +179,7 @@
 			    (format #f "?~a " k))))
 		     (msg (list f (markup-body n)))
 		     (n (list "[" (color :fg "red" (bold msg)) "]")))
-		 (skribe-eval n e))))
+		 (evaluate-document n e))))
 
 ;*---------------------------------------------------------------------*/
 ;*    &the-bibliography ...                                            */
@@ -314,14 +327,14 @@
 ;*---------------------------------------------------------------------*/
 (markup-writer '&bib-entry-title
    :action (lambda (n e)
-	      (skribe-eval (bold (markup-body n)) e)))
+	      (evaluate-document (bold (markup-body n)) e)))
 
 ;*---------------------------------------------------------------------*/
 ;*    &bib-entry-publisher ...                                         */
 ;*---------------------------------------------------------------------*/
 (markup-writer '&bib-entry-publisher
    :action (lambda (n e)
-	      (skribe-eval (it (markup-body n)) e)))
+	      (evaluate-document (it (markup-body n)) e)))
 
 ;*---------------------------------------------------------------------*/
 ;*    &the-index ...  @label the-index@                                */
@@ -441,7 +454,7 @@
 			       ;;:&skribe-eval-location loc
 			       :class "index-table"
 			       (make-sub-tables ie nc pref))))))
-		 (output (skribe-eval t e) e))))
+		 (output (evaluate-document t e) e))))
 
 ;*---------------------------------------------------------------------*/
 ;*    &the-index-header ...                                            */
@@ -458,7 +471,7 @@
 (markup-writer '&prog-line
    :before (lambda (n e)
 	      (let ((n (markup-ident n)))
-		 (if n (skribe-eval (it (list n) ": ") e))))
+		 (if n (evaluate-document (it (list n) ": ") e))))
    :after "\n")
 
 ;*---------------------------------------------------------------------*/
@@ -469,7 +482,7 @@
    :action (lambda (n e)
 	      (let ((o (markup-option n :offset))
 		    (n (markup-ident (handle-body (markup-body n)))))
-		 (skribe-eval (it (if (integer? o) (+ o n) n)) e))))
+		 (evaluate-document (it (if (integer? o) (+ o n) n)) e))))
 
 
 
