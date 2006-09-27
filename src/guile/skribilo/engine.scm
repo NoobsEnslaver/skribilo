@@ -186,6 +186,7 @@
 	engine)))
 
 (define (make-engine engine-class)
+  ;; Instantiate ENGINE-CLASS.
   (make engine-class))
 
 
@@ -193,7 +194,6 @@
 
 (define (engine-ident obj) (engine-class-ident (engine-class obj)))
 (define (engine-format obj) (engine-class-format (engine-class obj)))
-;;(define (engine-customs obj) (engine-class-customs (engine-class obj)))
 (define (engine-filter obj) (engine-class-filter (engine-class obj)))
 (define (engine-symbol-table obj)
   (engine-class-symbol-table (engine-class obj)))
@@ -275,8 +275,7 @@
 ;;;
 (define (copy-engine e)
   (let ((new (shallow-clone e)))
-    (slot-set! new 'class   (engine-class e))
-    (slot-set! new 'customs (list-copy (slot-ref e 'customs)))
+    (slot-set! new 'customs (map list-copy (slot-ref e 'customs)))
     new))
 
 (define* (copy-engine-class ident e :key (version 'unspecified)
@@ -365,9 +364,15 @@ otherwise the requested engine is returned."
      (let* ((engine (symbol-append id '-engine))
 	    (m (resolve-module (engine-id->module-name id))))
        (if (module-bound? m engine)
-	   (let ((e (module-ref m engine)))
-	     (if e (consume-load-hook! id))
-	     e)
+	   (let* ((e (module-ref m engine))
+                  ;; We have to have this thin compatibility layer here.
+                  (c (cond ((engine-class? e) e)
+                           ((engine? e) (engine-class e))
+                           (else
+                            (skribe-error 'lookup-engine-class
+                                          "not an engine class" e)))))
+	     (if c (consume-load-hook! id))
+	     c)
 	   (error "no such engine" id)))))
 
 
