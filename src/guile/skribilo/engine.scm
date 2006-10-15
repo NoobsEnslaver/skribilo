@@ -107,22 +107,9 @@
   (customs		:init-keyword :custom		:init-value '())
   (symbol-table		:init-keyword :symbol-table	:init-value '()))
 
-(define-class <engine> ()
+(define-class <engine> (<object>)
   (customs	:init-keyword :customs	:init-value '())
   :metaclass <engine-class>)
-
-(define-method (compute-cpl (class <engine-class>))
-  ;; Automatically set the class precedence list of <engine> subclasses.
-  (format (current-error-port) "computing CPL for ~a~%" class)
-  (list class <engine> <top>))
-
-(define-method (initialize (engine-class <engine-class>) . args)
-  ;; Set the name of <engine> subclasses.
-  (let ((result (next-method))
-	(ident (slot-ref engine-class 'ident)))
-    (slot-set! engine-class 'name
-	       (symbol-append '<engine: ident '>))
-    result))
 
 
 (define %format format)
@@ -133,7 +120,11 @@
 				       (symbol-table '())
 				       (custom '())
 				       (info '()))
-  (let ((e (make <engine-class>
+  ;; We use `make-class' from `(oop goops)' (currently undocumented).
+  (let ((e (make-class (list <engine>) '()
+             :metaclass <engine-class>
+             :name (symbol-append '<engine: ident '>)
+
 	     :ident ident :version version :format format
 	     :filter filter :delegate delegate
 	     :symbol-table symbol-table
@@ -169,33 +160,40 @@
 (define (engine? obj)
   (is-a? obj <engine>))
 
+(define (engine-class e)
+  (and (engine? e) (class-of e)))
+
 ;; A mapping of engine classes to hooks.
 (define %engine-instantiate-hook (make-hash-table))
 
-(define-method (initialize (engine <engine>) . args)
-  (format (current-error-port) "initializing engine ~a~%" engine)
-  engine)
-
 (define-method (make-instance (class <engine-class>) . args)
+  (define (initialize-engine! engine)
+    ;; Automatically initialize the `customs' slot of the newly created
+    ;; engine.
+    (let ((init-values (engine-class-customs class)))
+      (slot-set! engine 'customs (map list-copy init-values))
+      engine))
+
   (format #t "making engine of class ~a~%" class)
   (let ((engine (next-method)))
     (if (engine? engine)
-	(let ((hook (hashq-ref %engine-instantiate-hook engine-class)))
+	(let ((hook (hashq-ref %engine-instantiate-hook class)))
 	  (format (current-error-port) "engine made: ~a~%" engine)
+          (initialize-engine! engine)
 	  (if (hook? hook)
 	      (run-hook hook engine class))
 	  engine)
 	engine)))
 
 (define (make-engine engine-class)
-  (make engine-class
-    :customs (list-copy (slot-ref engine-class 'customs))))
+  ;; Instantiate ENGINE-CLASS.
+  (make engine-class))
+
 
 ;; Convenience functions.
 
 (define (engine-ident obj) (engine-class-ident (engine-class obj)))
 (define (engine-format obj) (engine-class-format (engine-class obj)))
-;;(define (engine-customs obj) (engine-class-customs (engine-class obj)))
 (define (engine-filter obj) (engine-class-filter (engine-class obj)))
 (define (engine-symbol-table obj)
   (engine-class-symbol-table (engine-class obj)))
@@ -208,6 +206,11 @@
 	(skribe-error 'engine-format? "no engine" e)
 	(string=? fmt (engine-format e)))))
 
+
+
+;;;
+;;; Writers.
+;;;
 
 (define (engine-class-add-writer! e ident pred upred opt before action
 				  after class valid)
@@ -272,8 +275,7 @@
 ;;;
 (define (copy-engine e)
   (let ((new (shallow-clone e)))
-    (slot-set! new 'class   (engine-class e))
-    (slot-set! new 'customs (list-copy (slot-ref e 'customs)))
+    (slot-set! new 'customs (map list-copy (slot-ref e 'customs)))
     new))
 
 (define* (copy-engine-class ident e :key (version 'unspecified)
@@ -362,9 +364,15 @@ otherwise the requested engine is returned."
      (let* ((engine (symbol-append id '-engine))
 	    (m (resolve-module (engine-id->module-name id))))
        (if (module-bound? m engine)
-	   (let ((e (module-ref m engine)))
-	     (if e (consume-load-hook! id))
-	     e)
+	   (let* ((e (module-ref m engine))
+                  ;; We have to have this thin compatibility layer here.
+                  (c (cond ((engine-class? e) e)
+                           ((engine? e) (engine-class e))
+                           (else
+                            (skribe-error 'lookup-engine-class
+                                          "not an engine class" e)))))
+	     (if c (consume-load-hook! id))
+	     c)
 	   (error "no such engine" id)))))
 
 

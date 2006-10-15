@@ -30,7 +30,7 @@
   :use-module (skribilo utils keywords)
   :autoload   (srfi srfi-1)        (every any filter)
   :autoload   (skribilo evaluator) (include-document)
-  :autoload   (skribilo engine)    (engine?)
+  :autoload   (skribilo engine)    (engine? engine-class?)
 
   ;; optional ``sub-packages''
   :autoload   (skribilo biblio)    (default-bib-table resolve-bib
@@ -896,7 +896,7 @@
    (cond
       ((and combinator (not (procedure? combinator)))
        (skribe-error 'processor "Combinator not a procedure" combinator))
-      ((and engine (not (engine? engine)))
+      ((and engine (not (or (engine? engine) (engine-class? engine))))
        (skribe-error 'processor "Illegal engine" engine))
       ((and procedure
 	    (or (not (procedure? procedure))
@@ -911,7 +911,9 @@
       (else
        (new processor
 	  (combinator combinator)
-	  (engine engine)
+	  (engine (if (engine-class? engine)
+                      (make-engine engine)
+                      engine))
 	  (procedure (or procedure (lambda (n e) n)))
 	  (body (the-body opts))))))
 

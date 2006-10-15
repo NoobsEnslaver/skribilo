@@ -1,6 +1,7 @@
-;;; engine.skb  --  The description of the Skribe engines
+;;; engine.skb  --  Description of Skribilo engines.
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
+;;; Copyright 2006  Ludovic Courtès  <ludovic.courtes@laas.fr>
 ;;;
 ;;;
 ;;; This program is free software; you can redistribute it and/or modify
@@ -35,10 +36,10 @@
 ;*---------------------------------------------------------------------*/
 (chapter :title "Engines" 
 
-   (p [When Skribe produces a document in a given format, it uses a
-specialize engine. For instance, when a Web page is made from a Skribe
-document, the HTML engine is used. The engines provided by Skribe are
-given below:])
+   (p [When Skribilo produces a document in a given format, it uses a
+specialized engine. For instance, when a Web page is made from a
+Skribilo document, an HTML engine is used. The engine classes provided
+by Skribe are given below:])
 
    (resolve (lambda (n e env)
 	       (let* ((current-chapter (ast-chapter n))
@@ -51,52 +52,91 @@ given below:])
 			     (let ((title (markup-option x :title)))
 				(item (ref :text title :section title))))
 			  sects)))))
-   
-   (section :title "Functions dealing with engines"
+
+   (p [Skribilo differentiates an ,(emph [engine class]) from an ,(emph
+[engine]).  An engine class defines the overall behavior of a type of
+engine (e.g., HTML, Lout, LaTeX, etc.).  This includes, for instance,
+information about how to produce particular symbols and how to produce
+various markups in the particular format represented by the engine class
+(e.g., a ,(code [code]) markup can be rendered using the ,(code
+[<code>]) tag in HTML).  Conversely, an engine is an ,(emph [instance])
+of an engine class.  Therefore, the behavior of an engine is mostly
+defined by its class, but engines can have their own settings (e.g.,
+their own ,(ref :text (emph [customs]) :ident "engine-customs")) that
+can defer from the default settings specified by their class.])
+   (p [Skribe users will notice that this is slightly different from
+Skribe's notion of an engine which encompasses both notions (or, in
+other words, Skribe only allow the instantiation of one engine for each
+engine class).  A compatibility layer is available in the ,(code
+"(skribilo utils compat)") module.])
+
+   (section :title "Functions Dealing With Engines"
       
-      (subsection :title "Creating engines"
-	 (p [The function ,(code "make-engine") creates a brand new engine.])
+      (subsection :title "Creating Engine Classes"
+	 (p [The function ,(code "make-engine-class") creates a brand
+new engine class.])
 	 
-	 (doc-markup 'make-engine
-	    '((ident [The name (a symbol) of the new engine.])
+	 (doc-markup 'make-engine-class
+	    '((ident [The name (a symbol) of the new engine class.])
 	      (:version [The version number.])
-	      (:format [The output format (a string) of this engine.])
+	      (:format [The output format (a string) of this engine class.])
 	      (:filter [A string filter (a function).])
-	      (:delegate [A delegate engine.])
-	      (:symbol-table [The engine symbol table.])
-	      (:custom [The engine custom list.])
-	      (:info [Miscellaneous.]))
+	      (:delegate [A delegate engine class.])
+	      (:symbol-table [The engine class symbol table.])
+	      (:custom [The engine class custom list and default values.])
+	      (:info [Miscellaneous information.]))
 	    :common-args '()
             :skribe-source? #f
 	    :source *engine-src*
 	    :idx *function-index*)
+
+	 (p [Once an engine class has been created or ,(ref :text
+[retrieved] :ident "engine-lookup"), it can be instantiated using ,(code
+"make-engine"):])
 	 
+	 (doc-markup 'make-engine
+	    '((engine-class [The engine class that is to be
+instantiated.]))
+	    :common-args '()
+	    :skribe-source? #f
+	    :source *engine-src*
+	    :idx *function-index*)
+
+	 (p [Each engine has its own values for its customs (initially
+the default values that were specified in the ,(code ":custom")
+parameter passed when creating its class).  Thus, it is possible to have
+several engines of a same class that peacefully coexist, even with
+different customs.])
+
 	 (p [The function ,(code "copy-engine") duplicates an existing engine.])
 	 (doc-markup 'copy-engine
-	    '((ident [The name (a symbol) of the new engine.])
-	      (e [The old engine to be duplicated.])
-	      (:version [The version number.])
-	      (:filter [A string filter (a function).])
-	      (:delegate [A delegate engine.])
-	      (:symbol-table [The engine symbol table.])
-	      (:custom [The engine custom list.]))
+	    '((e [The engine to be duplicated.]))
 	    :common-args '()
             :skribe-source? #f
 	    :source *engine-src*
 	    :idx *function-index*))
 	      
-      (subsection :title "Retrieving engines"
+      (subsection :title "Retrieving Engines"
+	          :ident "engine-lookup"
 	 
-	 (p [The ,(code "find-engine") function searches in the list of defined
-engines. It returns an ,(code "engine") object on success and ,(code "#f")
-on failure.])
-	 (doc-markup 'find-engine
-	    '((id [The name (a symbol) of the engine to be searched.])
-	      (:version [An optional version number for the searched engine.]))
+	 (p [It is customary to fetch an engine class from Skribilo's
+directory (e.g., the ,(ref :text [HTML engine] :ident "html-engine"),
+the ,(ref :text [LaTeX engine] :ident "latex-engine")) using ,(code
+"lookup-engine-class") (for instance, this is what the ,(code
+"--target") option of the ,(code "skribilo") program does).])
+	 
+	 (doc-markup 'lookup-engine-class
+	    '((id [The name (a symbol) of the engine class that is looked
+for.])
+	      (:version [The version number.]))
 	    :common-args '()
             :skribe-source? #f
 	    :source *engine-src*
-	    :idx *function-index*))
+	    :idx *function-index*)
+
+	 (p [This function is roughly equivalent to Skribe's ,(code
+"find-engine"), with the noticeable difference that ,(code
+"find-engine") returns an engine rather than an engine class.]))
       
       (subsection :title "Engine accessors"
 	 (p [The predicate ,(code "engine?") returns ,(code "#t") if its
@@ -115,12 +155,13 @@ argument is an engine. Otherwise, it returns ,(code "#f"). In other words,
 	 (doc-markup 'engine-ident
 	    '((obj [The engine.]))
 	    :common-args '()
-	    :others '(engine-format engine-customs engine-filter engine-symbol-table)
+	    :others '(engine-format engine-filter engine-symbol-table)
             :skribe-source? #f
 	    :source *engine-src*
 	    :idx *function-index*))
       
-      (subsection :title "Engine customs"
+      (subsection :title "Engine Customs"
+	          :ident "engine-customs"
 	 
 	 (p [Engine customs are locations where dynamic informations relative
 to engines can be stored. Engine custom can be seen a global variables that
@@ -128,10 +169,10 @@ are specific to engines. The function ,(code "engine-custom") returns the
 value of a custom or ,(code "#f") if that custom is not defined. The
 function ,(code "engine-custom-set!") defines or sets a new value for
 a custom.])
-	 
+
 	 (doc-markup 'engine-custom
 	    `((e ,[The engine (as returned by 
-,(ref :mark "find-engine" :text (code "find-engine"))).])
+,(ref :mark "make-engine" :text (code "make-engine"))).])
 	      (id [The name of the custom.]))
 	    :common-args '()
             :skribe-source? #f
@@ -140,7 +181,7 @@ a custom.])
 	 
 	 (doc-markup 'engine-custom-set!
 	    `((e ,[The engine (as returned by 
-,(ref :mark "find-engine" :text (code "find-engine"))).])
+,(ref :mark "make-engine" :text (code "make-engine"))).])
 	      (id [The name of the custom.])
 	      (val [The new value of the custom.]))
 	    :common-args '()
