@@ -63,7 +63,7 @@
 (define-markup (include file)
    (if (not (string? file))
        (skribe-error 'include "Illegal file (string expected)" file)
-       (include-document file)))
+       (include-document file :module (current-module))))
 
 ;*---------------------------------------------------------------------*/
 ;*    document ...                                                     */
