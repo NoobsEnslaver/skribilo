@@ -21,9 +21,10 @@
 
 
 (define-module (skribilo output)
-  :autoload   (skribilo engine) (engine-ident processor-get-engine)
   :autoload   (skribilo writer) (writer? writer-ident lookup-markup-writer)
   :autoload   (skribilo location) (location?)
+  :autoload   (skribilo engine) (engine-class engine-ident engine-filter)
+
   :use-module (skribilo ast)
   :use-module (skribilo debug)
   :use-module (skribilo utils syntax)
@@ -146,7 +147,7 @@
 
 
 (define-method (out (node <string>) e)
-  (let ((f (slot-ref e 'filter)))
+  (let ((f (engine-filter e)))
     (if (procedure? f)
 	(display (f node))
 	(display node))))
