@@ -25,6 +25,8 @@
   :use-module (skribilo writer)
   :autoload   (skribilo output) (output)
   :use-module (skribilo evaluator)
+  :autoload   (skribilo package base) (color)
+  :autoload   (skribilo utils keywords) (list-split)
 
   ;; syntactic sugar
   :use-module (skribilo reader)
@@ -186,13 +188,13 @@
 ;*---------------------------------------------------------------------*/
 (markup-writer '&the-bibliography
    :before (lambda (n e)
-	      (let ((w (markup-writer-get 'table e)))
+	      (let ((w (markup-writer-get 'table (engine-class e))))
 		 (and (writer? w) (invoke (writer-before w) n e))))
    :action (lambda (n e)
 	      (when (pair? (markup-body n))
 		 (for-each (lambda (i) (output i e)) (markup-body n))))
    :after (lambda (n e)
-	     (let ((w (markup-writer-get 'table e)))
+	     (let ((w (markup-writer-get 'table (engine-class e))))
 		(and (writer? w) (invoke (writer-after w) n e)))))
 
 ;*---------------------------------------------------------------------*/
@@ -201,23 +203,28 @@
 (markup-writer '&bib-entry
    :options '(:title)
    :before (lambda (n e)
-	      (invoke (writer-before (markup-writer-get 'tr e)) n e))
+	      (invoke (writer-before (markup-writer-get 'tr
+                                                        (engine-class e)))
+                      n e))
    :action (lambda (n e)
-	      (let ((wtc (markup-writer-get 'tc e)))
+	      (let ((wtc (markup-writer-get 'tc (engine-class e))))
 		 ;; the label
 		 (markup-option-add! n :valign 'top)
 		 (markup-option-add! n :align 'right)
 		 (invoke (writer-before wtc) n e)
-		 (output n e (markup-writer-get '&bib-entry-label e))
+		 (output n e (markup-writer-get '&bib-entry-label
+                                                (engine-class e)))
 		 (invoke (writer-after wtc) n e)
 		 ;; the body
 		 (markup-option-add! n :valign 'top)
 		 (markup-option-add! n :align 'left)
 		 (invoke (writer-before wtc) n e)
-		 (output n e (markup-writer-get '&bib-entry-body))
+		 (output n e (markup-writer-get '&bib-entry-body
+                                                (engine-class e)))
 		 (invoke (writer-after wtc) n e)))
    :after (lambda (n e)
-	     (invoke (writer-after (markup-writer-get 'tr e)) n e)))
+	     (invoke (writer-after (markup-writer-get 'tr (engine-class e)))
+                     n e)))
 
 ;*---------------------------------------------------------------------*/
 ;*    &bib-entry-label ...                                             */
@@ -484,9 +491,3 @@
 		    (n (markup-ident (handle-body (markup-body n)))))
 		 (evaluate-document (it (if (integer? o) (+ o n) n)) e))))
 
-
-
-;;;; A VIRER (mais handle-body n'est pas défini)
-(markup-writer 'line-ref
-   :options '(:offset)
-   :action #f)
