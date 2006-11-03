@@ -155,7 +155,7 @@
 				 "  skribe-load: `~a' -> `~a'~%"
 				 file mod-name))
 		     (let ((mod (false-if-exception
-				 (resolve-module mod-name))))
+				 (resolve-interface mod-name))))
 		       (if (not mod)
 			   (raise c)
 			   (begin
@@ -237,27 +237,16 @@
 	    (if (eq? arg :delegate)
 		(let ((delegate (cadr args)))
 		  (loop (cddr args)
-			(cons* :delegate
-			       (if (orig:engine? delegate)
+			(cons* (if (orig:engine? delegate)
 				   (orig:engine-class delegate)
 				   delegate)
+                               :delegate
 			       result)))
 		(loop (cdr args) (cons arg result)))))))
 
   (if (symbol? first-arg)
       (apply orig:make-engine-class first-arg (rewrite-delegate-arg args))
       (apply orig:make-engine-class first-arg args)))
-
-(define-public (markup-writer markup . args)
-  ;; In old-style `markup-writer', the first arg could (optionally) be an
-  ;; engine.  Now, this must be (optionally) an engine class instead of an
-  ;; engine.
-  (if (null? args)
-      (apply orig:markup-writer markup args)
-      (let loop ((first-arg (car args)))
-	(if (orig:engine? first-arg)
-	    (loop (orig:engine-class first-arg))
-	    (apply orig:markup-writer markup first-arg (cdr args))))))
 
 
 (define (ensure-engine engine-or-class)
@@ -272,7 +261,7 @@
    (if (null? %default-engines)
        (let* ((class  (orig:default-engine-class))
 	      (engine (find-engine (orig:engine-class-ident class))))
-	 (set! %default-engine (list engine))
+	 (set! %default-engines (list engine))
 	 engine)
        (car %default-engines))))
 
@@ -303,9 +292,40 @@
 	(else
 	 (apply orig:copy-engine-class ident e args))))
 
+(define-public engine-ident       orig:engine-ident)
 (define-public engine-custom      orig:engine-custom)
 (define-public engine-custom-set! orig:engine-custom-set!)
 (define-public engine-format?     orig:engine-format?)
+
+
+;;;
+;;; Writers.
+;;;
+
+(define-public (markup-writer markup . args)
+  ;; In old-style `markup-writer', the second arg could (optionally) be an
+  ;; engine.  Now, this must be (optionally) an engine class instead of an
+  ;; engine.
+  (if (null? args)
+      (apply orig:markup-writer markup args)
+      (let loop ((first-arg (car args))
+                 (rest (cdr args)))
+	(cond ((orig:engine? first-arg)
+               (loop (orig:engine-class first-arg) rest))
+              ((orig:engine-class? first-arg)
+               (apply orig:markup-writer markup first-arg rest))
+              (else
+               ;; FIRST-ARG does not specify an engine: keep it and use the
+               ;; current default engine.
+               (loop (default-engine) (cons first-arg rest)))))))
+
+(define*-public (markup-writer-get markup :optional engine :key (class #f)
+                                   (pred #f))
+  (let ((eclass (if (orig:engine? engine)
+                    (orig:engine-class engine)
+                    (orig:engine-class (default-engine)))))
+    (orig:markup-writer-get markup eclass
+                            :class class :pred pred)))
 
 
 ;;;
