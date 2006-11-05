@@ -26,6 +26,7 @@
   :use-module (skribilo lib) ;; `define-markup'
   :use-module (skribilo resolve)
   :use-module (skribilo output)
+  :use-module (skribilo evaluator)
   :use-module (skribilo utils keywords)
   :use-module (skribilo utils syntax) ;; `when'
 
@@ -58,13 +59,13 @@
 		 (let ((ident (markup-ident n))
 		       (number (markup-option n :number))
 		       (legend (markup-option n :legend)))
-		    (skribe-eval (mark ident) e)
-		    (skribe-eval (center
-				  (markup-body n)
-				  (if number
-				      (bold (format #f "Ex. ~a: " number)))
-				  legend)
-				 e)))))
+		    (evaluate-document (mark ident) e)
+		    (evaluate-document
+                     (center (markup-body n)
+                             (if number
+                                 (bold (format #f "Ex. ~a: " number)))
+                             legend)
+                     e)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    html-browsing-extra ...                                          */
@@ -289,19 +290,19 @@
 		     (pref (eq? (engine-custom e 'index-page-ref) #t))
 		     (loc (ast-loc n))
 		     ;; FIXME: Since we don't support
-		     ;; `:&skribe-eval-location', we could set up a
-		     ;; `parameterize' thing around `skribe-eval' to provide
+		     ;; `:&evaluate-document-location', we could set up a
+		     ;; `parameterize' thing around `evaluate-document' to provide
 		     ;; it with the right location information.
 		     (t (cond
 			   ((null? ie)
 			    "")
 			   ((or (not (integer? nc)) (= nc 1))
-			    (table :width 100. ;;:&skribe-eval-location loc
+			    (table :width 100. ;;:&evaluate-document-location loc
 			       (make-column ie pref)))
 			   (else
-			    (table :width 100. ;;:&skribe-eval-location loc
+			    (table :width 100. ;;:&evaluate-document-location loc
 			       (make-sub-tables ie nc pref))))))
-		 (output (skribe-eval t e) e))))
+		 (evaluate-document t e))))
 
 ;*---------------------------------------------------------------------*/
 ;*    compiler-command ...                                             */
