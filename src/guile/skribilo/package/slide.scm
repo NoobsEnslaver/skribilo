@@ -30,6 +30,8 @@
   :use-module (skribilo evaluator) ;; `*load-options*'
   :use-module (skribilo package base)
 
+  :autoload   (skribilo utils keywords) (the-options the-body)
+
   :use-module (srfi srfi-1)
   :use-module (ice-9 optargs))
 

@@ -276,7 +276,9 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 			 (let ((lout-code
 				(with-output-to-string
 				  (lambda ()
-				    (output node (lookup-engine-class 'lout))))))
+				    (output node
+                                            (make-engine
+                                             (lookup-engine-class 'lout)))))))
 			   (output (lout-illustration
 				    :ident (markup-ident node)
 				    lout-code)

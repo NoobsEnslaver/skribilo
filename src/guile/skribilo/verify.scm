@@ -20,16 +20,19 @@
 ;;; USA.
 
 (define-module (skribilo verify)
-  :autoload (skribilo engine) (engine-ident processor-get-engine)
+  :autoload (skribilo engine) (engine-ident engine-class processor-get-engine)
   :autoload (skribilo writer) (writer? writer-options lookup-markup-writer)
   :autoload (skribilo lib)    (skribe-warning/ast skribe-warning
 			       skribe-error)
+
+  :use-module (skribilo debug)
+  :use-module (skribilo ast)
+  :use-module (oop goops)
+
+  :use-module (skribilo utils syntax)
+
   :export (verify))
 
-(use-modules (skribilo debug)
-	     (skribilo ast)
-	     (skribilo utils syntax)
-	     (oop goops))
 
 (fluid-set! current-reader %skribilo-module-reader)
 
