@@ -32,7 +32,8 @@
 ;*    Packages							       */
 ;*---------------------------------------------------------------------*/
 (use-modules (skribilo package eq)
-	     (skribilo package pie))
+	     (skribilo package pie)
+	     (skribilo package slide))
 
 ;; Load the compile-time configuration file.
 (load "doc-config.scm")

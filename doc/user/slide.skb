@@ -189,9 +189,11 @@ output format does not support embedded application.]))
 					:options '(:title :ident
 						   :number :toc :vspace)
 					:action dummy-slide-output)
-			 (markup-writer 'slide-vspace
+			 (markup-writer 'slide-vspace e
+			                :options '(:alt)
 					:action dummy-slide-vspace-output)
-			 (markup-writer 'slide-embed
+			 (markup-writer 'slide-embed e
+			                :options '(:alt)
 					:action dummy-slide-embed-output)
 			 e))
 		     (include "src/slides.skb"))))
