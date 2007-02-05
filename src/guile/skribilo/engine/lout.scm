@@ -24,6 +24,8 @@
 
 
 (define-skribe-module (skribilo engine lout)
+  :use-module (srfi srfi-13)
+  :use-module (srfi srfi-14)
   :autoload (ice-9 popen)   (open-output-pipe)
   :autoload (ice-9 rdelim)  (read-line))
 
@@ -378,9 +380,9 @@
   (let ((leader (engine-custom engine 'toc-leader))
 	(leader-space (engine-custom engine 'toc-leader-space)))
     (apply string-append
-	   `("# @SkribeMark implements Skribe's marks "
+	   `("# @SkribiloMark implements Skribe's marks "
 	     "(i.e. cross-references)\n"
-	     "def @SkribeMark\n"
+	     "def @SkribiloMark\n"
 	     "    right @Tag\n"
 	     "{\n"
 	     "    @PageMark @Tag\n"
@@ -389,7 +391,29 @@
 	     "# @SkribiloLeaders is used in `toc'\n"
 	     "# (this is mostly copied from the expert's guide)\n"
 	     "def @SkribiloLeaders { "
-	     ,leader " |" ,leader-space " @SkribiloLeaders }\n\n"))))
+	     ,leader " |" ,leader-space " @SkribiloLeaders }\n\n"
+
+             "# Embedding an application in PDF (``Launch'' actions)\n"
+             "# (tested with XPdf 3.1 and Evince 0.4.0)\n"
+             "def @SkribiloEmbed\n"
+             "  left command\n"
+             "  import @PSLengths\n"
+             "    named borderwidth { 1p }\n"
+             "  right body\n"
+             "{\n"
+             "  {\n"
+             "    \"[ /Rect [0 0 xsize ysize]\"\n"
+             "    \"  /Color [0 0 1]\"\n"
+             "    \"  /Border [ 0 0 \" borderwidth \" ]\"\n"
+             "    \"  /Action /Launch\"\n"
+             "    \"  /File  (\" command \")\"\n"
+             "    \"  /Subtype /Link\"\n"
+             "    \"/ANN\"\n"
+             "    \"pdfmark\"\n"
+             "  }\n"
+             "  @Graphic body\n"
+             "}\n\n"))))
+
 
 (define (lout-make-doc-cover-sheet doc engine)
   ;; Create a cover sheet for node `doc' which is a doc-style Lout document.
@@ -410,18 +434,22 @@
        (output title engine)
        (display "The Lout Document"))
     (display " }\n")
-    (display "//1.7fx\n")
-    (if date-line
-	(begin
-	  (display "@Center { ")
-	  (output date-line engine)
-	  (display " }\n//1.4fx\n")))
+    (display "//2.0fx\n")
     (if author
        (begin
          (display "@Center { ")
          (output author engine)
          (display " }\n")
-         (display "//4fx\n")))
+         (display "//4.6fx\n")))
+    (if date-line
+	(begin
+	  (display "@Center { ")
+	  (output (if (eq? #t date-line)
+                      (strftime "%e %B %Y" (localtime (current-time)))
+                      date-line)
+                  engine)
+	  (display " }\n//1.7fx\n")))
+    (display "//0.5fx\n")
     (if multi-column?
 	(display "\n} # @FullWidth\n"))))
 
@@ -444,13 +472,14 @@
 		 (let ((split (let loop ((where 10))
 				(if (= 0 where)
 				    10
-				    (if (char=? (string-ref text
-							    (- where 1))
-						#\space)
+				    (if (char-set-contains?
+                                         char-set:whitespace
+                                         (string-ref text (- where 1)))
 					(loop (- where 1))
 					where)))))
 		   `(,(ref :url url :text (substring text 0 split))
-		     ,(substring text split len)))
+		     ,(!lout (lout-make-url-breakable
+                              (substring text split len)))))
 		 (list markup))))
 
 	  ((markup? text)
@@ -475,7 +504,7 @@
     (if num
 	(begin
 	  (if (is-markup? node 'chapter) (display "@B { "))
-	  (printf "~a. |2s " (lout-structure-number-string node))
+	  (printf "~a. |2s " (markup-number-string node))
 	  (output title engine)
 	  (if (is-markup? node 'chapter) (display " }")))
 	(if (is-markup? node 'chapter)
@@ -498,7 +527,7 @@
 (define (lout-pdf-bookmark-title node engine)
   ;; Default implementation of the `pdf-bookmark-title-proc' custom that
   ;; returns a title (a string) for the PDF bookmark of `node'.
-  (let ((number (lout-structure-number-string node)))
+  (let ((number (markup-number-string node)))
     (string-append  (if (string=? number "") "" (string-append number ". "))
 		    (ast->string (markup-option node :title)))))
 
@@ -558,7 +587,7 @@
 			 ;; also honor this custom for `doc' documents.
 			 (cover-sheet? #t)
 
-			 ;; For reports, the date line.
+			 ;; For reports and slides, the date line.
 			 (date-line #t)
 
 			 ;; For reports, an abstract.
@@ -604,7 +633,7 @@
 			 (use-skribe-footnote-numbers? #t)
 
 			 ;; A procedure that is passed the engine
-			 ;; and produces Lout definitions.
+			 ;; and returns Lout definitions (a string).
 			 (inline-definitions-proc ,lout-definitions)
 
 			 ;; A procedure that takes a URL `ref' markup and
@@ -634,6 +663,10 @@
 			 ;; The Lout program name, only useful when using
 			 ;; `lout-illustration' on other back-ends.
 			 (lout-program-name "lout")
+
+                         ;; Additional arguments that should be passed to
+                         ;; Lout, e.g., `("-I foo" "-I bar")'.
+                         (lout-program-arguments ())
 
 			 ;; Title and author information in the PDF
 			 ;; document information.  If `#t', the
@@ -1012,7 +1045,7 @@
 		   (display "@SysInclude { tbl }\n"))
 
 	       ;; Write additional Lout definitions
-	       (display (lout-definitions e))
+	       (display ((engine-custom e 'inline-definitions-proc) e))
 
 	       (case doc-type
 		 ((report) (display "@Report\n"))
@@ -1051,23 +1084,25 @@
 				   (output institution e)
 				   (printf " }\n"))))))))
 
+               (if (memq doc-type '(report slides))
+                   (let ((date-line (engine-custom e 'date-line)))
+		     (display "  @DateLine { ")
+		     (if (or (string? date-line) (ast? date-line))
+			 (output date-line e)
+			 (display (if date-line "Yes" "No")))
+		     (display " }\n")))
+
 	       ;; Lout reports make it possible to choose whether to prepend
 	       ;; a cover sheet (books and docs don't).  Same for a date
 	       ;; line.
 	       (if (eq? doc-type 'report)
 		   (let ((cover-sheet?   (engine-custom e 'cover-sheet?))
-			 (date-line      (engine-custom e 'date-line))
 			 (abstract       (engine-custom e 'abstract))
 			 (abstract-title (engine-custom e 'abstract-title)))
 		     (display (string-append "  @CoverSheet { "
 					     (if cover-sheet?
 						 "Yes" "No")
 					     " }\n"))
-		     (display "  @DateLine { ")
-		     (if (string? date-line)
-			 (output date-line e)
-			 (display (if date-line "Yes" "No")))
-		     (display " }\n")
 
 		     (if abstract
 			 (begin
@@ -1288,17 +1323,11 @@
 		     doc-type)))))
 
 (define-public (lout-structure-number-string markup)
-  ;; Return a structure number string such as "1.2".
-  ;; FIXME: External code has started to rely on this.  This should be
-  ;;        generalized and moved elsewhere.
-  (let loop ((struct markup))
-    (if (document? struct)
-	""
-	(let ((parent-num (loop (ast-parent struct)))
-	      (num (markup-option struct :number)))
-	  (string-append parent-num
-			 (if (string=? "" parent-num) "" ".")
-			 (if (number? num) (number->string num) ""))))))
+  ;; FIXME: External code has started to rely on this before this was moved
+  ;; to the `ast' module as `markup-number-string'.  Thus, we'll have to keep it
+  ;; here for some time.
+  (markup-number-string markup "."))
+
 
 ;*---------------------------------------------------------------------*/
 ;*    lout-block-before ...                                            */
@@ -1317,7 +1346,7 @@
 	   ;; Lout markup)
 	   (display "\n//1.8vx\n@B { ")
 	   (output title e)
-	   (display " }\n@SkribeMark { ")
+	   (display " }\n@SkribiloMark { ")
 	   (display (lout-tagify ident))
 	   (display " }\n//0.8vx\n\n"))
 	(begin
@@ -1327,7 +1356,7 @@
 
 	   (if (number? number)
 	       (printf "  @BypassNumber { ~a }\n"
-		       (lout-structure-number-string n))
+		       (markup-number-string n))
 	       (if (not number)
 		   ;; this trick hides the section number
 		   (printf "  @BypassNumber { } # unnumbered\n")))
@@ -1646,8 +1675,12 @@
 ;; Program lines appear within a `lines @Break' block.
 (markup-writer '&prog-line
    :before (lambda (n e)
-	      (let ((n (markup-ident n)))
-		 (if n (skribe-eval (it (list n) ": ") e))))
+             (let ((num (markup-option n :number)))
+               (if (number? num)
+                   (skribe-eval
+                    (it (string-append (string-pad (number->string num) 3)
+                                       ": "))
+                    e))))
    :after "\n")
 
 ;*---------------------------------------------------------------------*/
@@ -2380,7 +2413,7 @@
    :action (lambda (n e)
 	     (if (markup-ident n)
 		 (begin
-		   (display "{ @SkribeMark { ")
+		   (display "{ @SkribiloMark { ")
 		   (display (lout-tagify (markup-ident n)))
 		   (display " } }"))
 		 (skribe-error 'lout "mark: Node has no identifier" n))))
@@ -2462,6 +2495,7 @@
 					   ((is-markup? x 'bib-entry) x)
 					   ((is-markup? x 'bib-ref)
 					    (handle-ast (markup-body x)))
+                                           ((is-markup? x 'unref) #f)
 					   (else
 					    (skribe-error
 					     'lout
@@ -2469,9 +2503,14 @@
 					     x)))))
 		    (help-proc (lambda (proc)
 				 (lambda (e1 e2)
-				   (proc (canonicalize-entry e1)
-					 (canonicalize-entry e2)))))
+                                   (let ((e1 (canonicalize-entry e1))
+                                         (e2 (canonicalize-entry e2)))
+                                     ;; don't pass `unref's to PROC
+                                     (if (and e1 e2)
+                                         (proc e1 e2)
+                                         #f)))))
 		    (sort-proc (engine-custom e 'bib-refs-sort-proc)))
+
 	       (let loop ((rs (if sort-proc
 				  (sort entries (help-proc sort-proc))
 				  entries)))
@@ -2491,6 +2530,19 @@
    :after "]")
 
 ;*---------------------------------------------------------------------*/
+;*    lout-make-url-breakable ...                                      */
+;*---------------------------------------------------------------------*/
+(define-public lout-make-url-breakable
+  ;; Make the given string (which is assumed to be a URL) breakable.
+  (make-string-replace `((#\/ "\"/\"&0ik{}")
+                         (#\. ".&0ik{}")
+                         (#\- "-&0ik{}")
+                         (#\_ "_&0ik{}")
+                         (#\@ "\"@\"&0ik{}")
+                         ,@lout-verbatim-encoding
+                         (#\newline " "))))
+
+;*---------------------------------------------------------------------*/
 ;*    url-ref ...                                                      */
 ;*---------------------------------------------------------------------*/
 (markup-writer 'url-ref
@@ -2503,19 +2555,9 @@
 		       (markup-option n '&transformed))
 		   (begin
 		     (printf "{ \"~a\" @ExternalLink { " url)
-		     (if text ;; FIXME: Should be (not (string-index text #\space))
-			 (output text e)
-			 (let ((filter-url (make-string-replace
-					    `((#\/ "\"/\"&-")
-					      (#\. ".&-")
-					      (#\- "&-")
-					      (#\_ "_&-")
-					      ,@lout-verbatim-encoding
-					      (#\newline "")))))
-			   ;; Filter the URL in a way to give Lout hints on
-			   ;; where hyphenation should take place.
-			   (fprint (current-error-port) "Here!!!" filter-url)
-			   (display (filter-url url) e)))
+		     (if text
+                         (output text e)
+                         (display (lout-make-url-breakable url) e))
 		     (printf " } }"))
 		   (begin
 		     (markup-option-add! n '&transformed #t)
@@ -2602,7 +2644,7 @@
 ;*---------------------------------------------------------------------*/
 (markup-writer '&bib-entry-title
    :action (lambda (n e)
-	      (let* ((t (bold (markup-body n)))
+	      (let* ((t (markup-body n))
 		     (en (handle-ast (ast-parent n)))
 		     (url (markup-option en 'url))
 		     (ht (if url (ref :url (markup-body url) :text t) t)))
@@ -2624,7 +2666,7 @@
    :action (lambda (n e)
 	      (let* ((en (handle-ast (ast-parent n)))
 		     (url (markup-option en 'url))
-		     (t (bold (markup-body url))))
+		     (t (it (markup-body url))))
 		 (skribe-eval (ref :url (markup-body url) :text t) e))))
 
 ;*---------------------------------------------------------------------*/
@@ -2848,11 +2890,13 @@
 					     (gensym 'lout-illustration)))
 					".eps"))
 		 (port (open-output-pipe
-			(string-append (or (engine-custom lout
-							  'lout-program-name)
-					   "lout")
-				       " -o " output
-				       " -EPS"))))
+			(apply string-append
+                               (or (engine-custom lout 'lout-program-name)
+                                   "lout")
+                               " -o " output
+                               " -EPS "
+                               (engine-custom lout
+                                              'lout-program-arguments)))))
 
 	    ;; send the illustration to Lout's standard input
 	    (display (illustration-header) port)

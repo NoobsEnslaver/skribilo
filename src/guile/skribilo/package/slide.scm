@@ -162,6 +162,7 @@
 (define-markup (slide-embed #!rest opt
 			    #!key
 			    command
+                            (arguments '())
 			    (geometry-opt "-geometry")
 			    (geometry #f) (rgeometry #f)
 			    (transient #f) (transient-opt #f)
@@ -243,12 +244,14 @@
 ;*---------------------------------------------------------------------*/
 (define-markup (slide-topic #!rest opt
 			    #!key title (outline? #t)
-                            (ident #f) (class "slide-topic"))
+                            (ident #f) (class #f))
    (new container
       (markup 'slide-topic)
       (required-options '(:title :outline?))
       (ident (or ident (symbol->string (gensym "slide-topic"))))
-      (options (the-options opt))
+      (class class)
+      (options `((:outline? ,outline?)
+                 ,@(the-options opt :outline? :class)))
       (body (the-body opt))))
 
 ;*---------------------------------------------------------------------*/
@@ -256,12 +259,14 @@
 ;*---------------------------------------------------------------------*/
 (define-markup (slide-subtopic #!rest opt
 			       #!key title (outline? #f)
-                               (ident #f) (class "slide-subtopic"))
+                               (ident #f) (class #f))
    (new container
       (markup 'slide-subtopic)
       (required-options '(:title :outline?))
       (ident (or ident (symbol->string (gensym "slide-subtopic"))))
-      (options (the-options opt))
+      (class class)
+      (options `((:outline? ,outline?)
+                 ,@(the-options opt :outline? :class)))
       (body (the-body opt))))
 
 

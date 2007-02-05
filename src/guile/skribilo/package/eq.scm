@@ -19,7 +19,7 @@
 ;;; USA.
 
 (define-module (skribilo package eq)
-  :autoload   (skribilo ast)    (markup?)
+  :autoload   (skribilo ast)    (markup? find-up)
   :autoload   (skribilo output) (output)
   :use-module (skribilo writer)
   :use-module (skribilo engine)
@@ -29,6 +29,8 @@
   :use-module (skribilo utils keywords) ;; `the-options', etc.
   :autoload   (skribilo package base) (it symbol sub sup)
   :autoload   (skribilo engine lout) (lout-illustration)
+
+  :use-module (srfi srfi-39)
   :use-module (ice-9 optargs))
 
 ;;; Author: Ludovic Courtès
@@ -52,9 +54,14 @@
 ;;; Utilities.
 ;;;
 
+(define-public *embedded-renderer*
+  ;; Tells whether an engine is invoked as an embedded renderer or as the
+  ;; native engine.
+  (make-parameter #f))
+
 (define %operators
   '(/ * + - = != ~= < > <= >= sqrt expt sum product script
-    in notin apply))
+    in notin apply limit combinations))
 
 (define %symbols
   ;; A set of symbols that are automatically recognized within an `eq' quoted
@@ -110,24 +117,45 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 				   (string-length str))))
       #f))
 
+(define-public (inline-equation? m)
+  "Return @code{#t} if @var{m} is an equation that is to be displayed inline."
+  (and (is-markup? m 'eq)
+       (let ((i (markup-option m :inline?)))
+         (case i
+           ((auto)
+            (not (find-up (lambda (n)
+                            (is-markup? n 'eq-display))
+                          m)))
+           ((#t) #t)
+           (else #f)))))
+
 
 ;;;
 ;;; Operator precedence.
 ;;;
 
 (define %operator-precedence
-  ;; FIXME: This needs to be augmented.
-  '((+ . 1)
-    (- . 1)
-    (* . 2)
-    (/ . 2)
-    (sum . 3)
+  ;; Taken from http://en.wikipedia.org/wiki/Order_of_operations .
+  '((expt . 2)
+    (sqrt . 2)
+
+    (* . 3)
+    (/ . 3)
     (product . 3)
-    (= . 0)
-    (< . 0)
-    (> . 0)
-    (<= . 0)
-    (>= . 0)))
+
+    (+ . 4)
+    (- . 4)
+    (sum . 4)
+
+    (< . 6)
+    (> . 6)
+    (<= . 6)
+    (>= . 6)
+
+    (= . 7)
+    (!= . 7)
+    (~= . 7)))
+
 
 (define-public (operator-precedence op)
   (let ((p (assq op %operator-precedence)))
@@ -169,12 +197,27 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 ;;; Markup.
 ;;;
 
-(define-markup (eq :rest opts :key (ident #f) (inline? #f)
-		                   (renderer #f) (class "eq"))
-  (new markup
+(define-markup (eq-display :rest opts :key (ident #f) (class "eq-display"))
+  (new container
+       (markup 'eq-display)
+       (ident (or ident (symbol->string (gensym "eq-display"))))
+       (class class)
+       (options (the-options opts :ident :class))
+       (body (the-body opts))))
+
+(define-markup (eq :rest opts :key (ident #f) (class "eq")
+                                   (inline? 'auto) (align-with #f)
+		                   (renderer #f) (div-style 'over)
+                                   (mul-style 'space))
+  (new container
        (markup 'eq)
        (ident (or ident (symbol->string (gensym "eq"))))
-       (options (the-options opts))
+       (class class)
+       (options `((:div-style ,div-style) (:align-with ,align-with)
+                  (:mul-style ,mul-style)
+                  ,@(the-options opts
+                                 :ident :class
+                                 :div-style :mul-style :align-with)))
        (body (let loop ((body (the-body opts))
 			(result '()))
 	       (if (null? body)
@@ -187,8 +230,27 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 						       ;; passed
 			     ))))))
 
-(define-simple-markup eq:/)
-(define-simple-markup eq:*)
+
+(define-markup (eq:/ :rest opts :key (ident #f) (div-style #f))
+  ;; If no `:div-style' is specified here, obey the top-level one.
+  (new markup
+       (markup 'eq:/)
+       (ident (or ident (symbol->string (gensym "eq:/"))))
+       (class #f)
+       (options `((:div-style ,div-style)
+                  ,@(the-options opts :ident :div-style)))
+       (body (the-body opts))))
+
+(define-markup (eq:* :rest opts :key (ident #f) (mul-style #f))
+  ;; If no `:mul-style' is specified here, obey the top-level one.
+  (new markup
+       (markup 'eq:*)
+       (ident (or ident (symbol->string (gensym "eq:*"))))
+       (class #f)
+       (options `((:mul-style ,mul-style)
+                  ,@(the-options opts :ident :mul-style)))
+       (body (the-body opts))))
+
 (define-simple-markup eq:+)
 (define-simple-markup eq:-)
 
@@ -252,11 +314,36 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 			 (loop (cdr body) (cons first result)))))))))
 
 
+(define-markup (eq:limit var lim :rest body :key (ident #f))
+  (new markup
+       (markup 'eq:limit)
+       (ident (or ident (symbol->string (gensym "eq:limit"))))
+       (options `((:var ,var) (:limit ,lim)
+                  ,@(the-options body :ident)))
+       (body (the-body body))))
+
+(define-markup (eq:combinations x y :rest opts :key (ident #f))
+  (new markup
+       (markup 'eq:combinations)
+       (ident (or ident (symbol->string (gensym "eq:combinations"))))
+       (options `((:of ,x) (:among ,y)
+                  ,@(the-options opts :ident)))
+       (body (the-body opts))))
+
 
 ;;;
 ;;; Text-based rendering.
 ;;;
 
+
+(markup-writer 'eq-display (lookup-engine-class 'base)
+   :action (lambda (node engine)
+             (for-each (lambda (node)
+                         (let ((eq? (is-markup? node 'eq)))
+                           (if eq? (output (linebreak) engine))
+                           (output node engine)
+                           (if eq? (output (linebreak) engine))))
+                       (markup-body node))))
 
 (markup-writer 'eq (lookup-engine-class 'base)
    :action (lambda (node engine)
@@ -269,22 +356,23 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 	       (cond ((not renderer) ;; default: use the current engine
 		      (output (it (markup-body node)) engine))
 		     ((symbol? renderer)
-		      (case renderer
-			;; FIXME: We should have an `embed' slot for each
-			;; engine class similar to `lout-illustration'.
-			((lout)
-			 (let ((lout-code
-				(with-output-to-string
-				  (lambda ()
-				    (output node
-                                            (make-engine
-                                             (lookup-engine-class 'lout)))))))
-			   (output (lout-illustration
-				    :ident (markup-ident node)
-				    lout-code)
-				   engine)))
-			(else
-			 (skribe-error 'eq "invalid renderer" renderer))))
+                      (parameterize ((*embedded-renderer* #t))
+                        (case renderer
+                          ;; FIXME: We should have an `embed' slot for each
+                          ;; engine class similar to `lout-illustration'.
+                          ((lout)
+                           (let ((lout-code
+                                  (with-output-to-string
+                                    (lambda ()
+                                      (output node
+                                              (make-engine
+                                               (lookup-engine-class 'lout)))))))
+                             (output (lout-illustration
+                                      :ident (markup-ident node)
+                                      lout-code)
+                                     engine)))
+                          (else
+                           (skribe-error 'eq "invalid renderer" renderer)))))
 		     ;; FIXME: `engine?' and `engine-class?'
 		     (else
 		      (skribe-error 'eq "`:renderer' -- wrong argument type"
@@ -303,10 +391,10 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 			      (nested-eq? (equation-markup? o))
 			      (need-paren?
 			       (and nested-eq?
-; 				    (< (operator-precedence
-; 					(equation-markup-name->operator
-; 					 (markup-markup o)))
-; 				       ,precedence)
+ 				    (>= (operator-precedence
+                                         (equation-markup-name->operator
+                                          (markup-markup o)))
+                                        ,precedence)
 				    )
 			       ))
 
@@ -424,6 +512,28 @@ a symbol representing the mathematical operator denoted by @var{m} (e.g.,
 	       (output (sup sup*) engine)
 	       (output (sub sub*) engine))))
 
+(markup-writer 'eq:limit (lookup-engine-class 'base)
+   :action (lambda (node engine)
+             (let ((body  (markup-body node))
+                   (var   (markup-option node :var))
+                   (limit (markup-option node :limit)))
+               (display "lim (")
+               (output var engine)
+               (output (symbol "->") engine)
+               (output limit engine)
+               (display ", ")
+               (output body engine)
+               (display ")"))))
+
+(markup-writer 'eq:combinations (lookup-engine-class 'base)
+   :action (lambda (node engine)
+             (let ((of    (markup-option node :of))
+                   (among (markup-option node :among)))
+               (display "combinations(")
+               (output of engine)
+               (display ", ")
+               (output among engine)
+               (display ")"))))
 
 
 

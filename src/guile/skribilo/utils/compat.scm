@@ -37,6 +37,7 @@
   :autoload   (skribilo output)    (*document-being-output*)
   :use-module ((skribilo engine)   :renamer (symbol-prefix-proc 'orig:))
   :use-module ((skribilo writer)   :renamer (symbol-prefix-proc 'orig:))
+  :autoload   (skribilo biblio)    (*bib-table* open-bib-file)
   :use-module (skribilo debug)
 
   :re-export (file-size)  ;; re-exported from `(skribilo utils files)'
@@ -353,6 +354,18 @@
 
 (define-public (find-markup-ident ident)
   (or (find-markups ident) '()))
+
+
+
+;;;
+;;; Bibliography.
+;;;
+
+(define-public (default-bib-table)
+  (*bib-table*))
+
+(define-public (skribe-open-bib-file file command)
+  (open-bib-file file command))
 
 
 

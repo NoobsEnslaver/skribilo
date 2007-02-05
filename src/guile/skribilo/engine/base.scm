@@ -27,7 +27,8 @@
   :use-module (skribilo evaluator)
   :autoload   (skribilo package base) (color)
   :autoload   (skribilo utils keywords) (list-split)
-
+  :autoload   (skribilo biblio template) (make-bib-entry-template/default
+                                          output-bib-entry-template)
   ;; syntactic sugar
   :use-module (skribilo reader)
   :use-module (skribilo utils syntax))
@@ -236,91 +237,31 @@
    :after "]")
 
 ;*---------------------------------------------------------------------*/
+;*    &bib-entry-author ...                                            */
+;*---------------------------------------------------------------------*/
+; (markup-writer '&bib-entry-author
+;                :action (lambda (n e)
+;                          (let ((names (markup-body n)))
+;                            (skribe-eval
+;                             (sc (abbreviate-first-names names)) e))))
+
+;*---------------------------------------------------------------------*/
+;*    &bib-entry-url ...                                               */
+;*---------------------------------------------------------------------*/
+(markup-writer '&bib-entry-url
+               :action (lambda (n e)
+                         (let ((url (markup-body n)))
+                           (evaluate-document
+                            (ref :text (it url) :url url) e))))
+
+;*---------------------------------------------------------------------*/
 ;*    &bib-entry-body ...                                              */
 ;*---------------------------------------------------------------------*/
 (markup-writer '&bib-entry-body
    :action (lambda (n e)
-	      (define (output-fields descr)
-		 (let loop ((descr descr)
-			    (pending #f)
-			    (armed #f))
-		    (cond
-		       ((null? descr)
-			'done)
-		       ((pair? (car descr))
-			(if (eq? (caar descr) 'or)
-			    (let ((o1 (cadr (car descr))))
-			       (if (markup-option n o1)
-				   (loop (cons o1 (cdr descr))
-					 pending
-					 #t)
-				   (let ((o2 (caddr (car descr))))
-				      (loop (cons o2 (cdr descr))
-					    pending
-					    armed))))
-			    (let ((o (markup-option n (cadr (car descr)))))
-			       (if o
-				   (begin
-				      (if (and pending armed)
-					  (output pending e))
-				      (output (caar descr) e)
-				      (output o e)
-				      (if (pair? (cddr (car descr)))
-					  (output (caddr (car descr)) e))
-				      (loop (cdr descr) #f #t))
-				   (loop (cdr descr) pending armed)))))
-		       ((symbol? (car descr))
-			(let ((o (markup-option n (car descr))))
-			   (if o
-			       (begin
-				  (if (and armed pending)
-				      (output pending e))
-				  (output o e)
-				  (loop (cdr descr) #f #t))
-			       (loop (cdr descr) pending armed))))
-		       ((null? (cdr descr))
-			(output (car descr) e))
-		       ((string? (car descr))
-			(loop (cdr descr)
-			      (if pending pending (car descr))
-			      armed))
-		       (else
-			(skribe-error 'output-bib-fields
-				      "Illegal description"
-				      (car descr))))))
-	      (output-fields
-	       (case (markup-option n 'kind)
-		  ((techreport)
-		   `(author " -- " (or title url documenturl) " -- "
-			    number ", " institution ", "
-			    address ", " month ", " year ", "
-			    ("pp. " pages) "."))
-		  ((article)
-		   `(author " -- " (or title url documenturl) " -- "
-			    journal ", " volume "" ("(" number ")") ", "
-			    address ", " month ", " year ", "
-			    ("pp. " pages) "."))
-		  ((inproceedings)
-		   `(author " -- " (or title url documenturl) " -- "
-			    booktitle ", " series ", " ("(" number ")") ", "
-			    address ", " month ", " year ", "
-			    ("pp. " pages) "."))
-		  ((book)
-		   '(author " -- " (or title url documenturl) " -- "
-			    publisher ", " address
-			    ", " month ", " year ", " ("pp. " pages) "."))
-		  ((phdthesis)
-		   '(author " -- " (or title url documenturl) " -- " type ", "
-			    school ", " address
-			    ", " month ", " year"."))
-		  ((misc)
-		   '(author " -- " (or title url documenturl) " -- "
-			    publisher ", " address
-			    ", " month ", " year"."))
-		  (else
-		   '(author " -- " (or title url documenturl) " -- "
-			    publisher ", " address
-			    ", " month ", " year ", " ("pp. " pages) "."))))))
+	      (let* ((kind (markup-option n 'kind))
+                     (template (make-bib-entry-template/default kind)))
+                (output-bib-entry-template n e template))))
 
 ;*---------------------------------------------------------------------*/
 ;*    &bib-entry-ident ...                                             */
@@ -335,6 +276,21 @@
 (markup-writer '&bib-entry-title
    :action (lambda (n e)
 	      (evaluate-document (bold (markup-body n)) e)))
+
+;*---------------------------------------------------------------------*/
+;*    &bib-entry-booktitle ...                                         */
+;*---------------------------------------------------------------------*/
+(markup-writer '&bib-entry-booktitle
+               :action (lambda (n e)
+                         (let ((title (markup-body n)))
+                           (evaluate-document (it title) e))))
+
+;*---------------------------------------------------------------------*/
+;*    &bib-entry-journal ...                                           */
+;*---------------------------------------------------------------------*/
+(markup-writer '&bib-entry-journal
+               :action (lambda (n e)
+                         (evaluate-document (it (markup-body n)) e)))
 
 ;*---------------------------------------------------------------------*/
 ;*    &bib-entry-publisher ...                                         */
@@ -477,8 +433,12 @@
 ;*---------------------------------------------------------------------*/
 (markup-writer '&prog-line
    :before (lambda (n e)
-	      (let ((n (markup-ident n)))
-		 (if n (evaluate-document (it (list n) ": ") e))))
+             (let ((num (markup-option n :number)))
+               (if (number? num)
+                   (evaluate-document
+                    (it (string-append (string-pad (number->string num) 3)
+                                       ": "))
+                    e))))
    :after "\n")
 
 ;*---------------------------------------------------------------------*/

@@ -50,12 +50,20 @@
 ;;; Simple markup writers.
 ;;;
 
+(markup-writer 'eq-display (lookup-engine-class 'lout)
+   :before "\n@BeginAlignedDisplays\n"
+   :after  "\n@EndAlignedDisplays\n")
 
 (markup-writer 'eq (lookup-engine-class 'lout)
-   :options '(:inline?)
-   :before "{ "
+   :options '(:inline? :align-with :div-style :mul-style)
+   :before (lambda (node engine)
+             (let* ((parent (ast-parent node))
+                    (displayed? (is-markup? parent 'eq-display)))
+               (format #t "~a{ "
+                       (if (and displayed? (not (*embedded-renderer*)))
+                           "\n@IAD " ""))))
    :action (lambda (node engine)
-	     (display (if (markup-option node :inline?)
+	     (display (if (inline-equation? node)
 			  "@E { "
 			  "@Eq { "))
 	     (let ((eq (markup-body node)))
@@ -63,6 +71,29 @@
 	       (output eq engine)))
    :after  " } }")
 
+
+;; Scaled parenthesis.  We could use `pmatrix' here but it precludes
+;; line-breaking within equations.
+(define %left-paren  "{ Base @Font @VScale \"(\" }")
+(define %right-paren "{ Base @Font @VScale \")\" }")
+
+(define (div-style->lout style)
+  (case style
+    ((over)     "over")
+    ((fraction) "frac")
+    ((div)      "div")
+    ((slash)    "slash")
+    (else
+     (error "unsupported div style" style))))
+
+(define (mul-style->lout style)
+  (case style
+    ((space)    "")
+    ((cross)    "times")
+    ((asterisk) "*")
+    ((dot)      "cdot")
+    (else
+     (error "unsupported mul style" style))))
 
 
 (define-macro (simple-lout-markup-writer sym . args)
@@ -74,45 +105,54 @@
 			   (cadr args)))
 	 (precedence (operator-precedence sym))
 
-	 ;; Note: We could use `pmatrix' here but it precludes line-breaking
-	 ;; within equations.
-	 (open-par `(if need-paren? "{ @VScale ( }" ""))
-	 (close-par `(if need-paren? "{ @VScale ) }" "")))
+	 (open-par (if parentheses?
+                       `(if need-paren? %left-paren "")
+                       ""))
+	 (close-par (if parentheses?
+                        `(if need-paren? %right-paren "")
+                        "")))
 
     `(markup-writer ',(symbol-append 'eq: sym)
-		    (lookup-engine-class 'lout)
-		    :action (lambda (node engine)
-			      (let loop ((operands (markup-body node)))
-				(if (null? operands)
-				    #t
-				    (let* ((op (car operands))
-					   (eq-op? (equation-markup? op))
-					   (need-paren?
-					    (and eq-op?
-						 (< (operator-precedence
-						     (equation-markup-name->operator
-						      (markup-markup op)))
-						    ,precedence)))
-					   (column (port-column
-						    (current-output-port))))
+                    (lookup-engine-class 'lout)
+        :action (lambda (node engine)
+                  (let* ((lout-name ,(if (string? lout-name)
+                                         lout-name
+                                         `(,lout-name node
+                                                      engine)))
+                         (eq        (ast-parent node))
+                         (eq-parent (ast-parent eq)))
 
-				      ;; Work around Lout's limitations...
-				      (if (> column 1000) (display "\n"))
+                    (let loop ((operands (markup-body node))
+                               (first? #t))
+                      (if (null? operands)
+                          #t
+                          (let* ((align?
+                                  (and first?
+                                       (is-markup? eq-parent 'eq-display)
+                                       (eq? ',sym
+                                            (markup-option eq :align-with))))
+                                 (op (car operands))
+                                 (eq-op? (equation-markup? op))
+                                 (need-paren?
+                                  (and eq-op?
+                                       (>= (operator-precedence
+                                            (equation-markup-name->operator
+                                             (markup-markup op)))
+                                           ,precedence)))
+                                 (column (port-column (current-output-port))))
 
-				      (display (string-append " { "
-							      ,(if parentheses?
-								   open-par
-								   "")))
-				      (output op engine)
-				      (display (string-append ,(if parentheses?
-								   close-par
-								   "")
-							      " }"))
-				      (if (pair? (cdr operands))
-					  (display ,(string-append " "
-								   lout-name
-								   " ")))
-				      (loop (cdr operands)))))))))
+                            ;; Work around Lout's limitations...
+                            (if (> column 1000) (display "\n"))
+
+                            (display (string-append " { " ,open-par))
+                            (output op engine)
+                            (display (string-append ,close-par " }"))
+                            (if (pair? (cdr operands))
+                                (display (string-append " "
+                                                        (if align? "^" "")
+                                                        lout-name
+                                                        " ")))
+                            (loop (cdr operands) #f)))))))))
 
 
 ;; `+' and `*' have higher precedence than `-', `/', `=', etc., so their
@@ -121,9 +161,26 @@
 
 
 (simple-lout-markup-writer +)
-(simple-lout-markup-writer * "times")
 (simple-lout-markup-writer - "-")
-(simple-lout-markup-writer / "over" #f)
+
+(simple-lout-markup-writer *
+                           (lambda (n e)
+                             ;; Obey either the per-node `:mul-style' or the
+                             ;; top-level one.
+                             (mul-style->lout
+                              (or (markup-option n :mul-style)
+                                  (let ((eq (ast-parent n)))
+                                    (markup-option eq :mul-style))))))
+
+(simple-lout-markup-writer /
+                           (lambda (n e)
+                             ;; Obey either the per-node `:div-style' or the
+                             ;; top-level one.
+                             (div-style->lout
+                              (or (markup-option n :div-style)
+                                  (let ((eq (ast-parent n)))
+                                    (markup-option eq :div-style)))))
+                           #f)
 (simple-lout-markup-writer =)
 (simple-lout-markup-writer <)
 (simple-lout-markup-writer >)
@@ -139,9 +196,9 @@
 			    (second (cadr body))
 			    (parentheses? (equation-markup? first)))
 		       (display " { { ")
-		       (if parentheses? (display "("))
+		       (if parentheses? (display %left-paren))
 		       (output first engine)
-		       (if parentheses? (display ")"))
+		       (if parentheses? (display %right-paren))
 		       (display ,(string-append " } " lout-name " { "))
 		       (output second engine)
 		       (display " } } "))
@@ -149,15 +206,15 @@
 				   "wrong number of arguments"
 				   body))))))
 
-(binary-lout-markup-writer expt "sup")
-(binary-lout-markup-writer in "element")
+(binary-lout-markup-writer expt  "sup")
+(binary-lout-markup-writer in    "element")
 (binary-lout-markup-writer notin "notelement")
 
 (markup-writer 'eq:apply (lookup-engine-class 'lout)
    :action (lambda (node engine)
 	     (let ((func (car (markup-body node))))
 	       (output func engine)
-	       (display "(")
+	       (display %left-paren)
 	       (let loop ((operands (cdr (markup-body node))))
 		 (if (null? operands)
 		     #t
@@ -166,8 +223,32 @@
 		       (if (not (null? (cdr operands)))
 			   (display ", "))
 		       (loop (cdr operands)))))
-	       (display ")"))))
+	       (display %right-paren))))
 
+
+(markup-writer 'eq:limit (lookup-engine-class 'lout)
+   :action (lambda (node engine)
+             (let ((body  (markup-body node))
+                   (var   (markup-option node :var))
+                   (limit (markup-option node :limit)))
+               (display "{ lim from { ")
+               (output var engine)
+               (display " --> ")
+               (output limit engine)
+               (display (string-append " } } @VContract { " %left-paren))
+               (output body engine)
+               (display (string-append %right-paren " } ")))))
+
+(markup-writer 'eq:combinations (lookup-engine-class 'lout)
+   :action (lambda (node engine)
+             (let ((of    (markup-option node :of))
+                   (among (markup-option node :among)))
+               (display " ` { matrix atleft { lpar } atright { rpar } { ")
+               (display "row col { ")
+               (output of engine)
+               (display " } row col { ")
+               (output among engine)
+               (display " } } } `\n"))))
 
 
 ;;;
@@ -207,7 +288,7 @@
 		     (display " } ")))
 	       (if sub
 		   (begin
-		     (display " on { ")
+		     (display (if sup " on { " " sub { "))
 		     (output sub engine)
 		     (display " } ")))
 	       (display " } "))))
