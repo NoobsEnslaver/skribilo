@@ -36,6 +36,7 @@ AC_PROG_LN_S
 AC_PROG_MKDIR_P
 
 # Look for Guile.
+GUILE_PKG([2.2 2.0 1.8])
 GUILE_PROGS
 GUILE_SITE_DIR
 AC_PATH_PROGS([GUILD], [guild guile-tools])
