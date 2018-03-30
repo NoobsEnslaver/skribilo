@@ -2,7 +2,7 @@
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
-;;; Copyright 2007, 2013  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2007, 2013, 2017  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -188,6 +188,7 @@
 (define (references)
    (list "\n\n"
 	 (chapter :title "References"
+                  :number #f
                   (flush :side 'left
                          (the-bibliography
                           :sort bib-sort/first-author-last-name)))))
