@@ -1,7 +1,7 @@
 ;;; base.scm -- The base markup package of Skribe/Skribilo.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2008, 2009, 2013, 2015, 2016 Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2008, 2009, 2013, 2015, 2016, 2018 Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -539,21 +539,21 @@
                         ;; 'definition' denote parameter names; they must not
                         ;; be translated.  Likewise for the 3 subsequent
                         ;; strings.
-			(_ "file, start/stop, and definition\
+			(G_ "file, start/stop, and definition\
  cannot be combined with body")
 			body))
 	 ((and start stop definition)
 	  (skribe-error 'source
-			(_ "start/stop are exclusive with a definition")
+			(G_ "start/stop are exclusive with a definition")
 			body))
 	 ((and (or start stop definition) (not file))
 	  (skribe-error 'source
-			(_ "start/stop and definition require a\
+			(G_ "start/stop and definition require a\
  file specification")
 			file))
 	 ((and definition (not language))
 	  (skribe-error 'source
-			(_ "definition requires a language specification")
+			(G_ "definition requires a language specification")
 			definition))
 	 ((and file (not (string? file)))
           (invalid-argument-error 'source file 'file))
@@ -563,7 +563,7 @@
           (invalid-argument-error 'source stop 'stop))
 	 ((and (integer? start) (integer? stop) (> start stop))
 	  (skribe-error 'source
-			(_ "start line is greater than stop line")
+			(G_ "start line is greater than stop line")
 			(format #f "~a/~a" start stop)))
 	 ((and language (not (language? language)))
           (invalid-argument-error 'source language 'language))

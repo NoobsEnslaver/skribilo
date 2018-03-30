@@ -2,7 +2,7 @@
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
-;;; Copyright 2007, 2015  Ludovic Courtès <ludovic.courtes@laas.fr>
+;;; Copyright 2007, 2015, 2018  Ludovic Courtès <ludovic.courtes@laas.fr>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -214,20 +214,20 @@
      `(author ": " (or title url documenturl) ". "
               ;; TRANSLATORS: The next few msgids are fragments of
               ;; bibliography items.
-              ,(_ "Technical Report") " " number
+              ,(G_ "Technical Report") " " number
               (", " institution)
               (", " address)
               (", " pages)
               (" (" year ")")))
     ((article)
      `(author ": " (or title url documenturl) ". "
-              ,(_ "In: ") journal ", " volume
+              ,(G_ "In: ") journal ", " volume
               ("(" number ")") ", "
               (address ", ")
               ("pp. " pages) (" (" year ")")))
     ((inproceedings)
      '(author ": " (or title url documenturl) ". "
-              ,(_ "In: ") booktitle ", "
+              ,(G_ "In: ") booktitle ", "
               (series)
               ("(" number "), ")
               (publisher ", ")
@@ -243,14 +243,14 @@
        (", pp. " pages)))
     ((inbook)
      `(author ": " (or title url documenturl) ". "
-              ,(_ "In: ") booktitle ", " publisher
-              (", " editor " (" ,(_ "editor") ")")
-              (", " ,(_ "Chapter ") chapter)
+              ,(G_ "In: ") booktitle ", " publisher
+              (", " editor " (" ,(G_ "editor") ")")
+              (", " ,(G_ "Chapter ") chapter)
               (", pp. " pages)
               (" (" year ")")))
     ((phdthesis)
      `(author ": " (or title url documenturl)
-              ", " ,(_ "PhD Thesis")
+              ", " ,(G_ "PhD Thesis")
               (", " (or school institution))
               (", " address)
               (", " month)

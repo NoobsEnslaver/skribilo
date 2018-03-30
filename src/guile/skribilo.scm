@@ -1,7 +1,7 @@
 ;;; skribilo.scm  --  The Skribilo document processor.
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2013,
-;;;   2015, 2016  Ludovic Courtès <ludo@gnu.org>
+;;;   2015, 2016, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;;
@@ -62,61 +62,61 @@
 ;;;
 
 (define (skribilo-show-help)
-  (display (_ "Usage: skribilo [OPTIONS] [INPUT]"))
-  (display (_ "
+  (display (G_ "Usage: skribilo [OPTIONS] [INPUT]"))
+  (display (G_ "
 Process Skribilo document from file INPUT (or standard input) using the
 specified reader syntax or the 'skribe' syntax, and produce its output using
 the specified engine or the 'html' engine.
 "))
   (newline)
-  (display (_ "\
+  (display (G_ "\
   -R, --reader=READER    use READER to parse the input file;
                          e.g., 'skribe' (default) or 'outline'\n"))
-  (display (_ "\
+  (display (G_ "\
   -t, --target=ENGINE    use ENGINE as the output engine; e.g., 'html'\n"))
-  (display (_ "\
+  (display (G_ "\
   -c, --custom=C=VAL     use VAL as the value of ENGINE's custom C\n"))
-  (display (_ "\
+  (display (G_ "\
   -o, --output=FILE      write output to FILE\n"))
-  (display (_ "\
+  (display (G_ "\
       --compat=COMPAT    use COMPAT as the compatibility layer; e.g., 'skribe'\n"))
   (newline)
-  (display (_ "\
+  (display (G_ "\
   -I, --doc-path=DIR     prepend DIR to the document include path\n"))
-  (display (_ "\
+  (display (G_ "\
   -B, --bib-path=DIR     prepend DIR to the bibliography include path\n"))
-  (display (_ "\
+  (display (G_ "\
   -S, --source-path=DIR  prepend DIR to the source include path\n"))
-  (display (_ "\
+  (display (G_ "\
   -P, --image-path=DIR   prepend DIR to the image include path\n"))
-  (display (_ "\
+  (display (G_ "\
   -U, --sui-path=DIR     prepend DIR to the Skribe URL Index (SUI) search path\n"))
   (newline)
-  (display (_ "\
+  (display (G_ "\
   -b, --base=BASE        strip BASE from all hyperlinks ('html' engine)\n"))
-  (display (_ "\
+  (display (G_ "\
   -e, --eval=EXPR        prepend EXPR to the list of expressions to be
                          evaluted before the input file is processed\n"))
-  (display (_ "\
+  (display (G_ "\
   -p, --preload=FILE     preload FILE before processing the input file\n"))
   (newline)
-  (display (_ "\
+  (display (G_ "\
   -v, --verbose[=LEVEL]  be verbose, unless LEVEL is 0\n"))
-  (display (_ "\
+  (display (G_ "\
   -w, --warning[=LEVEL]  issue warnings, unless LEVEL is 0\n"))
-  (display (_ "\
+  (display (G_ "\
   -g, --debug[=ARG]      issue debugging output, unless ARG is 0; if ARG is
                          not a number, it is interpreted as a symbol to be
                          watched\n"))
-  (display (_ "\
+  (display (G_ "\
       --no-color         disable colored debugging output\n"))
   (newline)
-  (display (_ "\
+  (display (G_ "\
   -h, --help             display this help text and exit\n"))
-  (display (_ "\
+  (display (G_ "\
   -V, --version          display version information and exit\n"))
   (newline)
-  (format #t (_ "\
+  (format #t (G_ "\
 Report bugs to <~a>.~%")
           (skribilo-bug-report-address)))
 
@@ -196,7 +196,7 @@ Report bugs to <~a>.~%")
                 (lambda (opt name arg result)
                   (let ((=-pos (string-index arg #\=)))
                     (if (not =-pos)
-                        (leave (_ "~a: missing value for custom") arg)
+                        (leave (G_ "~a: missing value for custom") arg)
                         (let ((custom (string-take arg =-pos))
                               (value  (string-drop arg (+ =-pos 1))))
                           (catch 'read-error
@@ -213,7 +213,7 @@ Report bugs to <~a>.~%")
                                  (alist-cons custom value customs)
                                  result)))
                             (lambda (key . args)
-                              (leave (_ "~a: invalid custom value")
+                              (leave (G_ "~a: invalid custom value")
                                      value))))))))
         (option '(#\o "output") #t #f
                 (lambda (opt name arg result)
@@ -318,7 +318,7 @@ options."
       (setlocale LC_ALL ""))
     (lambda args
       (format (current-error-port)
-              (_ "warning: failed to install locale: ~a~%")
+              (G_ "warning: failed to install locale: ~a~%")
               (strerror (system-error-errno args)))))
 
   ;; Tell gettext where to look for message catalogs.

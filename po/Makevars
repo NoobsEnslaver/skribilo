@@ -11,7 +11,7 @@ top_builddir = ..
 # Use '--no-wrap' because that is what the TP uses.
 XGETTEXT_OPTIONS =				\
   --no-wrap					\
-  --keyword=_ --keyword=N_ --language=Scheme
+  --keyword=G_ --keyword=N_ --language=Scheme
 
 # This is the copyright holder that gets inserted into the header of the
 # $(DOMAIN).pot file.  Set this to the copyright holder of the surrounding

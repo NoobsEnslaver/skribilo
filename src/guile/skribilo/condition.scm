@@ -1,7 +1,7 @@
 ;;; condition.scm  --  Skribilo SRFI-35 error condition hierarchy.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2006, 2007, 2008, 2015 Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2006, 2007, 2008, 2015, 2018 Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -26,7 +26,7 @@
   :use-module (srfi srfi-39)
   :use-module (ice-9 optargs)
   :autoload   (skribilo parameters)   (*destination-file*)
-  :autoload   (skribilo utils syntax) (_ N_)
+  :autoload   (skribilo utils syntax) (G_ N_)
   :export     (&skribilo-error skribilo-error?
 
                invalid-argument-error
@@ -139,8 +139,8 @@
           (format (current-error-port) "~%Call stack:~%")
           (display-backtrace stack (current-error-port)))
         (begin
-          (format (current-error-port) (_ "Call stack trace not available.~%"))
-          (format (current-error-port) (_ "Use 'GUILE=\"guile --debug\" skribilo ...' for a detailed stack trace.~%"))))))
+          (format (current-error-port) (G_ "Call stack trace not available.~%"))
+          (format (current-error-port) (G_ "Use 'GUILE=\"guile --debug\" skribilo ...' for a detailed stack trace.~%"))))))
 
 (define (abort exit-val)
   ;; Abort the `skribilo' command-line program, returning EXIT-VAL.
@@ -160,45 +160,45 @@
              (let ((name (invalid-argument-error:name c)))
                (if name
                    (format (current-error-port)
-                           (_ "in '~a': invalid argument '~a': ~S~%")
+                           (G_ "in '~a': invalid argument '~a': ~S~%")
                            (invalid-argument-error:proc-name c)
                            name
                            (invalid-argument-error:argument c))
                    (format (current-error-port)
-                           (_ "in '~a': invalid argument: ~S~%")
+                           (G_ "in '~a': invalid argument: ~S~%")
                            (invalid-argument-error:proc-name c)
                            (invalid-argument-error:argument c))))
 	     (abort exit-val))
 
 	    ((too-few-arguments-error? c)
 	     (format (current-error-port)
-                     (_ "in '~a': too few arguments: ~S~%")
+                     (G_ "in '~a': too few arguments: ~S~%")
 		     (too-few-arguments-error:proc-name c)
 		     (too-few-arguments-error:arguments c))
              (abort exit-val))
 
 	    ((file-search-error? c)
 	     (format (current-error-port)
-                     (_ "~a: not found in path '~S'~%")
+                     (G_ "~a: not found in path '~S'~%")
 		     (file-error:file-name c)
 		     (file-search-error:path c))
 	     (abort exit-val))
 
 	    ((file-open-error? c)
 	     (format (current-error-port)
-                     (_ "~a: cannot open file~%")
+                     (G_ "~a: cannot open file~%")
 		     (file-error:file-name c))
 	     (abort exit-val))
 
 	    ((file-write-error? c)
 	     (format (current-error-port)
-                     (_ "~a: cannot write to file~%")
+                     (G_ "~a: cannot write to file~%")
 		     (file-error:file-name c))
 	     (abort exit-val))
 
 	    ((file-error? c)
 	     (format (current-error-port)
-                     (_ "file error: ~a~%")
+                     (G_ "file error: ~a~%")
 		     (file-error:file-name c))
 	     (abort exit-val))
 
@@ -207,7 +207,7 @@
 	       (if (procedure? handler)
 		   (handler c)
 		   (format (current-error-port)
-			   (_ "undefined skribilo error: ~S~%")
+			   (G_ "undefined skribilo error: ~S~%")
 			   c)))
 	     (abort exit-val))
 
@@ -217,7 +217,7 @@
 
             (else
              (format (current-error-port)
-                     (_ "unexpected error condition: ~A~%") c)
+                     (G_ "unexpected error condition: ~A~%") c)
              (abort exit-val))))
 
    thunk))

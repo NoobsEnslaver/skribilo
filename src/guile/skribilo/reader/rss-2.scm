@@ -1,6 +1,6 @@
 ;;; rss-2.scm  --  A reader for RSS 2.0 files.
 ;;;
-;;; Copyright 2008, 2011  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2008, 2011, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -67,7 +67,7 @@
     (_
      (raise (condition
              (&message
-              (message (_ "input is not a valid RSS 2.0 feed"))))))))
+              (message (G_ "input is not a valid RSS 2.0 feed"))))))))
 
 (define (channel-items channel)
   ;; Return the list of items of CHANNEL, an SXML tree.
@@ -239,14 +239,14 @@
        `(list ,@(loop (html->shtml body))))
 
       (((? symbol? unsupported-tag) rest ...)
-       (warn* (_ "tag '~s' ignored") tag)
+       (warn* (G_ "tag '~s' ignored") tag)
        #f)
 
       ((lst ...)
        (map loop lst))
 
       (_
-       (warn* (_ "skipping tag '~a'~%") tag)
+       (warn* (G_ "skipping tag '~a'~%") tag)
        #f))))
 
 (define (english-date->date str)
@@ -297,7 +297,7 @@
     (if (null? channels)
         (raise (condition
                 (&message
-                 (message (_ "no RSS 2.0 channels found in feed")))))
+                 (message (G_ "no RSS 2.0 channels found in feed")))))
         (let ((title   (channel-title (car channels)))
               (single? (null? (cdr channels))))
           ;; When there's only one channel, promote items as chapters.

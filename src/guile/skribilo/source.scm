@@ -1,7 +1,7 @@
 ;;; source.scm	-- Highlighting source files.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2008, 2009, 2010  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2008, 2009, 2010, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -67,18 +67,18 @@
   ;; Issue a user-friendly error message for error condition C.
   (cond ((no-extractor-error? c)
          (format (current-error-port)
-                 (_ "source language '~a' does not have an extractor~%")
+                 (G_ "source language '~a' does not have an extractor~%")
                  (language-name (no-extractor-error:language c))))
 
         ((definition-not-found-error? c)
          (format (current-error-port)
-                 (_ "source definition of '~a' in language '~a' not found~%")
+                 (G_ "source definition of '~a' in language '~a' not found~%")
                  (definition-not-found-error:definition c)
                  (language-name (definition-not-found-error:language c))))
 
 	(else
 	 (format (current-error-port)
-                 (_ "undefined source error: ~A~%")
+                 (G_ "undefined source error: ~A~%")
 		 c))))
 
 (register-error-condition-handler! source-error? handle-source-error)

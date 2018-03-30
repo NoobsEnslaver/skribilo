@@ -1,7 +1,7 @@
 ;;; author.scm  --  Handling author names.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2006, 2007, 2008, 2009, 2015 Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2006, 2007, 2008, 2009, 2015, 2018 Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -179,7 +179,7 @@
 
    (let ((check-author (lambda (e)
 			  (if (not (markup-option e 'author))
-                              (let ((msg (_ "no author for this bib entry")))
+                              (let ((msg (G_ "no author for this bib entry")))
                                 (raise (condition
                                         (&message
                                          (message (string-append

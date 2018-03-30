@@ -1,7 +1,7 @@
 ;;; engine.scm	-- Skribilo engines.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2007, 2008, 2009, 2010  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2007, 2008, 2009, 2010, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -71,12 +71,12 @@
   ;; Issue a user-friendly error message for error condition C.
   (cond ((unknown-engine-error? c)
          (format (current-error-port)
-                 (_ "unknown engine `~a'~%")
+                 (G_ "unknown engine `~a'~%")
                  (unknown-engine-error:engine-name c)))
 
 	(else
 	 (format (current-error-port)
-                 (_ "undefined engine error: ~A~%")
+                 (G_ "undefined engine error: ~A~%")
 		 c))))
 
 (register-error-condition-handler! engine-error? handle-engine-error)

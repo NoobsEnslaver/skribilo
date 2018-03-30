@@ -1,7 +1,7 @@
 ;;; verify.scm  --  Skribe AST verification.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2007, 2008  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2007, 2008, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;;
@@ -72,14 +72,14 @@
                (option (unsupported-markup-option-error:option c)))
            (show-location node)
 	   (format (current-error-port)
-                   (_ "option '~a' of markup '~a' not supported by engine '~a'~%")
+                   (G_ "option '~a' of markup '~a' not supported by engine '~a'~%")
 		   option (and (markup? node)
                                (markup-markup node))
                    (engine-ident engine))))
 
 	(else
 	 (format (current-error-port)
-                 (_ "undefined verify error: ~a~%")
+                 (G_ "undefined verify error: ~a~%")
 		 c))))
 
 (register-error-condition-handler! verify-error? handle-verify-error)

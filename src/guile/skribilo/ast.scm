@@ -2,7 +2,7 @@
 ;;;
 ;;; Copyright 2003, 2004, 2009  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;; Copyright 2003, 2004  Manuel Serrano
-;;; Copyright 2005, 2006, 2007, 2012, 2013, 2015  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2012, 2013, 2015, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -136,21 +136,21 @@
   (cond ((ast-orphan-error? c)
 	 (let ((node (ast-orphan-error:ast c)))
            (show-location node)
-	   (format (current-error-port) (_ "orphan node: ~a~%")
+	   (format (current-error-port) (G_ "orphan node: ~a~%")
 		   node)))
 
 	((ast-cycle-error? c)
 	 (let ((object (ast-cycle-error:object c)))
            (show-location object)
 	   (format (current-error-port)
-		   (_ "cycle found in AST: ~a~%") object)))
+		   (G_ "cycle found in AST: ~a~%") object)))
 
 	((markup-unknown-option-error? c)
 	 (let ((markup (markup-unknown-option-error:markup c))
 	       (option (markup-unknown-option-error:option c)))
            (show-location markup)
 	   (format (current-error-port)
-		   (_ "~a: unknown markup option for '~a'~%")
+		   (G_ "~a: unknown markup option for '~a'~%")
 		   option markup)))
 
 	((markup-already-bound-error? c)
@@ -158,7 +158,7 @@
 	       (ident  (markup-already-bound-error:ident  c)))
            (show-location markup)
 	   (format (current-error-port)
-		   (_ "'~a' (~a): markup identifier already bound~%")
+		   (G_ "'~a' (~a): markup identifier already bound~%")
 		   ident
 		   (if (markup? markup)
 		       (markup-markup markup)
@@ -166,7 +166,7 @@
 
 	(else
 	 (format (current-error-port)
-                 (_ "undefined AST error: ~a~%")
+                 (G_ "undefined AST error: ~a~%")
 		 c))))
 
 (register-error-condition-handler! ast-error? handle-ast-error)

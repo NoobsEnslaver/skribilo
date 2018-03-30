@@ -1,7 +1,7 @@
 ;;; biblio.scm  --  Bibliography functions.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2009, 2013  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2009, 2013, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2001, 2002, 2003, 2004  Manuel Serrano
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
@@ -108,23 +108,23 @@
                 (line  (source-property entry 'line)))
            (if (and file col line)
                (format (current-error-port)
-                       (_ "~a:~a:~a: invalid bibliography entry: ~a~%")
+                       (G_ "~a:~a:~a: invalid bibliography entry: ~a~%")
                        file line col entry)
                (format (current-error-port)
-                       (_ "invalid bibliography entry: ~a~%")
+                       (G_ "invalid bibliography entry: ~a~%")
                        entry))))
 	((biblio-template-error? c)
 	 (format (current-error-port)
-                 (_ "invalid bibliography entry template: '~a', in '~a'~%")
+                 (G_ "invalid bibliography entry template: '~a', in '~a'~%")
                  (biblio-template-error:expression c)
                  (biblio-template-error:template c)))
         ((biblio-parse-error? c)
          (format (current-error-port)
-                 (_ "invalid bibliography entry s-exp: '~a'~%")
+                 (G_ "invalid bibliography entry s-exp: '~a'~%")
                  (biblio-parse-error:sexp c)))
 	(else
 	 (format (current-error-port)
-                 (_ "undefined bibliography error: ~a~%")
+                 (G_ "undefined bibliography error: ~a~%")
 		 c))))
 
 (register-error-condition-handler! biblio-error?

@@ -1,7 +1,7 @@
 ;;; sui.scm -- Skribe URL Indices
 ;;;
 ;;; Copyright (C) 2005, 2006, 2007, 2008, 2009, 2012,
-;;;    2015  Ludovic Courtès <ludo@gnu.org>
+;;;    2015, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright (C) 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -79,12 +79,12 @@
 	 (let ((sexp (invalid-sui-error:sexp c)))
            (show-location sexp)
 	   (format (current-error-port)
-                   (_ "invalid SUI form: ~A~%")
+                   (G_ "invalid SUI form: ~A~%")
                    sexp)))
 
 	(else
 	 (format (current-error-port)
-                 (_ "undefined SUI error: ~A~%")
+                 (G_ "undefined SUI error: ~A~%")
 		 c))))
 
 (register-error-condition-handler! sui-error? handle-sui-error)

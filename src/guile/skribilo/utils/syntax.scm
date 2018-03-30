@@ -1,7 +1,7 @@
 ;;; syntax.scm  --  Syntactic candy for Skribilo modules. -*- coding: utf-8 -*-
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011,
-;;;   2012, 2016 Ludovic Courtès <ludo@gnu.org>
+;;;   2012, 2016, 2018 Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -28,7 +28,7 @@
            set-correct-file-encoding!
            default-to-utf-8
            %skribilo-text-domain
-           _ N_
+           G_ N_
            unwind-protect))
 
 ;;; Author:  Ludovic Courtès
@@ -54,7 +54,7 @@
 		     (if (string? file)
 			 (format #f "~a:~a:~a: " file line column)
 			 "")
-		     (_ "unexpected character in Skribilo module"))
+		     (G_ "unexpected character in Skribilo module"))
 		    chr)))
 
          (cond-expand
@@ -132,7 +132,7 @@
 
 (textdomain %skribilo-text-domain)
 
-(define (_ msg)
+(define (G_ msg)
   (gettext msg %skribilo-text-domain))
 
 (define (N_ msg msgplural n)

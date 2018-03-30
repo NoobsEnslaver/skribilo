@@ -1,7 +1,7 @@
 ;;; template.scm  --  Template system for bibliography entries.
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
-;;; Copyright 2006, 2007, 2015 Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2006, 2007, 2015, 2018 Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -150,20 +150,20 @@
      `(author ". " (or title url documenturl) ". "
               ;; TRANSLATORS: The next few msgids are fragments of
               ;; bibliography items.
-              ,(_ "Technical Report") " " number
+              ,(G_ "Technical Report") " " number
               (", " institution)
               (", " address)
               (", " month) " " year
               (", pp. " pages) "."))
     ((article)
      `(author ". " (or title url documenturl) ". "
-              ,(_ "In ") journal ", " volume
+              ,(G_ "In ") journal ", " volume
               ("(" number ") ")", "
               (address ", ") month " " year ", "
               ("pp. " pages) "."))
     ((inproceedings)
      `(author ". " (or title url documenturl) ". "
-              ,(_ "In ") booktitle ", "
+              ,(G_ "In ") booktitle ", "
               (series ", ")
               ("(" number ")")
               ("pp. " pages ", ")
@@ -179,14 +179,14 @@
               (", pp. " pages) "."))
     ((inbook)
      `(author ". " (or title url documenturl) ". "
-              ,(_ "In ") booktitle ", " publisher
-              (", " editor " (" ,(_ "editor") ")")
-              (", " ,(_ "Chapter ") chapter)
+              ,(G_ "In ") booktitle ", " publisher
+              (", " editor " (" ,(G_ "editor") ")")
+              (", " ,(G_ "Chapter ") chapter)
               (", pp. " pages) ", "
               (month " ") year "."))
     ((phdthesis)
      `(author ". " (or title url documenturl)
-              ", " ,(_ "PhD Thesis")
+              ", " ,(G_ "PhD Thesis")
               (", " (or school institution))
               (", " address)
               (", " month)
@@ -210,7 +210,7 @@
   (case kind
     ((techreport)
      `(author " -- " (or title url documenturl) " -- "
-              ,(_ "Technical Report") " " number ", " institution ", "
+              ,(G_ "Technical Report") " " number ", " institution ", "
               address ", " month ", " year ", "
               ("pp. " pages) "."))
     ((article)
