@@ -29,6 +29,7 @@
   :use-module (ice-9 optargs)
   :use-module (ice-9 format)
 
+  :use-module (srfi srfi-1)
   :autoload   (srfi srfi-34)  (raise guard)
   :use-module (srfi srfi-35)
   :autoload   (srfi srfi-39)  (make-parameter)
@@ -350,11 +351,10 @@ otherwise the requested engine is returned."
 
 
 (define (engine-custom-set! e id val)
-  (let* ((customs (slot-ref e 'customs))
-	 (c       (assq id customs)))
-    (if (pair? c)
-	(set-car! (cdr c) val)
-	(slot-set! e 'customs (cons (list id val) customs)))))
+  (let ((customs (slot-ref e 'customs)))
+    (slot-set! e 'customs
+               (cons (list id val)
+                     (alist-delete id customs eq?)))))
 
 (define (engine-custom-add! e id val)
    (let ((old (engine-custom e id)))

@@ -1,6 +1,6 @@
 ;;; resolve.scm  --  Skribilo reference resolution.
 ;;;
-;;; Copyright 2005, 2006, 2008, 2009  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2008, 2009, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;;
@@ -30,6 +30,7 @@
   :use-module (skribilo condition)
   :use-module (srfi srfi-34)
   :use-module (srfi srfi-35)
+  :use-module (ice-9 match)
 
   :export (resolve! resolve-search-parent
 	   resolve-counter resolve-parent resolve-ident
@@ -91,21 +92,14 @@
 
 
 (define-method (do-resolve! (ast <pair>) engine env)
-  (let Loop ((n* ast))
-    (cond
-      ((null? n*)
-       ast)
-      ((list? n*)
-       (set-car! n* (do-resolve! (car n*) engine env))
-       (Loop (cdr n*)))
-      ((pair? n*)
-       (set-car! n* (do-resolve! (car n*) engine env))
-       (set-cdr! n* (do-resolve! (cdr n*) engine env))
-       n*)
-      (else
-       (raise (condition (&invalid-argument-error
-			  (proc-name "do-resolve!<pair>")
-			  (argument n*))))))))
+  (match ast
+    ((? list?)                                    ;proper list
+     (map (lambda (elt)
+            (do-resolve! elt engine env))
+          ast))
+    ((head . tail)                                ;pair or improper list
+     (cons (do-resolve! head engine env)
+           (do-resolve! tail engine env)))))
 
 
 (define-method (do-resolve! (node <node>) engine env)
@@ -125,11 +119,13 @@
 
              (when (pair? options)
                (debug-item "unresolved options=" options)
-               (for-each (lambda (o)
-                           (set-car! (cdr o)
-                                     (do-resolve! (cadr o) engine env)))
-                         options)
-               (debug-item "resolved options=" options))
+               (let ((resolved (map (match-lambda
+                                      ((option value)
+                                       (list option
+                                             (do-resolve! value engine env))))
+                                    options)))
+                 (slot-set! node 'options resolved)
+                 (debug-item "resolved options=" options)))
 
 	     (slot-set! node 'body (do-resolve! body engine env))
 	     (slot-set! node 'resolved? (not (*unresolved*))))
@@ -182,13 +178,13 @@
   (parameterize ((*document-being-resolved* node))
     (next-method)
     ;; resolve the engine custom
-    (let ((env (append `((parent ,node)) env0)))
-      (for-each (lambda (c)
-		  (let ((i (car c))
-			(a (cadr c)))
-		    (debug-item "custom=" i " " a)
-		    (set-car! (cdr c) (do-resolve! a engine env))))
-		(slot-ref engine 'customs)))
+    (let* ((env (append `((parent ,node)) env0))
+           (resolved (map (match-lambda
+                            ((i a)
+                             (debug-item "custom=" i " " a)
+                             (list i (do-resolve! a engine env))))
+                          (slot-ref engine 'customs))))
+      (slot-set! engine 'customs resolved))
     node))
 
 
