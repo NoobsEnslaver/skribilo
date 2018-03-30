@@ -6,7 +6,7 @@ AC_INIT([Skribilo],
         m4_esyscmd([build-aux/git-version-gen .tarball-version]),
         [skribilo-users@nongnu.org],
 	[skribilo],
-	[http://nongnu.org/skribilo/])
+	[https://nongnu.org/skribilo/])
 AC_CONFIG_AUX_DIR(build-aux)
 AC_CONFIG_MACRO_DIR(m4)
 
