@@ -89,7 +89,7 @@
   # and large margin is 2/9th.
 
   # `@TopMargin' is margin above headers.  We want a margin of 3.3c for
-  # the page _body  (i.e., excluding headers), so we have to choose
+  # the page _body_ (i.e., excluding headers), so we have to choose
   # `@TopMargin' = 3.3c - (`@MidGap' + 1.0f), since running headers are
   # typeset in 1.0f and followed by a `@MidGap' gap.  We take:
   # 1.0f = 10p = 0.35c and `@MidGap' = 0.75c.

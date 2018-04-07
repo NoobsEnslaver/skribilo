@@ -2,7 +2,7 @@
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2009, 2012,
-;;;   2015 Ludovic Courtès <ludo@gnu.org>
+;;;   2015, 2018 Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -92,6 +92,13 @@
 ;*---------------------------------------------------------------------*/
 (let ((le (find-engine 'lout)))
 
+  (engine-custom-set! le 'initial-font "Palatino Base 11p")
+
+  ;; XXX: Adding 'marginkerning' makes Lout 3.40 segfault.
+  (engine-custom-set! le 'initial-break
+                      "unbreakablefirst unbreakablelast \
+hyphen adjust 1.3fx")
+
   (let ((defs (engine-custom le 'inline-definitions-proc)))
     (engine-custom-set! le 'inline-definitions-proc
                         (lambda (e)
@@ -115,12 +122,18 @@ def @SkribiloExample named @Title {} right x {
       @Diag { @CurveBox
                 outlinestyle { noline }
                 paint { rgb 0.95 0.95 0.87 }
-                font { 0.9f }
+                font { 9p }
 		break { 0.9fx }
               @HExpand @Body } }
   { x }
 }\n\n"
                            ))))
+
+  ;; Compared to the default 'prog' writer, this one uses a smaller font.
+  (markup-writer 'prog le
+     :options '(:line :mark)
+     :before "\n{ Courier Base 9p } @Font { lines nohyphen 0.9fx } @Break lout @Space {\n"
+     :after "\n} # @Break\n")
 
   (markup-writer 'doc-markup
     :action (lambda (n e)
