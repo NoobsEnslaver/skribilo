@@ -20,7 +20,7 @@
   (if (engine? html)
       (begin
         ;; Customizing the HTML output...
-        (engine-custom-set! html 'css "skribilo.css")
+        (engine-custom-set! html 'css "static/main.css")
         (engine-custom-set! html 'html-navtabs-produce-css? #f)
         (engine-custom-set! html 'html-navtabs html-tabs)
         (engine-custom-set! html 'charset "UTF-8"))))
