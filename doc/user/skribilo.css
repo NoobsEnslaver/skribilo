@@ -153,7 +153,41 @@ table.toc {
   margin-left: 0em;
   margin-right: 3em;
   line-height: 1.5;
-};
+}
+
+.skribilo-doc-markup {
+  border-top: 1px dotted #333;
+  background: #fef7f7;
+  border-radius: 0px 0px 10px 10px;
+  padding: 15px;
+}
+
+.skribilo-api-prototype {
+  margin-bottom: 10px;
+}
+
+.skribilo-api-option-name,
+.skribilo-api-argument-name {
+  font-family: monospace, Courier;
+  font-size: 0.9em;
+  display: inline-block;
+  min-width: 120px;
+  vertical-align: top;
+}
+.skribilo-api-option-description {
+  display: inline-block;
+  max-width: 90%;
+}
+.skribilo-api-option-engines {
+  border-left: 1px dotted #333;
+  border-right: 1px dotted #333;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 0.9em;
+}
+.skribilo-api-see-also {
+  margin-top: 15px;
+}
 
 /* Links.  */
 

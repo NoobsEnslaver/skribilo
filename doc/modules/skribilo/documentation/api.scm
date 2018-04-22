@@ -68,7 +68,47 @@
       :action (lambda (n e)
 		 (let ((c (engine-custom e 'title-background)))
 		    (markup-option-add! n :bg c)
-		    (output n e tro)))))
+		    (output n e tro))))
+
+   (markup-writer 'doc-markup he
+      :action (lambda (n e)
+                (let ((protos (markup-option n 'prototypes))
+                      (opts   (markup-option n 'options))
+                      (params (markup-option n 'parameters))
+                      (see    (markup-option n 'see-also)))
+                  (display "<div class=\"skribilo-doc-markup\">")
+                  (for-each (lambda (p)
+                              (output (! "\n<div \
+  class=\"skribilo-api-prototype\">$1</div>" p) e))
+                            protos)
+                  (for-each (match-lambda
+                              ((name (engines ...) desc)
+                               (output (! "\n<div
+  class=\"skribilo-api-option\"> \
+  <span class=\"skribilo-api-option-name\">$1</span> \
+  <span class=\"skribilo-api-option-description\">$2</span> \
+  <span class=\"skribilo-api-option-engines\">$3</span></div>"
+                                          name desc engines)
+                                       e)))
+                            (or opts '()))
+
+                  (for-each (match-lambda
+                              ((param . desc)
+                               (output (! "\n<div \
+  class=\"skribilo-api-argument\"> \
+  <span class=\"skribilo-api-argument-name\">$1</span> \
+  <span class=\"skribilo-api-argument-description\">$2</span></div>"
+                                          param desc)
+                                       e)))
+                            (or params '()))
+
+                  (when (pair? see)
+                    (output (! "<div class=\"skribilo-api-see-also\">\
+See also $1</div>"
+                               (punctuate see))
+                            e))
+
+                  (display "</div>\n")))))
 
 ;*---------------------------------------------------------------------*/
 ;*    LaTeX configuration                                              */
@@ -135,7 +175,7 @@ def @SkribiloExample named @Title {} right x {
      :before "\n{ Courier Base 9p } @Font { lines nohyphen 0.9fx } @Break lout @Space {\n"
      :after "\n} # @Break\n")
 
-  (markup-writer 'doc-markup
+  (markup-writer 'doc-markup le
     :action (lambda (n e)
               (let ((protos (markup-option n 'prototypes))
                     (opts   (markup-option n 'options))
@@ -177,7 +217,7 @@ def @SkribiloExample named @Title {} right x {
 
                 (display "\n@LP\n"))))
 
-  (markup-writer 'doc-engine
+  (markup-writer 'doc-engine le
     :action (lambda (n e)
               (let ((customs  (markup-option n 'customs))
                     (defaults (markup-option n 'defaults)))
@@ -652,78 +692,7 @@ def @SkribiloExample named @Title {} right x {
 				 (define-markup-formals def)
 				 dargs))
 			     others od))))
-	  ;; doc table
-	  (define (doc-markup.html)
-	     (let ((df (map (lambda (f)
-			       (tr :bg *prgm-skribe-color*
-				  (td :colspan 2 :width 20. :align 'left
-				     (param (car f)) )
-				  (td :align 'left :width 80. (cadr f))))
-			    dformals))
-		   (dr (and (pair? drest)
-			    (tr :bg *prgm-skribe-color*
-			       (td :align 'left 
-				  :valign 'top
-				  :colspan 2 
-				  :width 20.
-				  (param (cadr (car drest))))
-			       (td :align 'left :width 80. 
-				  (caddr (car drest))))))
-		   (do (map (lambda (f)
-			       (tr :bg *prgm-skribe-color*
-				  (td :align 'left 
-				     :valign 'top
-				     :width 10.
-				     (param (car f)))
-				  (td :align 'left 
-				     :valign 'top
-				     :width 20.
-				     (opt-engine-support (car f)))
-				  (td :align 'left :width 70. (cadr f))))
-			    doptions))
-		   (so (map (lambda (x)
-			       (let ((s (symbol->string x)))
-				  (list 
-				   (ref :mark s :text (code s))
-				   " ")))
-			    see-also)))
-		(table :&location &invocation-location
-                   :border (if (engine-format? "latex") 1 0)
-		   :width (if (engine-format? "latex") #f *prgm-width*)
-		   `(,(tr :class 'api-table-prototype
-			 (th :colspan 3 :align 'left :width *prgm-width*
-			    "prototype"))
-		     ,@(map (lambda (p)
-			       (tr :bg *prgm-skribe-color*
-				  (td :colspan 3 :width *prgm-width*
-				     :align 'left  p)))
-			    p+)
-		     ,@(if (pair? do)
-			   `(,(tr :class 'api-table-header
-				 (th :align 'left "option" 
-				    :width 10.) 
-				 (th :align 'center "engines"
-				    :width 20.)
-				 (th "description"))
-			     ,@do)
-			   '())
-		     ,@(if (or (pair? df) dr)
-			   `(,(tr :class 'api-table-header
-				 (th :colspan 2 
-				    :align 'left 
-				    :width 30.
-				    "argument") 
-				 (th "description"))
-			     ,@(if (pair? df) df '())
-			     ,@(if dr (list dr) '()))
-			   '())
-		     ,@(if (pair? so)
-			   `(,(tr :class 'api-table-header
-				 (th :colspan 3 :align 'left 
-				    (it "See also")))
-			     ,(tr :bg *prgm-skribe-color*
-				 (td :colspan 3 :align 'left so)))
-			   '())))))
+
 	  ;; doc enumerate
 	  (define (doc-markup.latex)
 	     (let ((df (map (lambda (f)
@@ -810,11 +779,8 @@ def @SkribiloExample named @Title {} right x {
 		(cond
 		   ((engine-format? "latex")
 		    (doc-markup.latex))
-                   ((or (engine-format? "lout")
-                        (engine-format? "info"))
-                    (doc-markup.generic))
-		   (else
-		    (center (doc-markup.html)))))))))
+                   (else
+                    (doc-markup.generic))))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    doc-engine ...                                                   */
