@@ -44,7 +44,7 @@
 
 
 ;*---------------------------------------------------------------------*/
-;*    Html configuration                                               */
+;*    HTML configuration                                               */
 ;*---------------------------------------------------------------------*/
 (let* ((he (find-engine 'html))
        (tro (markup-writer-get 'tr he)))
@@ -108,7 +108,30 @@ See also $1</div>"
                                (punctuate see))
                             e))
 
-                  (display "</div>\n")))))
+                  (display "</div>\n"))))
+
+  (markup-writer 'doc-engine he
+    :action (lambda (n e)
+              (let ((customs  (markup-option n 'customs))
+                    (defaults (markup-option n 'defaults)))
+
+                (display "\n<div class=\"skribilo-doc-engine\">")
+                (for-each (match-lambda
+                            ((name desc)
+                             (output (! "\
+<div class=\"skribilo-api-engine-custom\"> \
+<span class=\"skribilo-api-engine-custom-name\">$1</span> \
+<span class=\"skribilo-api-engine-custom-description\"> \
+<span class=\"skribilo-api-engine-custom-default\">default: <tt>$2</tt></span> \
+$3</span></div>\n"
+                                        (object->string name)
+                                        (match (assq name defaults)
+                                          ((_ dflt)
+                                           (object->string dflt)))
+                                        desc)
+                                     e)))
+                          customs)
+                (display "\n</div>\n")))))
 
 ;*---------------------------------------------------------------------*/
 ;*    LaTeX configuration                                              */
@@ -808,7 +831,8 @@ def @SkribiloExample named @Title {} right x {
                       ((engine-format? "latex" e)
                        (skribe-warning 3 "'doc-engine' not rendered in LaTeX")
                        #f)
-                      ((engine-format? "lout" e)
+                      ((or (engine-format? "lout" e)
+                           (engine-format? "html" e))
                        (list (map (lambda (c)
                                     (index (symbol->string (car c))
                                            :index idx

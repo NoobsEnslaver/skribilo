@@ -1,4 +1,4 @@
-/* -*- coding: utf-8; mode: C; -*-
+/* -*- coding: utf-8 -*-
 
    CSS style sheet for the Skribilo manual.
 
@@ -155,7 +155,7 @@ table.toc {
   line-height: 1.5;
 }
 
-.skribilo-doc-markup {
+.skribilo-doc-markup, .skribilo-doc-engine {
   border-top: 1px dotted #333;
   background: #fef7f7;
   border-radius: 0px 0px 10px 10px;
@@ -167,28 +167,36 @@ table.toc {
 }
 
 .skribilo-api-option-name,
-.skribilo-api-argument-name {
+.skribilo-api-argument-name,
+.skribilo-api-engine-custom-name {
   font-family: monospace, Courier;
   font-size: 0.9em;
   display: inline-block;
   min-width: 120px;
   vertical-align: top;
 }
-.skribilo-api-option-description {
-  display: inline-block;
-  max-width: 90%;
+.skribilo-api-engine-custom-name {
+  min-width: 150px;
 }
-.skribilo-api-option-engines {
+.skribilo-api-option-description,
+.skribilo-api-engine-custom-description {
+  display: inline-block;
+  max-width: 80%;
+}
+.skribilo-api-option-engines,
+.skribilo-api-engine-custom-default {
   border-left: 1px dotted #333;
   border-right: 1px dotted #333;
   padding-left: 5px;
   padding-right: 5px;
   font-size: 0.9em;
 }
+.skribilo-api-engine-custom-default {
+  color: #333;
+}
 .skribilo-api-see-also {
   margin-top: 15px;
 }
-
 /* Links.  */
 
 a { text-decoration: none; border: 0 0 0 0; border-style: none; }
