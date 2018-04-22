@@ -68,6 +68,12 @@
     (invalid-argument-error 'include file 'file))
   (include-document file))
 
+(cond-expand
+  (guile-2
+   ;; On Guile 2.x, replace the 'include' core binding.
+   (module-replace! (current-module) '(include)))
+  (else #t))
+
 ;*---------------------------------------------------------------------*/
 ;*    document ...                                                     */
 ;*---------------------------------------------------------------------*/
