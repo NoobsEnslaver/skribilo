@@ -1,7 +1,7 @@
 ;;; manual.scm  --  Skribilo manuals and documentation style.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2007, 2008, 2009, 2012  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2007, 2008, 2009, 2012, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -216,9 +216,12 @@
      (resolve (lambda (n e env)
                 ;; Same trick as for `ctrtable': don't center frames (which
                 ;; are actually `@Tbl') in Lout.
-                (if (engine-format? "lout" e)
-                    (! "\n@LP\n@ID @F { $1 }\n@LP\n" pr)
-                    f)))))
+                (cond ((engine-format? "lout" e)
+                       (! "\n@LP\n@ID @F { $1 }\n@LP\n" pr))
+                      ((engine-format? "html" e)
+                       (! "\n<div class=\"skribilo-manual-disp \
+skribilo-manual-prgm\">$1</div>\n" pr))
+                      (else f))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    disp ...                                                         */
@@ -231,6 +234,11 @@
                         (the-body opts)))
                    ((engine-format? "lout" e)
                     (! "\n@ID { $1 } # disp\n"
+                       (if verb
+                           (pre (the-body opts))
+                           (the-body opts))))
+                   ((engine-format? "html" e)
+                    (! "\n<div class=\"skribilo-manual-disp\">$1</div>\n"
                        (if verb
                            (pre (the-body opts))
                            (the-body opts))))

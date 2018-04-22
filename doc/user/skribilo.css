@@ -2,7 +2,7 @@
 
    CSS style sheet for the Skribilo manual.
 
-   Copyright 2007, 2008, 2012 Ludovic Courtès <ludo@gnu.org>
+   Copyright 2007, 2008, 2012, 2018 Ludovic Courtès <ludo@gnu.org>
 
    Copying and distribution of this file, with or without modification,
    are permitted in any medium without royalty provided the copyright
@@ -138,6 +138,22 @@ table.toc {
   border-width: 0px;
   align: center;
 }
+
+.skribilo-manual-prgm {				  /* for 'prgm' */
+  font-family: fixed-width, Courier;
+  text-align: left;
+}
+
+.skribilo-manual-disp {				  /* for 'disp' */
+  border-left: 1px dotted black;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0em;
+  margin-right: 3em;
+  line-height: 1.5;
+};
 
 /* Links.  */
 
