@@ -32,8 +32,18 @@ skrinfodir = $(infodir)
 skrinfo_DATA = skribilo.info
 
 html_DATA = user.html user.sui
-dist_html_DATA = skribilo.css			\
-  lobster-1.4.otf junction.ttf
+nobase_dist_html_DATA =				\
+  lobster-1.4.otf junction.ttf			\
+  static/gears-down.png				\
+  static/gears-up.png				\
+  static/graphy.png				\
+  static/Hack-Regular.ttf			\
+  static/LinBiolinum_Rah.ttf			\
+  static/LinLibertine_Rah.ttf			\
+  static/main.css				\
+  static/manual.css				\
+  static/normalize.css
+
 
 if HAVE_LOUT
 BUILT_SOURCES = lout/front-page.lout

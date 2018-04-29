@@ -1,0 +1,108 @@
+/* -*- coding: utf-8 -*-
+
+   CSS style sheet for the Skribilo manual.
+
+   Copyright 2007, 2008, 2012, 2018 Ludovic Courtès <ludo@gnu.org>
+
+   Copying and distribution of this file, with or without modification,
+   are permitted in any medium without royalty provided the copyright
+   notice and this notice are preserved.  */
+
+@import url("main.css");
+
+pre { font-family: monospace; text-align: left; }
+
+.toc {
+  line-height: 1.8em;
+}
+
+.small-toc {
+  text-align: left;
+  font-size: normal;
+  font-weight: normal;
+  background: #f6f6fa;
+
+  position: relative;
+  padding: 10px;
+  width: 30%;
+  margin: 30px 0 0 0;
+
+  /* XXX: `float' doesn't play well with tables.  */
+  /* float: right; */
+  /* margin: 0 0 30px 30px; */
+
+  border-width: 1px;
+  border-style: dotted;
+  border-color: #999;
+  border-radius: 5px;
+  -moz-border-radius: 2px;
+}
+
+.code-excerpt {
+  background: #eeeef0;
+  font-family: fixed-width, Courier;
+  text-align: left;
+  margin: 20px;
+  padding: 10px 25px 10px 25px;
+  border-width: 0px;
+  align: center;
+}
+
+.skribilo-manual-prgm {				  /* for 'prgm' */
+  font-family: fixed-width, Courier;
+  text-align: left;
+}
+
+.skribilo-manual-disp {				  /* for 'disp' */
+  border-left: 1px dotted black;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0em;
+  margin-right: 3em;
+  line-height: 1.5;
+}
+
+.skribilo-doc-markup, .skribilo-doc-engine {
+  border-top: 1px dotted #333;
+  background: #fef7f7;
+  border-radius: 0px 0px 10px 10px;
+  padding: 15px;
+}
+
+.skribilo-api-prototype {
+  margin-bottom: 10px;
+}
+
+.skribilo-api-option-name,
+.skribilo-api-argument-name,
+.skribilo-api-engine-custom-name {
+  font-family: monospace, Courier;
+  font-size: 0.9em;
+  display: inline-block;
+  min-width: 120px;
+  vertical-align: top;
+}
+.skribilo-api-engine-custom-name {
+  min-width: 150px;
+}
+.skribilo-api-option-description,
+.skribilo-api-engine-custom-description {
+  display: inline-block;
+  max-width: 80%;
+}
+.skribilo-api-option-engines,
+.skribilo-api-engine-custom-default {
+  border-left: 1px dotted #333;
+  border-right: 1px dotted #333;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 0.9em;
+}
+.skribilo-api-engine-custom-default {
+  color: #333;
+}
+.skribilo-api-see-also {
+  margin-top: 15px;
+}
