@@ -120,13 +120,13 @@
 	     (display "<center>")
 	     (if (string? tfont)
 		 (begin
-		    (format #t  "<font ~a><strong>" tfont)
+		    (format #t  "<font ~a>" tfont)
 		    (output title e)
-		    (display "</strong></font>"))
+		    (display "</font>"))
 		 (begin
-		    (display "<div class=\"skribilo-title\"><strong><big><big><big>")
+		    (display "<div class=\"skribilo-title\">")
 		    (output title e)
-		    (display "</big></big></big></strong</div>")))
+		    (display "</div>")))
 	     (display "</center>\n")))
       (if (not authors)
 	  (display "\n")
