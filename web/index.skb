@@ -139,8 +139,8 @@ document generation tasks.  Technically, the Skribilo language/API is an
 embedded domain-specific language (EDSL), implemented ,(it [via])
 so-called ,(ref :url
 "http://www.haskell.org/haskellwiki/Embedded_domain_specific_language#Degree_of_embedding"
-:text [“deep embedding”]).  Skribilo uses ,(guile [GNU Guile]) 1.8 or
-2.0 as the underlying Scheme implementation.])
+:text [“deep embedding”]).  Skribilo uses ,(guile [GNU Guile]) 2.2, 2.0,
+or 1.8 as the underlying Scheme implementation.])
 
 
    (chapter :title [Features] :number #f :file #f
@@ -165,7 +165,7 @@ computer programs]), and others.])
          (item [,(ref :skribe %user-sui :chapter "Bibliographies" :text
 [Bibliography management])—i.e., BibTeX on steroids thanks to the
 programmability brought by ,(scheme [Scheme]).])
-         (item [Unicode support (when using Guile 2.0).])
+         (item [Unicode support (when using Guile 2.x).])
          (item [Use of a proper module system (that of ,(guile
 [Guile])) rather than ,(tt [load])-style interactions.])
          (item [And much more!  :-)])))
@@ -181,7 +181,7 @@ General Public Licence]), version 3 or later.  To use Skribilo,
 you need the following pieces of software:
 
 ,(itemize
-    (item [,(guile [GNU Guile]) 2.0.*, or 1.8.3 or later;])
+    (item [,(guile [GNU Guile]) 2.2.*, 2.0.*, or 1.8.3+;])
     (item [,(ref :url "http://www.nongnu.org/guile-reader/"
                :text [Guile-Reader]) 0.6 or later;])
     (item [either ,(lout [Lout]) (3.31 or later), ,(latex [LaTeX]), or
@@ -305,7 +305,7 @@ AST, and things like ,(ref :url
           (item [Andy Wingo's ,(ref :url
 "http://www.gnu.org/software/guile/manual/html_node/texinfo.html" :text [STexi]) (,(ref
 :text [Texinfo] :url "http://www.gnu.org/software/texinfo/") as
-S-expressions), available in ,(guile [Guile 2.0]).  The
+S-expressions), available in ,(guile [Guile 2.x]).  The
 ,(ref :text (tt [fold-layout]) :url
 "http://www.gnu.org/software/guile/manual/html_node/sxml-fold.html")
 operator provides an interesting, purely functional approach to
