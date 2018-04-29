@@ -17,8 +17,6 @@
 
 body {
   font-family: "Linux Libertine", serif;
-  /* image from transparenttextures.com */
-  background: url("graphy.png");
   font-size: 18px;
   padding: 0px;
   margin: 0px;
@@ -30,6 +28,7 @@ h1, h2, h3, h4, h5, h6 {
 
 a:link, a:visited, a:active {
   text-decoration: none;
+  color: #842;
 }
 
 a:hover {
@@ -42,14 +41,13 @@ code, pre, tt {
 }
 
 div.navtabs-title {
-  background: url("gears-up.png");
+  background: url("gears-up.png"), url("graphy.png");
   background-position: bottom;
   background-repeat: repeat-x;
-  padding: 15px;
-  padding-bottom: 180px;
-  padding-top: 50px;
+  padding: 30px;
   text-align: center;
   font-size: 3em;
+  min-height: 70px;
 }
 
 div.navtabs-tabs {
@@ -70,17 +68,25 @@ div.navtabs-tabs > a {
   margin: 15px 15px;
 }
 
+div.skribilo-title {
+  font-size: 3em;
+  font-weight: bold;
+}
+
 div.skribilo-body {
   padding: 15px 30px;
+  margin: auto;
+  max-width: 800px;
   background: white;
   line-height: 1.5em;
+  text-align: justify;
 }
 
 div.skribilo-ending {
-  background: url("gears-down.png");
-  background-position: top;
+  background: url("gears-down.png"), url('graphy.png');
+  background-position: bottom;
   background-repeat: repeat-x;
   padding: 15px;
-  padding-top: 150px;
+  padding-top: 70px;
   text-align: right;
 }
