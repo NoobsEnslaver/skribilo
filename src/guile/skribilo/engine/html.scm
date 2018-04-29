@@ -1,7 +1,7 @@
 ;;; html.scm  --  HTML engine.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2008, 2009, 2011, 2012  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -908,9 +908,9 @@
 		   (output title e)
 		   (display "</strong></font>"))
 		(begin
-		   (display "<div class=\"skribilo-title\"><strong><big>")
+		   (display "<div class=\"skribilo-title\">")
 		   (output title e)
-		   (display "</big></strong></div>"))))
+		   (display "</div>"))))
 	 (if (not authors)
 	     (display "\n")
 	     (html-title-authors authors e))
