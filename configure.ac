@@ -32,6 +32,15 @@ AC_ARG_WITH([guilemoduledir],
    esac],
   [guilemoduledir=""])
 
+AC_ARG_WITH([guileobjectdir],
+  [AS_HELP_STRING([--with-guileobjectdir=DIR],
+    [install Guile object files under DIR])],
+  [case "x$withval" in
+     xyes|xno) guileobjectdir="";;
+     *)        guileobjectdir="$withval";;
+   esac],
+  [guileobjectdir=""])
+
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 
@@ -94,12 +103,15 @@ AM_CONDITIONAL([HAVE_PLOTICUS], [test "x$PLOTICUS" != "x"])
 # Emacs.
 AM_PATH_LISPDIR
 
-
-pkgdatadir="$datadir/$PACKAGE_TARNAME"
+dnl Installation directories for .scm and .go files.
 if test "x$guilemoduledir" = "x"; then
-  guilemoduledir="$pkgdatadir/$PACKAGE_VERSION"
+  guilemoduledir="${datarootdir}/guile/site/$GUILE_EFFECTIVE_VERSION"
+fi
+if test "x$guileobjectdir" = "x"; then
+  guileobjectdir="${libdir}/guile/$GUILE_EFFECTIVE_VERSION/site-ccache"
 fi
 AC_SUBST([guilemoduledir])
+AC_SUBST([guileobjectdir])
 
 if test "$guilemoduledir" != "$GUILE_SITE"; then
    # Guile won't be able to locate the modules "out of the box", so

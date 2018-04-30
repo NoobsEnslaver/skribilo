@@ -7,7 +7,7 @@ if HAVE_GUILE2
 GOBJECTS = $(SOURCES:%.scm=%.go)
 
 nobase_dist_module_DATA = $(SOURCES) $(SOURCES_NOT_COMPILED)
-nobase_nodist_module_DATA = $(GOBJECTS)
+nobase_nodist_guileobject_DATA = $(GOBJECTS)
 
 # Compiler warnings.
 guile_warnings =							\
@@ -46,12 +46,12 @@ SUFFIXES += .go
 # files.  See
 # <http://lists.gnu.org/archive/html/guile-devel/2010-07/msg00125.html>
 # for details.
-skr_install_go_files = install-nobase_nodist_moduleDATA
+skr_install_go_files = install-nobase_nodist_guileobjectDATA
 $(skr_install_go_files): install-nobase_dist_moduleDATA
 
 else !HAVE_GUILE2
 
 nobase_dist_module_DATA = $(SOURCES) $(SOURCES_NOT_COMPILED)
-nobase_nodist_module_DATA =
+nobase_nodist_guileobject_DATA =
 
 endif !HAVE_GUILE2
