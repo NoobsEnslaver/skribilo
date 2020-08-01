@@ -155,6 +155,10 @@ the string \"hello\".  Implement `sliceweight' markups too."
 (define %ploticus-program "ploticus")
 (define %ploticus-debug? #f)
 
+;; XXX: Really prevent '%ploticus-program' from being inlined below when
+;; using Guile 3.0.
+(set! %ploticus-program "ploticus")
+
 (define (color-spec->ploticus color-spec)
   (define round (make-rounder 2))
 
