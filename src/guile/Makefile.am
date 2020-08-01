@@ -22,8 +22,7 @@ EXTRA_DIST =						\
   README						\
   skribilo/source/lisp-lex.l				\
   skribilo/source/xml-lex.l skribilo/source/c-lex.l	\
-  skribilo/utils/images.in skribilo/config.in		\
-  srfi/srfi-64.scm srfi/srfi-64.upstream.scm
+  skribilo/utils/images.in skribilo/config.in
 
 SOURCES =								\
   skribilo.scm diff.scm							\
