@@ -419,7 +419,11 @@ options."
                             (open-output-file output-file)
                             (current-output-port))))
 
-          (setvbuf (*skribilo-output-port*) _IOFBF 16384)
+          (setvbuf (*skribilo-output-port*)
+                   (cond-expand
+                     (guile-2.0 _IOFBF)
+                     (else      'block))
+                   16384)
 
           (if input-file
               (with-input-from-file input-file
