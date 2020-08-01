@@ -1,7 +1,7 @@
 ;;; engine.scm	-- Skribilo engines.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2007, 2008, 2009, 2010, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2007, 2008, 2009, 2010, 2018, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -278,14 +278,8 @@
 (define (engine-loaded? id)
   "Check whether engine @var{id} is already loaded."
   ;; Trick taken from `resolve-module' in `boot-9.scm'.
-  (cond-expand (guile-2
-                (nested-ref-module (resolve-module '() #f)
-                                   (engine-id->module-name id)))
-               (else
-                ;; This method works for 1.8 but is deprecated in 1.9/2.0 and
-                ;; doesn't work with 1.9.11 anyway.
-                (nested-ref the-root-module
-                            `(%app modules ,@(engine-id->module-name id))))))
+  (nested-ref-module (resolve-module '() #f)
+                     (engine-id->module-name id)))
 
 ;; A mapping of engine names to hooks.
 (define %engine-load-hook (make-hash-table))

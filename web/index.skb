@@ -139,8 +139,8 @@ document generation tasks.  Technically, the Skribilo language/API is an
 embedded domain-specific language (EDSL), implemented ,(it [via])
 so-called ,(ref :url
 "http://www.haskell.org/haskellwiki/Embedded_domain_specific_language#Degree_of_embedding"
-:text [“deep embedding”]).  Skribilo uses ,(guile [GNU Guile]) 2.2, 2.0,
-or 1.8 as the underlying Scheme implementation.])
+:text [“deep embedding”]).  Skribilo uses ,(guile [GNU Guile]) 2.2 or 2.0
+as the underlying Scheme implementation.])
 
 
    (chapter :title [Features] :number #f :file #f
@@ -181,7 +181,7 @@ General Public Licence]), version 3 or later.  To use Skribilo,
 you need the following pieces of software:
 
 ,(itemize
-    (item [,(guile [GNU Guile]) 2.2.*, 2.0.*, or 1.8.3+;])
+    (item [,(guile [GNU Guile]) 2.2.* or 2.0.*;])
     (item [,(ref :url "http://www.nongnu.org/guile-reader/"
                :text [Guile-Reader]) 0.6 or later;])
     (item [either ,(lout [Lout]) (3.31 or later), ,(latex [LaTeX]), or

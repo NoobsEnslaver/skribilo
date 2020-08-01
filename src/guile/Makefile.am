@@ -1,5 +1,5 @@
 # Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2012,
-#   2015, 2018 Ludovic Courtès <ludo@gnu.org>
+#   2015, 2018, 2020 Ludovic Courtès <ludo@gnu.org>
 #
 # This file is part of Skribilo.
 #
@@ -95,14 +95,9 @@ nobase_nodist_module_DATA =			\
   skribilo/config.scm				\
   skribilo/utils/images.scm
 
-if HAVE_GUILE2
-
 nobase_nodist_guileobject_DATA +=		\
  skribilo/config.go				\
  skribilo/utils/images.go
-
-endif HAVE_GUILE2
-
 
 BUILT_SOURCES =					\
   skribilo/config.scm				\

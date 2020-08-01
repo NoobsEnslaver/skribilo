@@ -45,27 +45,13 @@ AC_PROG_LN_S
 AC_PROG_MKDIR_P
 
 # Look for Guile.
-GUILE_PKG([2.2 2.0 1.8])
+GUILE_PKG([2.2 2.0])
 GUILE_PROGS
 GUILE_SITE_DIR
-AC_PATH_PROGS([GUILD], [guild guile-tools])
-
-# GNU Guile 2.0.x and its compiler.
-AM_CONDITIONAL([HAVE_GUILE2],
-  [test "x$GUILD" != "x" && \
-   "$GUILD" compile --help >/dev/null 2>&1])
+AC_PATH_PROGS([GUILD], [guild])
 
 # Need Guile-Reader.
 GUILE_MODULE_REQUIRED([system reader])
-
-# SRFI-34 is normally in Guile 1.8, but let's make sure.
-GUILE_MODULE_REQUIRED([srfi srfi-34])
-
-# Need SRFI-35, available in Guile >= 1.8.3.
-GUILE_MODULE_REQUIRED([srfi srfi-35])
-
-# Need SRFI-37, available in Guile >= 1.8.3.
-GUILE_MODULE_REQUIRED([srfi srfi-37])
 
 # Make sure we're not using the broken SRFI-35 from Guile-Lib <= 0.1.6.
 SKR_GUILE_SRFI_35_WORKS

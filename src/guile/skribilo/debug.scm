@@ -1,6 +1,6 @@
 ;;; debug.scm  --  Debugging facilities.  -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2009, 2012  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2009, 2012, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;; This file is part of Skribilo.
@@ -110,17 +110,9 @@
     (for-each (lambda (a) (display a (*debug-port*))) args)
     (newline (*debug-port*))))
 
-(cond-expand
- (guile-2
-  (define-syntax-rule (debug-item args ...)
-    (if (*debug-item?*)
-        (%do-debug-item args ...))))
- (else
-  (begin
-    ;; Work around Guile 1.8's broken macro support.
-    (export %do-debug-item)
-    (define-macro (debug-item . args)
-      `(if (*debug-item?*) (%do-debug-item ,@args))))))
+(define-syntax-rule (debug-item args ...)
+  (if (*debug-item?*)
+      (%do-debug-item args ...)))
 
 
 ;;;

@@ -1,7 +1,7 @@
 ;;; syntax.scm  --  Syntactic candy for Skribilo modules. -*- coding: utf-8 -*-
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011,
-;;;   2012, 2016, 2018 Ludovic Courtès <ludo@gnu.org>
+;;;   2012, 2016, 2018, 2020 Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -56,15 +56,7 @@
 			 "")
 		     (G_ "unexpected character in Skribilo module"))
 		    chr)))
-
-         (cond-expand
-          (guile-2 '(reader/record-positions))
-          (else
-           ;; On Guile 1.8, don't record positions by default: this yields a
-           ;; nice read performance improvement.
-           (if (memq 'positions (debug-options))
-               (list 'reader/record-positions)
-               '())))))
+         '(reader/record-positions)))
 
 (define-macro (skribilo-module-syntax)
   "Install the syntax reader for Skribilo modules."

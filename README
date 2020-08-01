@@ -29,7 +29,7 @@ Requirements
 
 You need at least:
 
-  * GNU Guile >= 1.8.3 (2.0.x recommended)
+  * GNU Guile >= 2.0.x
     http://www.gnu.org/software/guile/
 
   * Guile-Reader >= 0.6
