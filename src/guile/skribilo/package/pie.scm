@@ -1,7 +1,6 @@
 ;;; pie.scm  --  An pie-chart formatting package.
-;;; -*- coding: utf-8 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2009, 2010  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2009, 2010, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -29,9 +28,9 @@
   #:use-module (skribilo utils keywords) ;; `the-options', etc.
   #:use-module (skribilo utils strings)  ;; `make-string-replace'
   #:autoload   (skribilo color)        (color->rgb)
-  #:autoload   (skribilo package base) (bold)
+  #:use-module (skribilo package base)
   #:autoload   (srfi srfi-13)          (string-concatenate)
-  #:autoload   (ice-9 popen)           (open-output-pipe)
+  #:autoload   (ice-9 popen)           (open-output-pipe close-pipe)
   #:use-module (ice-9 optargs)
   #:export     (%ploticus-program %ploticus-debug?
                pie-sliceweight-value pie-remove-markup))

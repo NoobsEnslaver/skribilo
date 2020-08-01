@@ -1,7 +1,6 @@
 ;;; web-article.scm  --  A style to produce web articles.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2007, 2008  Ludovic Courtès <ludo@chbouib.org>
+;;; Copyright 2007, 2008, 2020  Ludovic CourtÃ¨s <ludo@chbouib.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -29,7 +28,7 @@
   #:use-module (skribilo package base)
 
   #:autoload   (skribilo output)         (output)
-  #:autoload   (skribilo evaluator)      (evaluate-document)
+  #:autoload   (skribilo evaluator)      (evaluate-document *load-options*)
   #:autoload   (skribilo engine html)    (html-width html-title-authors)
   #:autoload   (skribilo utils strings)  (string-canonicalize)
 

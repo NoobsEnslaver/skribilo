@@ -1,8 +1,7 @@
 ;;; lncs.scm  --  The Skribilo style for LNCS articles.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
-;;; Copyright 2007, 2015, 2018  Ludovic Courtès <ludovic.courtes@laas.fr>
+;;; Copyright 2007, 2015, 2018, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -25,12 +24,13 @@
   #:use-module (skribilo engine)
   #:use-module (skribilo writer)
   #:autoload   (skribilo output)         (output)
-  #:autoload   (skribilo package base)   (chapter font flush
-                                         toc the-bibliography)
+  #:use-module (skribilo package base)
   #:autoload   (skribilo utils keywords) (the-options the-body)
   #:autoload   (skribilo biblio template)(output-bib-entry-template
                                          make-bib-entry-template/default)
-  #:autoload   (skribilo biblio author)  (bib-sort/first-author-last-name)
+  #:autoload   (skribilo biblio author)  (bib-sort/first-author-last-name
+                                          abbreviate-author-first-names/family-first
+                                          abbreviate-first-names)
   #:autoload   (skribilo evaluator)      (evaluate-document)
 
   #:use-module (skribilo lib)
@@ -44,7 +44,7 @@
 
 (skribilo-module-syntax)
 
-;;; Author: Manuel Serrano, Ludovic Courtès
+;;; Author: Manuel Serrano, Ludovic CourtÃ¨s
 ;;;
 ;;; Commentary:
 ;;;

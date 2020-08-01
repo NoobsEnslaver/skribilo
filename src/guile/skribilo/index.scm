@@ -1,6 +1,6 @@
-;;; index.scm -- Document indices.        -*- coding: iso-8859-1 -*-
+;;; index.scm -- Document indices.
 ;;;
-;;; Copyright 2005, 2006, 2008, 2009, 2015, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2008, 2009, 2015, 2018, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -31,9 +31,9 @@
   ;; XXX: The use of `mark' here introduces a cross-dependency between
   ;; `index' and `package base'.  Thus, we require that each of these two
   ;; modules autoloads the other one.
-  #:autoload   (skribilo package base) (mark)
+  #:autoload   (skribilo package base) (mark ref)
 
-  #:autoload   (skribilo location)     (location?)
+  #:use-module (skribilo location)
 
   #:export (index? make-index-table *index-table*
            default-index resolve-the-index))

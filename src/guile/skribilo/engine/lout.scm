@@ -2,7 +2,7 @@
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2004, 2005, 2006, 2007, 2008, 2009, 2010,
-;;;  2012, 2015, 2018  Ludovic Courtès <ludo@gnu.org>
+;;;  2012, 2015, 2018, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -33,7 +33,7 @@
   #:use-module (skribilo package base)
   #:autoload   (skribilo utils images)  (convert-image)
   #:autoload   (skribilo evaluator)     (evaluate-document)
-  #:autoload   (skribilo output)        (output)
+  #:autoload   (skribilo output)        (output *document-being-output*)
   #:autoload   (skribilo color)         (color->rgb)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-2)
@@ -42,7 +42,7 @@
   #:use-module (srfi srfi-14)
   #:autoload   (srfi srfi-34)  (raise)
   #:use-module (srfi srfi-35)
-  #:autoload   (ice-9 popen)   (open-output-pipe)
+  #:autoload   (ice-9 popen)   (open-output-pipe close-pipe)
   #:autoload   (ice-9 rdelim)  (read-line)
 
   #:export (lout-engine

@@ -1,8 +1,7 @@
 ;;; jfp.scm  --  The Skribe style for JFP articles.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2003, 2004  Manuel Serrano
-;;; Copyright 2007  Ludovic Courtès <ludo@chbouib.org>
+;;; Copyright 2007, 2020  Ludovic CourtÃ¨s <ludo@chbouib.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -26,7 +25,7 @@
   #:use-module (skribilo writer)
   #:autoload   (skribilo output)          (output)
   #:autoload   (skribilo evaluator)       (evaluate-document)
-  #:autoload   (skribilo lib)             (skribe-error)
+  #:use-module (skribilo lib)
   #:autoload   (skribilo biblio template) (output-bib-entry-template)
   #:autoload   (skribilo utils keywords)  (the-body)
   #:use-module (skribilo package base)
@@ -38,7 +37,7 @@
 
   #:export (abstract references))
 
-;;; Author: Manuel Serrano, Ludovic Courtès
+;;; Author: Manuel Serrano, Ludovic CourtÃ¨s
 ;;;
 ;;; Commentary:
 ;;;

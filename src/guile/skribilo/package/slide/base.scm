@@ -1,6 +1,6 @@
 ;;; base.scm  --  Overhead transparencies, `base' engine.
 ;;;
-;;; Copyright 2006, 2008  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2006, 2008, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -27,7 +27,7 @@
   #:use-module (skribilo engine)
   #:use-module (skribilo ast)
   #:autoload   (skribilo output)        (output)
-  #:autoload   (skribilo package base)  (symbol color itemize item)
+  #:use-module (skribilo package base)
 
   #:use-module (srfi srfi-1)
 

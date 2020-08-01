@@ -1,7 +1,6 @@
 ;;; html.scm  --  HTML engine.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2018, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -63,7 +62,7 @@
 (define unspecified?
   ;; XXX: Hack to recognize the unspecified value as understood by
   ;; `engine-custom' et al.
-  (let ((really-unspecified? unspecified?))
+  (let ((really-unspecified? (@ (guile) unspecified?)))
     (lambda (x)
       (or (really-unspecified? x)
           (eq? x 'unspecified)))))

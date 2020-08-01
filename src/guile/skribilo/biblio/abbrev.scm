@@ -1,6 +1,6 @@
 ;;; abbrev.scm  --  Determining abbreviations.
 ;;;
-;;; Copyright 2006  Ludovic Courtès <ludovic.courtes@laas.fr>
+;;; Copyright 2006, 2020 Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -20,7 +20,7 @@
 
 (define-module (skribilo biblio abbrev)
   #:use-module (srfi srfi-13)
-  #:autoload   (skribilo ast)           (markup? markup-body-set!)
+  #:use-module (skribilo ast)
   #:autoload   (skribilo utils strings) (make-string-replace)
   #:autoload   (ice-9 regex)      (regexp-substitute/global)
   #:export (is-abbreviation? is-acronym? abbreviate-word

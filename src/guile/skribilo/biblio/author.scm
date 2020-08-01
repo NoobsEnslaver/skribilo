@@ -1,7 +1,6 @@
 ;;; author.scm  --  Handling author names.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2006, 2007, 2008, 2009, 2015, 2018 Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2006, 2007, 2008, 2009, 2015, 2018, 2020 Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -26,7 +25,7 @@
   #:use-module (srfi srfi-35)
   #:use-module (ice-9 match)
   #:use-module (skribilo biblio abbrev)
-  #:autoload   (skribilo ast)     (markup-option markup-body markup-ident)
+  #:use-module (skribilo ast)
   #:autoload   (skribilo utils strings) (make-string-replace)
   #:autoload   (skribilo package base)  (it)
   #:use-module (skribilo utils syntax)
@@ -43,7 +42,7 @@
 
 	   bib-sort/first-author-last-name))
 
-;;; Author:  Ludovic Courtès
+;;; Author:  Ludovic CourtÃ¨s
 ;;;
 ;;; Commentary:
 ;;;
@@ -101,8 +100,8 @@
                                  #:optional (abbreviate-author-names
                                              abbreviate-author-first-names))
    ;; Abbreviate first names in NAMES.  NAMES is supposed to be
-   ;; something like "Ludovic Courtès, Marc-Olivier Killijian".  The result
-   ;; is something like "L. Courtès, M-O. Killijian".
+   ;; something like "Ludovic CourtÃ¨s, Marc-Olivier Killijian".  The result
+   ;; is something like "L. CourtÃ¨s, M-O. Killijian".
    (let loop ((names ((make-string-replace '((#\newline " ")
 					     (#\tab     " ")))
 		      names))

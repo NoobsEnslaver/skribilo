@@ -1,7 +1,6 @@
 ;;; verify.scm  --  Skribe AST verification.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2007, 2008, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2007, 2008, 2018, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;;
@@ -28,7 +27,7 @@
   #:use-module (skribilo ast)
   #:use-module (skribilo condition)
   #:use-module (skribilo utils syntax)
-  #:autoload   (skribilo location) (location?)
+  #:use-module (skribilo location)
 
   #:autoload   (srfi srfi-34)    (raise)
   #:use-module (srfi srfi-35)

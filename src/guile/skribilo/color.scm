@@ -1,7 +1,6 @@
 ;;; color.scm -- Color management.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2006, 2007  Ludovic Courtès  <ludo@gnu.org>
+;;; Copyright 2006, 2007, 2020  Ludovic CourtÃ¨s  <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -23,7 +22,7 @@
 
 (define-module (skribilo color)
   #:use-module  (skribilo utils syntax)
-  #:autoload    (skribilo ast) (search-down)
+  #:use-module  (skribilo ast)
   #:autoload    (srfi srfi-1)  (append-map)
   #:autoload    (srfi srfi-60) (bitwise-and arithmetic-shift)
   #:export (color->rgb document-used-colors))

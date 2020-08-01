@@ -1,6 +1,6 @@
 ;;; lout.scm  --  Lout implementation of the `slide' package.
 ;;;
-;;; Copyright 2005, 2006, 2008  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2008, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -30,15 +30,7 @@
 
   #:use-module (srfi srfi-13) ;; `string-join'
 
-  ;; XXX: If changing the following `autoload' to `use-module' doesn't work,
-  ;; then you need to fix your Guile.  See this thread about
-  ;; `make-autoload-interface':
-  ;;
-  ;;   http://article.gmane.org/gmane.lisp.guile.devel/5748
-  ;;   http://lists.gnu.org/archive/html/guile-devel/2006-03/msg00004.html .
-
-  #:autoload (skribilo engine lout) (lout-tagify lout-output-pdf-meta-info
-				    lout-verbatim-encoding))
+  #:use-module (skribilo engine lout))
 
 
 (skribilo-module-syntax)

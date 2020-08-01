@@ -1,7 +1,6 @@
 ;;; eval.scm  --  Skribilo evaluator.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2009, 2012  Ludovic Courtès  <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2009, 2012, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -26,8 +25,7 @@
            evaluate-document evaluate-document-from-port
 	   load-document include-document *load-options*)
   #:autoload (skribilo parameters) (*verbose* *document-path*)
-  #:autoload (skribilo engine)     (*current-engine*
-				   engine? find-engine engine-ident)
+  #:use-module (skribilo engine)
   #:autoload (skribilo reader)     (*document-reader*)
 
   #:autoload (skribilo verify)     (verify)

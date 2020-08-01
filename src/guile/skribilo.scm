@@ -1,7 +1,7 @@
 ;;; skribilo.scm  --  The Skribilo document processor.
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2013,
-;;;   2015, 2016, 2018  Ludovic Courtès <ludo@gnu.org>
+;;;   2015, 2016, 2018, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;;
@@ -32,8 +32,8 @@
 
 (define-module (skribilo)
   #:autoload    (skribilo module) (make-user-module *skribilo-user-module*)
-  #:autoload    (skribilo engine) (*current-engine*)
-  #:autoload    (skribilo reader) (*document-reader*)
+  #:use-module  (skribilo engine)
+  #:use-module  (skribilo reader)
 
   #:use-module  (skribilo utils syntax)
   #:use-module  (skribilo evaluator)
@@ -435,9 +435,5 @@ options."
           ;; Make sure the output port is flushed before we leave.
           (force-output (*skribilo-output-port*)))))))
 
-
-;;; Local Variables:
-;;; coding: latin-1
-;;; End:
 
 ;;; skribilo ends here.

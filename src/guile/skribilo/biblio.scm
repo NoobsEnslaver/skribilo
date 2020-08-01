@@ -1,7 +1,6 @@
 ;;; biblio.scm  --  Bibliography functions.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2009, 2013, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2009, 2013, 2018, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2001, 2002, 2003, 2004  Manuel Serrano
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
@@ -32,8 +31,8 @@
   #:use-module (skribilo condition)
 
   #:autoload   (skribilo reader)       (*document-reader*)
-  #:autoload   (skribilo parameters)   (*bib-path*)
-  #:autoload   (skribilo ast)          (<markup> <handle> is-markup?)
+  #:use-module (skribilo parameters)
+  #:use-module (skribilo ast)
   #:autoload   (skribilo lib)          (skribe-warning)
   #:autoload   (skribilo biblio author)(short-author-names)
 
@@ -65,8 +64,6 @@
            biblio-template-error:template
            biblio-parse-error:sexp))
 
-;;; Author: Erick Gallesio, Manuel Serrano, Ludovic Courtès
-;;;
 ;;; Commentary:
 ;;;
 ;;; Provides the bibliography data type and basic bibliography handling,

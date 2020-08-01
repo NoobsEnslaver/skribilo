@@ -1,7 +1,6 @@
 ;;; sigplan.scm  --  The Skribe style for ACMPROC articles.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2007, 2009  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2007, 2009, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -27,7 +26,7 @@
   #:autoload   (skribilo output)          (output)
   #:autoload   (skribilo evaluator)       (evaluate-document)
   #:use-module (skribilo lib)
-  #:autoload   (skribilo utils keywords)  (the-body)
+  #:use-module (skribilo utils keywords)
   #:use-module (skribilo package base)
   #:use-module (srfi srfi-1)
 

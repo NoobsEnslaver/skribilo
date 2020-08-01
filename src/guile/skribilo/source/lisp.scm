@@ -1,6 +1,6 @@
 ;;; lisp.scm -- Lisp Family Fontification
 ;;;
-;;; Copyright 2005, 2006, 2007, 2008  Ludovic Courtès  <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2008, 2020  Ludovic CourtÃ¨s  <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -28,7 +28,7 @@
   #:use-module (srfi srfi-39)
   #:use-module (ice-9 match)
   #:autoload   (skribilo reader)            (make-reader)
-  #:autoload   (skribilo source lisp-lex)   (lexer-init)
+  #:autoload   (skribilo source lisp-lex)   (lexer-init lexer)
   #:export (skribe scheme stklos bigloo lisp))
 
 

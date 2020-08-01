@@ -30,7 +30,7 @@
   #:use-module (skribilo utils syntax)
   #:autoload (srfi srfi-1)     (find filter)
   #:autoload (srfi srfi-34)    (raise)
-  #:autoload (skribilo engine) (engine? engine-ident? default-engine)
+  #:autoload (skribilo engine) (engine? engine-ident default-engine)
 
   #:use-module (srfi srfi-35)
   #:use-module (skribilo condition)

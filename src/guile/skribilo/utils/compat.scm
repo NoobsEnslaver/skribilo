@@ -32,7 +32,7 @@
   #:autoload   (srfi srfi-13)       (string-rindex)
   #:use-module (srfi srfi-34)
   #:use-module (ice-9 optargs)
-  #:autoload   (skribilo ast)       (ast? document? document-lookup-node)
+  #:use-module (skribilo ast)
   #:autoload   (skribilo condition) (file-search-error? &file-search-error)
   #:autoload   (skribilo reader)    (make-reader)
   #:autoload   (skribilo resolve)   (*document-being-resolved*)

@@ -1,6 +1,6 @@
 ;;; outline.scm  --  A reader for Emacs' outline syntax.
 ;;;
-;;; Copyright 2006, 2008, 2009  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2006, 2008, 2009, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -29,7 +29,7 @@
   #:use-module (srfi srfi-14)
 
   #:autoload   (ice-9 rdelim) (read-line)
-  #:autoload   (ice-9 regex) (make-regexp)
+  #:use-module (ice-9 regex)
 
   #:export (reader-specification
            make-outline-reader))

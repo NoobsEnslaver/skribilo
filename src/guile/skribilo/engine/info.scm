@@ -1,7 +1,6 @@
 ;;; info.scm  --  GNU Info engine.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2008, 2009, 2012, 2015, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2008, 2009, 2012, 2015, 2018, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2001, 2002  Manuel Serrano
 ;;;
 ;;;
@@ -28,12 +27,11 @@
   #:use-module (skribilo utils syntax)
   #:use-module (skribilo package base)
   #:autoload   (skribilo parameters)    (*destination-file*)
-  #:autoload   (skribilo output)        (output)
-  #:autoload   (skribilo utils justify) (output-justified make-justifier
-                                        with-justification)
+  #:use-module (skribilo output)
+  #:use-module (skribilo utils justify)
   #:autoload   (skribilo utils text-table) (table->ascii)
   #:autoload   (skribilo utils images)  (convert-image)
-  #:autoload   (srfi srfi-1)            (fold)
+  #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-8)
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)

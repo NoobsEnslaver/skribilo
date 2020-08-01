@@ -32,15 +32,20 @@
   #:use-module (skribilo utils keywords)
   #:autoload   (srfi srfi-1)        (every any filter)
   #:autoload   (skribilo evaluator) (include-document)
-  #:autoload   (skribilo engine)    (engine?)
+  #:use-module (skribilo engine)
   #:autoload   (skribilo parameters)(*document-path* *sui-path*)
 
   ;; optional ``sub-packages''
   #:autoload   (skribilo biblio)    (*bib-table* resolve-bib
-                                    bib-load! bib-add! bib-sort-refs/number)
-  #:autoload   (skribilo source)    (language? source-read-lines source-fontify)
+                                     bib-load! bib-add! bib-sort-refs/number
+                                     bib-sort/authors assign-entries-numbers!
+                                     assign-entries-name+years!
+                                     resolve-the-bib)
+  #:autoload   (skribilo source)    (language? source-read-lines
+                                     source-fontify source-read-definition)
   #:autoload   (skribilo prog)      (make-prog-body resolve-line)
-  #:autoload   (skribilo index)     (make-index-table default-index)
+  #:autoload   (skribilo index)     (make-index-table default-index
+                                     index? resolve-the-index)
   #:autoload   (skribilo sui)       (load-sui sui-ref->url)
 
   #:replace (symbol))
