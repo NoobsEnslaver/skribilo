@@ -21,20 +21,20 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo engine base)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo evaluator)
-  :use-module (skribilo package base)
-  :autoload   (skribilo output) (output)
-  :autoload   (skribilo lib)    (skribe-error)
-  :autoload   (skribilo utils keywords) (list-split)
-  :autoload   (skribilo biblio template) (make-bib-entry-template/default
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo evaluator)
+  #:use-module (skribilo package base)
+  #:autoload   (skribilo output) (output)
+  #:autoload   (skribilo lib)    (skribe-error)
+  #:autoload   (skribilo utils keywords) (list-split)
+  #:autoload   (skribilo biblio template) (make-bib-entry-template/default
                                           output-bib-entry-template)
   ;; syntactic sugar
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :export (base-engine))
+  #:export (base-engine))
 
 (skribilo-module-syntax)
 

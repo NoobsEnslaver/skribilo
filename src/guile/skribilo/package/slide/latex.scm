@@ -20,24 +20,24 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package slide latex)
-  :use-module (skribilo package slide)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo package slide)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)        (output)
-  :use-module (skribilo ast)
-  :use-module (skribilo lib)
-  :autoload   (skribilo evaluator)     (evaluate-document)
-  :autoload   (skribilo engine latex)  (skribe-color->latex-rgb)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)        (output)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo lib)
+  #:autoload   (skribilo evaluator)     (evaluate-document)
+  #:autoload   (skribilo engine latex)  (skribe-color->latex-rgb)
 
-  :autoload   (ice-9 regex)            (string-match)
-  :use-module (ice-9 match)
-  :use-module (srfi srfi-11)
-  :use-module (srfi srfi-13)
-  :use-module (srfi srfi-39)
+  #:autoload   (ice-9 regex)            (string-match)
+  #:use-module (ice-9 match)
+  #:use-module (srfi srfi-11)
+  #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-39)
 
-  :export (%slide-latex-mode %slide-latex-initialize! *slide-advi-scale*))
+  #:export (%slide-latex-mode %slide-latex-initialize! *slide-advi-scale*))
 
 
 (skribilo-module-syntax)

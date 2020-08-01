@@ -20,23 +20,23 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package eq)
-  :autoload   (skribilo ast)    (markup? find1-up)
-  :autoload   (skribilo output) (output)
-  :use-module (skribilo writer)
-  :use-module (skribilo engine)
-  :use-module (skribilo lib)
-  :use-module (skribilo condition)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils keywords) ;; `the-options', etc.
-  :use-module (skribilo package base)
-  :autoload   (skribilo engine lout)  (lout-illustration)
-  :autoload   (skribilo resolve)      (resolve-counter)
+  #:autoload   (skribilo ast)    (markup? find1-up)
+  #:autoload   (skribilo output) (output)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo condition)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils keywords) ;; `the-options', etc.
+  #:use-module (skribilo package base)
+  #:autoload   (skribilo engine lout)  (lout-illustration)
+  #:autoload   (skribilo resolve)      (resolve-counter)
 
-  :use-module (srfi srfi-1)
-  :autoload   (srfi srfi-34)          (raise)
-  :use-module (srfi srfi-35)
-  :use-module (srfi srfi-39)
-  :use-module (ice-9 optargs))
+  #:use-module (srfi srfi-1)
+  #:autoload   (srfi srfi-34)          (raise)
+  #:use-module (srfi srfi-35)
+  #:use-module (srfi srfi-39)
+  #:use-module (ice-9 optargs))
 
 ;;; Author: Ludovic Courtès
 ;;;

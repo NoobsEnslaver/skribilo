@@ -21,24 +21,24 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo writer)
-  :export (<writer> writer? writer-options writer-ident
+  #:export (<writer> writer? writer-options writer-ident
 	            writer-before writer-action writer-after writer-class
 
 	   invoke markup-writer markup-writer-get markup-writer-get*
 	   lookup-markup-writer copy-markup-writer)
 
-  :use-module (skribilo utils syntax)
-  :autoload (srfi srfi-1)     (find filter)
-  :autoload (srfi srfi-34)    (raise)
-  :autoload (skribilo engine) (engine? engine-ident? default-engine)
+  #:use-module (skribilo utils syntax)
+  #:autoload (srfi srfi-1)     (find filter)
+  #:autoload (srfi srfi-34)    (raise)
+  #:autoload (skribilo engine) (engine? engine-ident? default-engine)
 
-  :use-module (srfi srfi-35)
-  :use-module (skribilo condition)
-  :use-module (skribilo debug)
-  :use-module (skribilo ast)
+  #:use-module (srfi srfi-35)
+  #:use-module (skribilo condition)
+  #:use-module (skribilo debug)
+  #:use-module (skribilo ast)
 
-  :use-module (oop goops)
-  :use-module (ice-9 optargs))
+  #:use-module (oop goops)
+  #:use-module (ice-9 optargs))
 
 
 (skribilo-module-syntax)

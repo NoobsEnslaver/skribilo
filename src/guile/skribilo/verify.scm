@@ -21,21 +21,21 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo verify)
-  :autoload   (skribilo engine) (engine-ident processor-get-engine)
-  :autoload   (skribilo writer) (writer? writer-options lookup-markup-writer)
-  :autoload   (skribilo lib)    (skribe-warning/ast)
-  :use-module (skribilo debug)
-  :use-module (skribilo ast)
-  :use-module (skribilo condition)
-  :use-module (skribilo utils syntax)
-  :autoload   (skribilo location) (location?)
+  #:autoload   (skribilo engine) (engine-ident processor-get-engine)
+  #:autoload   (skribilo writer) (writer? writer-options lookup-markup-writer)
+  #:autoload   (skribilo lib)    (skribe-warning/ast)
+  #:use-module (skribilo debug)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo condition)
+  #:use-module (skribilo utils syntax)
+  #:autoload   (skribilo location) (location?)
 
-  :autoload   (srfi srfi-34)    (raise)
-  :use-module (srfi srfi-35)
+  #:autoload   (srfi srfi-34)    (raise)
+  #:use-module (srfi srfi-35)
 
-  :use-module (oop goops)
+  #:use-module (oop goops)
 
-  :export (verify))
+  #:export (verify))
 
 
 (skribilo-module-syntax)

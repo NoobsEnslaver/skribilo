@@ -20,18 +20,18 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package slide base)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (skribilo package slide)
-  :use-module (skribilo writer)
-  :use-module (skribilo engine)
-  :use-module (skribilo ast)
-  :autoload   (skribilo output)        (output)
-  :autoload   (skribilo package base)  (symbol color itemize item)
+  #:use-module (skribilo package slide)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo output)        (output)
+  #:autoload   (skribilo package base)  (symbol color itemize item)
 
-  :use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)
 
-  :export (%slide-outline-itemize-symbols))
+  #:export (%slide-outline-itemize-symbols))
 
 (skribilo-module-syntax)
 

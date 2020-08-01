@@ -20,13 +20,13 @@
 
 
 (define-module (skribilo biblio bibtex)
-  :autoload   (skribilo utils strings) (make-string-replace)
-  :autoload   (skribilo ast)           (markup-option ast->string)
-  :autoload   (skribilo engine)        (engine-filter find-engine)
-  :use-module (skribilo biblio author)
-  :use-module (srfi srfi-39)
-  :use-module (srfi srfi-13)
-  :export     (print-as-bibtex-entry))
+  #:autoload   (skribilo utils strings) (make-string-replace)
+  #:autoload   (skribilo ast)           (markup-option ast->string)
+  #:autoload   (skribilo engine)        (engine-filter find-engine)
+  #:use-module (skribilo biblio author)
+  #:use-module (srfi srfi-39)
+  #:use-module (srfi srfi-13)
+  #:export     (print-as-bibtex-entry))
 
 ;;; Author:  Ludovic Courtès
 ;;;

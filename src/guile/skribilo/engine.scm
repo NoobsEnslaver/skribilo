@@ -21,20 +21,20 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo engine)
-  :use-module (skribilo debug)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo condition)
+  #:use-module (skribilo debug)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo condition)
 
-  :use-module (oop goops)
-  :use-module (ice-9 optargs)
-  :use-module (ice-9 format)
+  #:use-module (oop goops)
+  #:use-module (ice-9 optargs)
+  #:use-module (ice-9 format)
 
-  :use-module (srfi srfi-1)
-  :autoload   (srfi srfi-34)  (raise guard)
-  :use-module (srfi srfi-35)
-  :autoload   (srfi srfi-39)  (make-parameter)
+  #:use-module (srfi srfi-1)
+  #:autoload   (srfi srfi-34)  (raise guard)
+  #:use-module (srfi srfi-35)
+  #:autoload   (srfi srfi-39)  (make-parameter)
 
-  :export (<engine> engine? engine-ident engine-format
+  #:export (<engine> engine? engine-ident engine-format
 		    engine-customs engine-filter engine-symbol-table
 
 	   *current-engine*

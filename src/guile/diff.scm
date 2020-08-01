@@ -7,7 +7,7 @@
 ;;;
 
 (define-module (diff)
-  :export (diff:longest-common-subsequence diff:edits
+  #:export (diff:longest-common-subsequence diff:edits
            diff:edit-length))
 
 ;Permission to copy this software, to modify it, to redistribute it,

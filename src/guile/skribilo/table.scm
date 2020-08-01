@@ -21,10 +21,10 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo table)
-  :use-module (skribilo ast)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo utils syntax)
 
-  :export (table-column-count))
+  #:export (table-column-count))
 
 ;;; Author: Manuel Serrano, Ludovic Courtès
 ;;;

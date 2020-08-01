@@ -20,12 +20,12 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo reader)
-  :use-module (srfi srfi-9)  ;; records
-  :use-module (srfi srfi-39) ;; parameter objects
-  :use-module (skribilo condition)
-  :autoload   (srfi srfi-34) (raise)
-  :use-module (srfi srfi-35)
-  :export (%make-reader lookup-reader make-reader
+  #:use-module (srfi srfi-9)  ;; records
+  #:use-module (srfi srfi-39) ;; parameter objects
+  #:use-module (skribilo condition)
+  #:autoload   (srfi srfi-34) (raise)
+  #:use-module (srfi srfi-35)
+  #:export (%make-reader lookup-reader make-reader
 	   *document-reader*
            reader:name
            reader:version

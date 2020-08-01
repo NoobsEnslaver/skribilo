@@ -21,26 +21,26 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo documentation extension)
-  :use-module (skribilo sui)
-  :use-module (skribilo config)
-  :use-module (skribilo parameters)
+  #:use-module (skribilo sui)
+  #:use-module (skribilo config)
+  #:use-module (skribilo parameters)
 
-  :use-module (skribilo lib)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo output)
-  :use-module (skribilo evaluator)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo output)
+  #:use-module (skribilo evaluator)
 
-  :use-module (skribilo package base)
-  :use-module (skribilo engine html)
+  #:use-module (skribilo package base)
+  #:use-module (skribilo engine html)
 
-  :use-module (skribilo utils files)
-  :use-module (skribilo utils compat)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils keywords)
+  #:use-module (skribilo utils files)
+  #:use-module (skribilo utils compat)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils keywords)
 
-  :use-module (ice-9 optargs))
+  #:use-module (ice-9 optargs))
 
 (skribilo-module-syntax)
 

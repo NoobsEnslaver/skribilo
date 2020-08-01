@@ -21,16 +21,16 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package html-navtabs)
-  :use-module (skribilo lib)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)        (output)
-  :autoload   (skribilo package base)  (handle)
-  :autoload   (skribilo engine html)   (html-width html-class html-file)
-  :autoload   (skribilo parameters)    (*destination-file*)
-  :use-module (skribilo utils strings)
-  :use-module (skribilo utils syntax))
+  #:use-module (skribilo lib)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)        (output)
+  #:autoload   (skribilo package base)  (handle)
+  #:autoload   (skribilo engine html)   (html-width html-class html-file)
+  #:autoload   (skribilo parameters)    (*destination-file*)
+  #:use-module (skribilo utils strings)
+  #:use-module (skribilo utils syntax))
 
 (skribilo-module-syntax)
 

@@ -20,12 +20,12 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo source c)
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo source c-lex)		;; SILex generated
-  :use-module (skribilo source parameters)
-  :use-module (srfi srfi-39)
-  :export (c c-language java))
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo source c-lex)		;; SILex generated
+  #:use-module (skribilo source parameters)
+  #:use-module (srfi srfi-39)
+  #:export (c c-language java))
 
 (skribilo-module-syntax)
 

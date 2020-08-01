@@ -21,22 +21,22 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package jfp)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)          (output)
-  :autoload   (skribilo evaluator)       (evaluate-document)
-  :autoload   (skribilo lib)             (skribe-error)
-  :autoload   (skribilo biblio template) (output-bib-entry-template)
-  :autoload   (skribilo utils keywords)  (the-body)
-  :use-module (skribilo package base)
-  :use-module (srfi srfi-1)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)          (output)
+  #:autoload   (skribilo evaluator)       (evaluate-document)
+  #:autoload   (skribilo lib)             (skribe-error)
+  #:autoload   (skribilo biblio template) (output-bib-entry-template)
+  #:autoload   (skribilo utils keywords)  (the-body)
+  #:use-module (skribilo package base)
+  #:use-module (srfi srfi-1)
 
-  :use-module (skribilo utils syntax)
-  :use-module (ice-9 optargs)
-  :autoload   (ice-9 regex)              (regexp-substitute/global)
+  #:use-module (skribilo utils syntax)
+  #:use-module (ice-9 optargs)
+  #:autoload   (ice-9 regex)              (regexp-substitute/global)
 
-  :export (abstract references))
+  #:export (abstract references))
 
 ;;; Author: Manuel Serrano, Ludovic Courtès
 ;;;

@@ -19,10 +19,10 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils strings)
-  :export (strip-ref-base string-canonicalize
+  #:export (strip-ref-base string-canonicalize
 	   make-string-replace)
-  :autoload   (skribilo parameters) (*ref-base*)
-  :use-module (srfi srfi-13))
+  #:autoload   (skribilo parameters) (*ref-base*)
+  #:use-module (srfi srfi-13))
 
 
 ;;;

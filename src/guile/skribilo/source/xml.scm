@@ -19,9 +19,9 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo source xml)
-  :export (xml)
-  :use-module (skribilo lib)
-  :use-module (ice-9 regex))
+  #:export (xml)
+  #:use-module (skribilo lib)
+  #:use-module (ice-9 regex))
 
 
 (define %comment-rx (make-regexp "<!--(.|\\n)*-->" regexp/extended))

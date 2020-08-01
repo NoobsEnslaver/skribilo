@@ -20,11 +20,11 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils justify)
-  :use-module (srfi srfi-13)
-  :autoload   (srfi srfi-34)       (raise)
-  :use-module (srfi srfi-35)
-  :use-module (skribilo condition)
-  :export (make-justifier output-flush
+  #:use-module (srfi srfi-13)
+  #:autoload   (srfi srfi-34)       (raise)
+  #:use-module (srfi srfi-35)
+  #:use-module (skribilo condition)
+  #:export (make-justifier output-flush
 
 	   *text-column-width*
 	   *text-justification*

@@ -20,19 +20,19 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo resolve)
-  :use-module (skribilo debug)
-  :use-module (skribilo ast)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo debug)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (oop goops)
-  :use-module (srfi srfi-39)
+  #:use-module (oop goops)
+  #:use-module (srfi srfi-39)
 
-  :use-module (skribilo condition)
-  :use-module (srfi srfi-34)
-  :use-module (srfi srfi-35)
-  :use-module (ice-9 match)
+  #:use-module (skribilo condition)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
+  #:use-module (ice-9 match)
 
-  :export (resolve! resolve-search-parent
+  #:export (resolve! resolve-search-parent
 	   resolve-counter resolve-parent resolve-ident
 	   *document-being-resolved*))
 

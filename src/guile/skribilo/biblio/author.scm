@@ -20,18 +20,18 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo biblio author)
-  :use-module (srfi srfi-13)
-  :use-module (srfi srfi-14)
-  :autoload   (srfi srfi-34)     (raise)
-  :use-module (srfi srfi-35)
-  :use-module (ice-9 match)
-  :use-module (skribilo biblio abbrev)
-  :autoload   (skribilo ast)     (markup-option markup-body markup-ident)
-  :autoload   (skribilo utils strings) (make-string-replace)
-  :autoload   (skribilo package base)  (it)
-  :use-module (skribilo utils syntax)
+  #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-14)
+  #:autoload   (srfi srfi-34)     (raise)
+  #:use-module (srfi srfi-35)
+  #:use-module (ice-9 match)
+  #:use-module (skribilo biblio abbrev)
+  #:autoload   (skribilo ast)     (markup-option markup-body markup-ident)
+  #:autoload   (skribilo utils strings) (make-string-replace)
+  #:autoload   (skribilo package base)  (it)
+  #:use-module (skribilo utils syntax)
 
-  :export (comma-separated->author-list
+  #:export (comma-separated->author-list
 	   comma-separated->and-separated-authors
 
 	   extract-first-author-name

@@ -20,22 +20,22 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo index)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo lib)
 
-  :use-module (skribilo ast)
-  :autoload   (srfi srfi-34)          (raise)
-  :use-module (srfi srfi-35)
-  :use-module (srfi srfi-39)
+  #:use-module (skribilo ast)
+  #:autoload   (srfi srfi-34)          (raise)
+  #:use-module (srfi srfi-35)
+  #:use-module (srfi srfi-39)
 
   ;; XXX: The use of `mark' here introduces a cross-dependency between
   ;; `index' and `package base'.  Thus, we require that each of these two
   ;; modules autoloads the other one.
-  :autoload   (skribilo package base) (mark)
+  #:autoload   (skribilo package base) (mark)
 
-  :autoload   (skribilo location)     (location?)
+  #:autoload   (skribilo location)     (location?)
 
-  :export (index? make-index-table *index-table*
+  #:export (index? make-index-table *index-table*
            default-index resolve-the-index))
 
 

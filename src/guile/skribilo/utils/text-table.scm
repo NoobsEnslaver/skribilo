@@ -20,12 +20,12 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils text-table)
-  :use-module (skribilo ast)
-  :use-module (skribilo table)
-  :use-module (skribilo utils justify)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo table)
+  #:use-module (skribilo utils justify)
+  #:use-module (skribilo utils syntax)
 
-  :export (table->ascii))
+  #:export (table->ascii))
 
 ;;; Author: Manuel Serrano, Ludovic Courtès
 ;;;

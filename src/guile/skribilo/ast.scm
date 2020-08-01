@@ -21,20 +21,20 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo ast)
-  :use-module (oop goops)
+  #:use-module (oop goops)
 
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-13)
-  :use-module (srfi srfi-34)
-  :use-module (srfi srfi-35)
-  :use-module (skribilo condition)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo location)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
+  #:use-module (skribilo condition)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo location)
 
-  :use-module (ice-9 match)
-  :use-module (ice-9 optargs)
+  #:use-module (ice-9 match)
+  #:use-module (ice-9 optargs)
 
-  :export (<ast> ast? ast-loc ast-loc-set!
+  #:export (<ast> ast? ast-loc ast-loc-set!
 		 ast-parent ast->string ast->file-location
 		 ast-resolved?
 

@@ -20,19 +20,19 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo biblio template)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-34)
-  :use-module (srfi srfi-35)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
 
-  :use-module (skribilo ast)
-  :autoload   (skribilo output) (output)
-  :use-module (skribilo biblio)
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo output) (output)
+  #:use-module (skribilo biblio)
 
-  :use-module (ice-9 optargs)
+  #:use-module (ice-9 optargs)
 
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :export (evaluate-bib-entry-template
+  #:export (evaluate-bib-entry-template
            output-bib-entry-template
            make-bib-entry-template/default
            make-bib-entry-template/skribe))

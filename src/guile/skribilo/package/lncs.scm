@@ -21,26 +21,26 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package lncs)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)         (output)
-  :autoload   (skribilo package base)   (chapter font flush
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)         (output)
+  #:autoload   (skribilo package base)   (chapter font flush
                                          toc the-bibliography)
-  :autoload   (skribilo utils keywords) (the-options the-body)
-  :autoload   (skribilo biblio template)(output-bib-entry-template
+  #:autoload   (skribilo utils keywords) (the-options the-body)
+  #:autoload   (skribilo biblio template)(output-bib-entry-template
                                          make-bib-entry-template/default)
-  :autoload   (skribilo biblio author)  (bib-sort/first-author-last-name)
-  :autoload   (skribilo evaluator)      (evaluate-document)
+  #:autoload   (skribilo biblio author)  (bib-sort/first-author-last-name)
+  #:autoload   (skribilo evaluator)      (evaluate-document)
 
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (ice-9 optargs)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-13)
+  #:use-module (ice-9 optargs)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
 
-  :export (abstract references))
+  #:export (abstract references))
 
 (skribilo-module-syntax)
 

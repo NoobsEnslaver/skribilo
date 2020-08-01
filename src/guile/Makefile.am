@@ -137,11 +137,11 @@ clean-local:
 	mv "$@" "$@.tmp" &&						\
 	echo '(define-module (skribilo source $(^:skribilo/source/%.l=%))' \
 	     > "$@" &&	\
-	echo '  :use-module (skribilo lib)' >> "$@" &&			\
-	echo '  :use-module (skribilo source parameters)'		\
+	echo '  #:use-module (skribilo lib)' >> "$@" &&			\
+	echo '  #:use-module (skribilo source parameters)'		\
 		>> "$@" &&						\
-	echo '  :use-module (srfi srfi-1)' >> "$@" &&			\
-	echo '  :export (lexer-init lexer' >> "$@" &&			\
+	echo '  #:use-module (srfi srfi-1)' >> "$@" &&			\
+	echo '  #:export (lexer-init lexer' >> "$@" &&			\
 	echo '           lexer-get-func-column' >> "$@" &&		\
 	echo '           lexer-get-func-offset' >> "$@" &&		\
 	echo '           lexer-get-line lexer-getc' >> "$@" &&		\

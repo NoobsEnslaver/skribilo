@@ -19,8 +19,8 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo source parameters)
-  :use-module (srfi srfi-39)
-  :export (*bracket-highlight* *class-highlight* *the-keys*))
+  #:use-module (srfi srfi-39)
+  #:export (*bracket-highlight* *class-highlight* *the-keys*))
 
 ;;;
 ;;; Parameters used by the fontifiers.

@@ -22,18 +22,18 @@
 
 
 (define-module (skribilo evaluator)
-  :export (evaluate-ast-from-port
+  #:export (evaluate-ast-from-port
            evaluate-document evaluate-document-from-port
 	   load-document include-document *load-options*)
-  :autoload (skribilo parameters) (*verbose* *document-path*)
-  :autoload (skribilo engine)     (*current-engine*
+  #:autoload (skribilo parameters) (*verbose* *document-path*)
+  #:autoload (skribilo engine)     (*current-engine*
 				   engine? find-engine engine-ident)
-  :autoload (skribilo reader)     (*document-reader*)
+  #:autoload (skribilo reader)     (*document-reader*)
 
-  :autoload (skribilo verify)     (verify)
-  :autoload (skribilo resolve)    (resolve!)
+  #:autoload (skribilo verify)     (verify)
+  #:autoload (skribilo resolve)    (resolve!)
 
-  :autoload (skribilo module)     (*skribilo-user-module*))
+  #:autoload (skribilo module)     (*skribilo-user-module*))
 
 
 (use-modules (skribilo utils syntax)

@@ -23,24 +23,24 @@
 
 
 (define-module (skribilo biblio)
-  :use-module (skribilo utils syntax) ;; `when', `unless'
+  #:use-module (skribilo utils syntax) ;; `when', `unless'
 
-  :use-module (srfi srfi-1)
-  :autoload   (srfi srfi-34)         (raise)
-  :use-module (srfi srfi-35)
-  :use-module (srfi srfi-39)
-  :use-module (skribilo condition)
+  #:use-module (srfi srfi-1)
+  #:autoload   (srfi srfi-34)         (raise)
+  #:use-module (srfi srfi-35)
+  #:use-module (srfi srfi-39)
+  #:use-module (skribilo condition)
 
-  :autoload   (skribilo reader)       (*document-reader*)
-  :autoload   (skribilo parameters)   (*bib-path*)
-  :autoload   (skribilo ast)          (<markup> <handle> is-markup?)
-  :autoload   (skribilo lib)          (skribe-warning)
-  :autoload   (skribilo biblio author)(short-author-names)
+  #:autoload   (skribilo reader)       (*document-reader*)
+  #:autoload   (skribilo parameters)   (*bib-path*)
+  #:autoload   (skribilo ast)          (<markup> <handle> is-markup?)
+  #:autoload   (skribilo lib)          (skribe-warning)
+  #:autoload   (skribilo biblio author)(short-author-names)
 
-  :use-module (ice-9 optargs)
-  :use-module (oop goops)
+  #:use-module (ice-9 optargs)
+  #:use-module (oop goops)
 
-  :export (bib-table? make-bib-table *bib-table*
+  #:export (bib-table? make-bib-table *bib-table*
 	   bib-add! bib-duplicate bib-for-each bib-map
 	   open-bib-file parse-bib
 

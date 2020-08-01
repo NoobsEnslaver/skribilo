@@ -19,7 +19,7 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils files)
-  :export (file-prefix file-suffix file-size))
+  #:export (file-prefix file-suffix file-size))
 
 ;;; Author:  Ludovic Courtès
 ;;;

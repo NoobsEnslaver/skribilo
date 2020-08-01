@@ -19,14 +19,14 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package eq lout)
-  :use-module (skribilo package eq)
-  :use-module (skribilo ast)
-  :autoload   (skribilo output) (output)
-  :use-module (skribilo writer)
-  :use-module (skribilo engine)
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
-  :use-module (srfi srfi-1))
+  #:use-module (skribilo package eq)
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo output) (output)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
+  #:use-module (srfi srfi-1))
 
 (skribilo-module-syntax)
 

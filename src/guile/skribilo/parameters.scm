@@ -20,7 +20,7 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo parameters)
-  :use-module (srfi srfi-39))
+  #:use-module (srfi srfi-39))
 
 ;;; Author:  Ludovic Courtès
 ;;;

@@ -21,20 +21,20 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package scribe)
-  :use-module (skribilo engine)
-  :autoload   (skribilo utils keywords) (the-options the-body)
-  :autoload   (skribilo evaluator)      (load-document)
-  :use-module (skribilo biblio)
-  :use-module ((skribilo package base) :renamer (symbol-prefix-proc 'skr:))
+  #:use-module (skribilo engine)
+  #:autoload   (skribilo utils keywords) (the-options the-body)
+  #:autoload   (skribilo evaluator)      (load-document)
+  #:use-module (skribilo biblio)
+  #:use-module ((skribilo package base) :renamer (symbol-prefix-proc 'skr:))
 
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (ice-9 optargs)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-13)
+  #:use-module (ice-9 optargs)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
 
-  :export (style chapter table-of-contents frame copyright sect euro
+  #:export (style chapter table-of-contents frame copyright sect euro
 	   tab space print-bibliography linebreak ref make-index
 	   index print-index scribe-format? scribe-url prgm
 	   *scribe-tex-predocument* latex-prelude html-prelude

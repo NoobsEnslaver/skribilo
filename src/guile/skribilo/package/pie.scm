@@ -20,20 +20,20 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package pie)
-  :use-module (skribilo ast)
-  :autoload   (skribilo output) (output)
-  :use-module (skribilo writer)
-  :use-module (skribilo engine)
-  :use-module (skribilo lib)            ;; `skribe-error' et al.
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils keywords) ;; `the-options', etc.
-  :use-module (skribilo utils strings)  ;; `make-string-replace'
-  :autoload   (skribilo color)        (color->rgb)
-  :autoload   (skribilo package base) (bold)
-  :autoload   (srfi srfi-13)          (string-concatenate)
-  :autoload   (ice-9 popen)           (open-output-pipe)
-  :use-module (ice-9 optargs)
-  :export     (%ploticus-program %ploticus-debug?
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo output) (output)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo lib)            ;; `skribe-error' et al.
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils keywords) ;; `the-options', etc.
+  #:use-module (skribilo utils strings)  ;; `make-string-replace'
+  #:autoload   (skribilo color)        (color->rgb)
+  #:autoload   (skribilo package base) (bold)
+  #:autoload   (srfi srfi-13)          (string-concatenate)
+  #:autoload   (ice-9 popen)           (open-output-pipe)
+  #:use-module (ice-9 optargs)
+  #:export     (%ploticus-program %ploticus-debug?
                pie-sliceweight-value pie-remove-markup))
 
 (skribilo-module-syntax)

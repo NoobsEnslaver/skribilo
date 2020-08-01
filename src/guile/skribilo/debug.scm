@@ -20,9 +20,9 @@
 
 
 (define-module (skribilo debug)
-  :use-module (skribilo utils syntax)
-  :use-module (srfi srfi-39)
-  :export (debug-item debug-bold with-debug))
+  #:use-module (skribilo utils syntax)
+  #:use-module (srfi srfi-39)
+  #:export (debug-item debug-bold with-debug))
 
 (skribilo-module-syntax)
 

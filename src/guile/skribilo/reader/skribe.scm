@@ -19,14 +19,14 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo reader skribe)
-  :use-module (skribilo reader)
-  :use-module (ice-9 optargs)
-  :use-module (srfi srfi-1)
+  #:use-module (skribilo reader)
+  #:use-module (ice-9 optargs)
+  #:use-module (srfi srfi-1)
 
   ;; the Scheme reader composition framework
-  :use-module ((system reader) #:renamer (symbol-prefix-proc 'r:))
+  #:use-module ((system reader) #:renamer (symbol-prefix-proc 'r:))
 
-  :export (reader-specification
+  #:export (reader-specification
            make-skribe-reader))
 
 ;;; Author:  Ludovic Courtès

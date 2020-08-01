@@ -20,10 +20,10 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo module)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-39)
-  :use-module (skribilo utils syntax)
-  :export (make-user-module user-module-flavor
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-39)
+  #:use-module (skribilo utils syntax)
+  #:export (make-user-module user-module-flavor
            *skribilo-user-module*))
 
 (skribilo-module-syntax)

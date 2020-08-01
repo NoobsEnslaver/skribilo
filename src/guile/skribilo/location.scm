@@ -21,10 +21,10 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo location)
-  :use-module (oop goops)
-  :use-module ((skribilo utils syntax) :select (skribilo-module-syntax))
-  :autoload   (srfi srfi-13)  (string-prefix?)
-  :export (<location> location? ast-location
+  #:use-module (oop goops)
+  #:use-module ((skribilo utils syntax) :select (skribilo-module-syntax))
+  #:autoload   (srfi srfi-13)  (string-prefix?)
+  #:export (<location> location? ast-location
 	   location-file location-line location-column
            invocation-location
            source-properties->location

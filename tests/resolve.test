@@ -18,11 +18,11 @@
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (tests resolve)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo resolve)
-  :use-module (skribilo package base)
-  :use-module (srfi srfi-64))
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo resolve)
+  #:use-module (skribilo package base)
+  #:use-module (srfi srfi-64))
 
 (define %engine
   (find-engine 'base))

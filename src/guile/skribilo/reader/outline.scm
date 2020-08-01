@@ -19,19 +19,19 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo reader outline)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo reader)
-  :use-module (ice-9 optargs)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo reader)
+  #:use-module (ice-9 optargs)
 
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-11)
-  :use-module (srfi srfi-13)
-  :use-module (srfi srfi-14)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-11)
+  #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-14)
 
-  :autoload   (ice-9 rdelim) (read-line)
-  :autoload   (ice-9 regex) (make-regexp)
+  #:autoload   (ice-9 rdelim) (read-line)
+  #:autoload   (ice-9 regex) (make-regexp)
 
-  :export (reader-specification
+  #:export (reader-specification
            make-outline-reader))
 
 (skribilo-module-syntax)

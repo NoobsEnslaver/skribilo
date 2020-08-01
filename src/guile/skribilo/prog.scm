@@ -21,15 +21,15 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo prog)
-  :use-module (ice-9 regex)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-11)
+  #:use-module (ice-9 regex)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-11)
 
-  :use-module (skribilo lib)  ;; `new'
-  :use-module (skribilo ast)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo lib)  ;; `new'
+  #:use-module (skribilo ast)
+  #:use-module (skribilo utils syntax)
 
-  :export (make-prog-body resolve-line))
+  #:export (make-prog-body resolve-line))
 
 (skribilo-module-syntax)
 

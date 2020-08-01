@@ -18,14 +18,14 @@
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (tests location)
-  :use-module (skribilo ast)
-  :use-module (skribilo reader)
-  :use-module (skribilo evaluator)
-  :use-module (skribilo package base)
-  :use-module (skribilo location)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-64)
-  :use-module (ice-9 match))
+  #:use-module (skribilo ast)
+  #:use-module (skribilo reader)
+  #:use-module (skribilo evaluator)
+  #:use-module (skribilo package base)
+  #:use-module (skribilo location)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-64)
+  #:use-module (ice-9 match))
 
 (cond-expand (guile-2 (begin))
              (else    (use-modules (ice-9 syncase))))

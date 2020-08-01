@@ -19,16 +19,16 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package slide lout)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :autoload   (skribilo utils strings) (make-string-replace)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)        (output)
-  :use-module (skribilo ast)
-  :autoload   (skribilo lib)           (skribe-error)
+  #:autoload   (skribilo utils strings) (make-string-replace)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)        (output)
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo lib)           (skribe-error)
 
-  :use-module (srfi srfi-13) ;; `string-join'
+  #:use-module (srfi srfi-13) ;; `string-join'
 
   ;; XXX: If changing the following `autoload' to `use-module' doesn't work,
   ;; then you need to fix your Guile.  See this thread about
@@ -37,7 +37,7 @@
   ;;   http://article.gmane.org/gmane.lisp.guile.devel/5748
   ;;   http://lists.gnu.org/archive/html/guile-devel/2006-03/msg00004.html .
 
-  :autoload (skribilo engine lout) (lout-tagify lout-output-pdf-meta-info
+  #:autoload (skribilo engine lout) (lout-tagify lout-output-pdf-meta-info
 				    lout-verbatim-encoding))
 
 

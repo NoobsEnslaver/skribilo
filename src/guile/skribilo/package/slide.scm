@@ -22,18 +22,18 @@
 
 
 (define-module (skribilo package slide)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (skribilo lib)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo evaluator) ;; `*load-options*'
+  #:use-module (skribilo lib)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo evaluator) ;; `*load-options*'
 
-  :autoload   (skribilo utils keywords) (the-options the-body)
+  #:autoload   (skribilo utils keywords) (the-options the-body)
 
-  :use-module (srfi srfi-1)
-  :use-module (ice-9 optargs)
-  :use-module (ice-9 match))
+  #:use-module (srfi srfi-1)
+  #:use-module (ice-9 optargs)
+  #:use-module (ice-9 match))
 
 (skribilo-module-syntax)
 

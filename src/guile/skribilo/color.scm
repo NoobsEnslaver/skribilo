@@ -22,11 +22,11 @@
 
 
 (define-module (skribilo color)
-  :use-module  (skribilo utils syntax)
-  :autoload    (skribilo ast) (search-down)
-  :autoload    (srfi srfi-1)  (append-map)
-  :autoload    (srfi srfi-60) (bitwise-and arithmetic-shift)
-  :export (color->rgb document-used-colors))
+  #:use-module  (skribilo utils syntax)
+  #:autoload    (skribilo ast) (search-down)
+  #:autoload    (srfi srfi-1)  (append-map)
+  #:autoload    (srfi srfi-60) (bitwise-and arithmetic-shift)
+  #:export (color->rgb document-used-colors))
 
 (skribilo-module-syntax)
 

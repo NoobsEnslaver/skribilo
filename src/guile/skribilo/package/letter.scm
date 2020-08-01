@@ -21,17 +21,17 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package letter)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo lib)
-  :autoload   (skribilo output)          (output)
-  :autoload   (skribilo utils keywords)  (the-body the-options)
-  :use-module ((skribilo package base) :renamer (symbol-prefix-proc 'skr:))
-  :use-module (srfi srfi-1)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo lib)
+  #:autoload   (skribilo output)          (output)
+  #:autoload   (skribilo utils keywords)  (the-body the-options)
+  #:use-module ((skribilo package base) :renamer (symbol-prefix-proc 'skr:))
+  #:use-module (srfi srfi-1)
 
-  :use-module (skribilo utils syntax)
-  :use-module (ice-9 optargs))
+  #:use-module (skribilo utils syntax)
+  #:use-module (ice-9 optargs))
 
 (skribilo-module-syntax)
 

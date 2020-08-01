@@ -20,7 +20,7 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo config)
-  :export (skribilo-version skribilo-url skribilo-bug-report-address
+  #:export (skribilo-version skribilo-url skribilo-bug-report-address
            skribilo-module-directory skribilo-doc-directory
            skribilo-locale-directory
            skribilo-scheme))

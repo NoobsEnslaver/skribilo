@@ -20,8 +20,8 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo lib)
-  :use-module (skribilo utils syntax)
-  :export (skribe-ast-error skribe-error
+  #:use-module (skribilo utils syntax)
+  #:export (skribe-ast-error skribe-error
            skribe-type-error
            warning/loc
            skribe-warning
@@ -36,18 +36,18 @@
            &invocation-location)
 
   ;; Re-exported because used in `define-markup'.
-  :re-export  (invocation-location)
+  #:re-export  (invocation-location)
 
-  :use-module (skribilo ast)
+  #:use-module (skribilo ast)
 
   ;; useful for `new' to work well with <language>
-  :autoload   (skribilo source)   (<language>)
+  #:autoload   (skribilo source)   (<language>)
 
-  :use-module (skribilo parameters)
-  :use-module (skribilo location)
+  #:use-module (skribilo parameters)
+  #:use-module (skribilo location)
 
-  :use-module (srfi srfi-1)
-  :use-module (oop goops))
+  #:use-module (srfi srfi-1)
+  #:use-module (oop goops))
 
 
 (skribilo-module-syntax)

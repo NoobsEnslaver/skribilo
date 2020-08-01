@@ -22,23 +22,23 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo documentation api)
-  :use-module (skribilo reader)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo ast)
-  :use-module (skribilo output)
-  :use-module (skribilo lib) ;; `define-markup'
-  :use-module (skribilo utils compat)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils justify)            ; for `info'
+  #:use-module (skribilo reader)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo output)
+  #:use-module (skribilo lib) ;; `define-markup'
+  #:use-module (skribilo utils compat)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils justify)            ; for `info'
 
-  :use-module (skribilo package base)
-  :use-module (skribilo documentation manual)
-  :use-module (skribilo documentation env) ;; `*api-engines*'
+  #:use-module (skribilo package base)
+  #:use-module (skribilo documentation manual)
+  #:use-module (skribilo documentation env) ;; `*api-engines*'
 
-  :use-module (srfi srfi-1)
-  :use-module (ice-9 match)
-  :use-module (ice-9 optargs))
+  #:use-module (srfi srfi-1)
+  #:use-module (ice-9 match)
+  #:use-module (ice-9 optargs))
 
 (skribilo-module-syntax)
 

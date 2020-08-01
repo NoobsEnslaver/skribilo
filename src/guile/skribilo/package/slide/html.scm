@@ -19,18 +19,18 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package slide html)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo resolve)     (resolve!)
-  :autoload   (skribilo output)      (output)
-  :autoload   (skribilo evaluator)   (evaluate-document)
-  :autoload   (skribilo engine html) (html-width html-title-authors)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo resolve)     (resolve!)
+  #:autoload   (skribilo output)      (output)
+  #:autoload   (skribilo evaluator)   (evaluate-document)
+  #:autoload   (skribilo engine html) (html-width html-title-authors)
 
-  :use-module (skribilo package slide)
-  :use-module (skribilo package base))
+  #:use-module (skribilo package slide)
+  #:use-module (skribilo package base))
 
 
 (skribilo-module-syntax)

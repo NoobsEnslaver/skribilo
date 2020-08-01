@@ -21,27 +21,27 @@
 
 
 (define-module (skribilo utils compat)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils files)
-  :use-module (skribilo parameters)
-  :use-module (skribilo evaluator)
-  :use-module (skribilo config)
-  :use-module (skribilo color)
-  :use-module (skribilo lib)
-  :use-module (srfi srfi-1)
-  :autoload   (srfi srfi-13)       (string-rindex)
-  :use-module (srfi srfi-34)
-  :use-module (ice-9 optargs)
-  :autoload   (skribilo ast)       (ast? document? document-lookup-node)
-  :autoload   (skribilo condition) (file-search-error? &file-search-error)
-  :autoload   (skribilo reader)    (make-reader)
-  :autoload   (skribilo resolve)   (*document-being-resolved*)
-  :autoload   (skribilo output)    (*document-being-output*)
-  :autoload   (skribilo biblio)    (*bib-table* open-bib-file)
-  :use-module (skribilo debug)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils files)
+  #:use-module (skribilo parameters)
+  #:use-module (skribilo evaluator)
+  #:use-module (skribilo config)
+  #:use-module (skribilo color)
+  #:use-module (skribilo lib)
+  #:use-module (srfi srfi-1)
+  #:autoload   (srfi srfi-13)       (string-rindex)
+  #:use-module (srfi srfi-34)
+  #:use-module (ice-9 optargs)
+  #:autoload   (skribilo ast)       (ast? document? document-lookup-node)
+  #:autoload   (skribilo condition) (file-search-error? &file-search-error)
+  #:autoload   (skribilo reader)    (make-reader)
+  #:autoload   (skribilo resolve)   (*document-being-resolved*)
+  #:autoload   (skribilo output)    (*document-being-output*)
+  #:autoload   (skribilo biblio)    (*bib-table* open-bib-file)
+  #:use-module (skribilo debug)
 
-  :re-export (file-size)  ;; re-exported from `(skribilo utils files)'
-  :replace (gensym))
+  #:re-export (file-size)  ;; re-exported from `(skribilo utils files)'
+  #:replace (gensym))
 
 ;;; Author:  Ludovic Courtès
 ;;;

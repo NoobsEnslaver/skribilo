@@ -21,7 +21,7 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo source)
-  :export (<language> language? language-extractor language-fontifier
+  #:export (<language> language? language-extractor language-fontifier
            language-name
 	   source-read-lines source-read-definition source-fontify
 
@@ -32,15 +32,15 @@
            definition-not-found-error:definition
            definition-not-found-error:language)
 
-  :use-module (srfi srfi-35)
-  :autoload   (srfi srfi-34) (raise)
-  :autoload   (srfi srfi-13) (string-prefix-length string-concatenate)
-  :use-module (skribilo condition)
+  #:use-module (srfi srfi-35)
+  #:autoload   (srfi srfi-34) (raise)
+  #:autoload   (srfi srfi-13) (string-prefix-length string-concatenate)
+  #:use-module (skribilo condition)
 
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo parameters)
-  :use-module (oop goops)
-  :use-module (ice-9 rdelim))
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo parameters)
+  #:use-module (oop goops)
+  #:use-module (ice-9 rdelim))
 
 
 (skribilo-module-syntax)

@@ -21,11 +21,11 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package web-book)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo package base))
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo package base))
 
 (skribilo-module-syntax)
 

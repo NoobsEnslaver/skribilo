@@ -20,14 +20,14 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo condition)
-  :autoload   (srfi srfi-1)  (find)
-  :use-module (srfi srfi-34)
-  :use-module (srfi srfi-35)
-  :use-module (srfi srfi-39)
-  :use-module (ice-9 optargs)
-  :autoload   (skribilo parameters)   (*destination-file*)
-  :autoload   (skribilo utils syntax) (G_ N_)
-  :export     (&skribilo-error skribilo-error?
+  #:autoload   (srfi srfi-1)  (find)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
+  #:use-module (srfi srfi-39)
+  #:use-module (ice-9 optargs)
+  #:autoload   (skribilo parameters)   (*destination-file*)
+  #:autoload   (skribilo utils syntax) (G_ N_)
+  #:export     (&skribilo-error skribilo-error?
 
                invalid-argument-error
 	       &invalid-argument-error invalid-argument-error?

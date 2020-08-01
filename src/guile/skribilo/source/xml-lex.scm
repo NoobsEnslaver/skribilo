@@ -1,8 +1,8 @@
 (define-module (skribilo source xml-lex)
-  :use-module (skribilo lib)
-  :use-module (skribilo source parameters)
-  :use-module (srfi srfi-1)
-  :export (lexer-init lexer
+  #:use-module (skribilo lib)
+  #:use-module (skribilo source parameters)
+  #:use-module (srfi srfi-1)
+  #:export (lexer-init lexer
            lexer-get-func-column
            lexer-get-func-offset
            lexer-get-line lexer-getc

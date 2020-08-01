@@ -21,7 +21,7 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package french)
-  :use-module (skribilo engine))
+  #:use-module (skribilo engine))
 
 ;*---------------------------------------------------------------------*/
 ;*    LaTeX configuration                                              */

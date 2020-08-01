@@ -21,29 +21,29 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package base)
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
-  :use-module (ice-9 optargs)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
+  #:use-module (ice-9 optargs)
 
-  :use-module (skribilo ast)
-  :use-module (skribilo resolve)
-  :use-module (skribilo location)
-  :use-module (skribilo condition)
-  :use-module (skribilo utils keywords)
-  :autoload   (srfi srfi-1)        (every any filter)
-  :autoload   (skribilo evaluator) (include-document)
-  :autoload   (skribilo engine)    (engine?)
-  :autoload   (skribilo parameters)(*document-path* *sui-path*)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo resolve)
+  #:use-module (skribilo location)
+  #:use-module (skribilo condition)
+  #:use-module (skribilo utils keywords)
+  #:autoload   (srfi srfi-1)        (every any filter)
+  #:autoload   (skribilo evaluator) (include-document)
+  #:autoload   (skribilo engine)    (engine?)
+  #:autoload   (skribilo parameters)(*document-path* *sui-path*)
 
   ;; optional ``sub-packages''
-  :autoload   (skribilo biblio)    (*bib-table* resolve-bib
+  #:autoload   (skribilo biblio)    (*bib-table* resolve-bib
                                     bib-load! bib-add! bib-sort-refs/number)
-  :autoload   (skribilo source)    (language? source-read-lines source-fontify)
-  :autoload   (skribilo prog)      (make-prog-body resolve-line)
-  :autoload   (skribilo index)     (make-index-table default-index)
-  :autoload   (skribilo sui)       (load-sui sui-ref->url)
+  #:autoload   (skribilo source)    (language? source-read-lines source-fontify)
+  #:autoload   (skribilo prog)      (make-prog-body resolve-line)
+  #:autoload   (skribilo index)     (make-index-table default-index)
+  #:autoload   (skribilo sui)       (load-sui sui-ref->url)
 
-  :replace (symbol))
+  #:replace (symbol))
 
 (skribilo-module-syntax)
 

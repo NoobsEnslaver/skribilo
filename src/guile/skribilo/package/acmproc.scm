@@ -21,22 +21,22 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package acmproc)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)         (output)
-  :use-module (skribilo package base)
-  :autoload   (skribilo utils keywords) (the-options the-body)
-  :autoload   (skribilo evaluator)      (evaluate-document)
-  :autoload   (skribilo biblio author)  (bib-sort/first-author-last-name)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)         (output)
+  #:use-module (skribilo package base)
+  #:autoload   (skribilo utils keywords) (the-options the-body)
+  #:autoload   (skribilo evaluator)      (evaluate-document)
+  #:autoload   (skribilo biblio author)  (bib-sort/first-author-last-name)
 
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (ice-9 optargs)
-  :use-module (srfi srfi-13)
+  #:use-module (ice-9 optargs)
+  #:use-module (srfi srfi-13)
 
-  :export (abstract references acm-copyright))
+  #:export (abstract references acm-copyright))
 
 (skribilo-module-syntax)
 

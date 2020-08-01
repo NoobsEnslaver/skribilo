@@ -21,14 +21,14 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo engine xml)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo utils strings)
-  :use-module (skribilo utils syntax)
-  :autoload   (skribilo output)         (output)
-  :use-module (srfi srfi-1)
-  :export (xml-engine))
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo utils strings)
+  #:use-module (skribilo utils syntax)
+  #:autoload   (skribilo output)         (output)
+  #:use-module (srfi srfi-1)
+  #:export (xml-engine))
 
 (skribilo-module-syntax)
 

@@ -20,10 +20,10 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils syntax)
-  :use-module (system reader library)
-  :use-module (system reader compat) ;; make sure `current-reader' exists
-  :use-module (system reader confinement)
-  :export (%skribilo-module-reader
+  #:use-module (system reader library)
+  #:use-module (system reader compat) ;; make sure `current-reader' exists
+  #:use-module (system reader confinement)
+  #:export (%skribilo-module-reader
            skribilo-module-syntax
            set-correct-file-encoding!
            default-to-utf-8

@@ -31,22 +31,22 @@
 
 
 (define-module (skribilo)
-  :autoload    (skribilo module) (make-user-module *skribilo-user-module*)
-  :autoload    (skribilo engine) (*current-engine*)
-  :autoload    (skribilo reader) (*document-reader*)
+  #:autoload    (skribilo module) (make-user-module *skribilo-user-module*)
+  #:autoload    (skribilo engine) (*current-engine*)
+  #:autoload    (skribilo reader) (*document-reader*)
 
-  :use-module  (skribilo utils syntax)
-  :use-module  (skribilo evaluator)
-  :use-module  (skribilo debug)
-  :use-module  (skribilo parameters)
-  :use-module  (skribilo config)
+  #:use-module  (skribilo utils syntax)
+  #:use-module  (skribilo evaluator)
+  #:use-module  (skribilo debug)
+  #:use-module  (skribilo parameters)
+  #:use-module  (skribilo config)
 
-  :use-module  (srfi srfi-1)
-  :use-module  (srfi srfi-13)
-  :use-module  (srfi srfi-37)
-  :use-module  (srfi srfi-39)
+  #:use-module  (srfi srfi-1)
+  #:use-module  (srfi srfi-13)
+  #:use-module  (srfi srfi-37)
+  #:use-module  (srfi srfi-39)
 
-  :export (skribilo))
+  #:export (skribilo))
 
 
 ;; Install the Skribilo module syntax reader.

@@ -20,15 +20,15 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils images)
-  :export (convert-image
+  #:export (convert-image
 	   *fig-convert-program* *generic-convert-program*)
 
-  :autoload (skribilo utils files) (file-suffix file-prefix)
-  :autoload (skribilo parameters)  (*image-path* *verbose*)
-  :autoload   (skribilo condition) (&file-search-error)
-  :autoload   (srfi srfi-34) (raise)
-  :use-module (srfi srfi-35)
-  :use-module (srfi srfi-39))
+  #:autoload (skribilo utils files) (file-suffix file-prefix)
+  #:autoload (skribilo parameters)  (*image-path* *verbose*)
+  #:autoload   (skribilo condition) (&file-search-error)
+  #:autoload   (srfi srfi-34) (raise)
+  #:use-module (srfi srfi-35)
+  #:use-module (srfi srfi-39))
 
 ;;; Author:  Erick Gallesio, Ludovic Courtès
 ;;;

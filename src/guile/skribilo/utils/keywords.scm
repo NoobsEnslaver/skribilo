@@ -20,7 +20,7 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo utils keywords)
-  :export (the-body the-options list-split))
+  #:export (the-body the-options list-split))
 
 ;;; Author: Manuel Serrano, Ludovic Courtès
 ;;;

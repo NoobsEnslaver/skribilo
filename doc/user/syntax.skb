@@ -271,8 +271,8 @@ skeleton for a reader would be like this:]
 	(example :legend [Writing a new reader.]
 	 (prgm :language scheme [
 (define-module (skribilo reader my-reader)
-  :use-module (skribilo reader)
-  :export (reader-specification))
+  #:use-module (skribilo reader)
+  #:export (reader-specification))
 
 (define (make-my-reader)
   (lambda (port)

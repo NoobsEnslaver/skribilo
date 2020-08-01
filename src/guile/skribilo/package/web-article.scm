@@ -21,19 +21,19 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package web-article)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo utils syntax)
 
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo package base)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo package base)
 
-  :autoload   (skribilo output)         (output)
-  :autoload   (skribilo evaluator)      (evaluate-document)
-  :autoload   (skribilo engine html)    (html-width html-title-authors)
-  :autoload   (skribilo utils strings)  (string-canonicalize)
+  #:autoload   (skribilo output)         (output)
+  #:autoload   (skribilo evaluator)      (evaluate-document)
+  #:autoload   (skribilo engine html)    (html-width html-title-authors)
+  #:autoload   (skribilo utils strings)  (string-canonicalize)
 
-  :use-module (srfi srfi-1))
+  #:use-module (srfi srfi-1))
 
 (skribilo-module-syntax)
 

@@ -21,20 +21,20 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package sigplan)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :autoload   (skribilo output)          (output)
-  :autoload   (skribilo evaluator)       (evaluate-document)
-  :use-module (skribilo lib)
-  :autoload   (skribilo utils keywords)  (the-body)
-  :use-module (skribilo package base)
-  :use-module (srfi srfi-1)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:autoload   (skribilo output)          (output)
+  #:autoload   (skribilo evaluator)       (evaluate-document)
+  #:use-module (skribilo lib)
+  #:autoload   (skribilo utils keywords)  (the-body)
+  #:use-module (skribilo package base)
+  #:use-module (srfi srfi-1)
 
-  :use-module (skribilo utils syntax)
-  :use-module (ice-9 optargs)
+  #:use-module (skribilo utils syntax)
+  #:use-module (ice-9 optargs)
 
-  :export (abstract references acm-copyright))
+  #:export (abstract references acm-copyright))
 
 (skribilo-module-syntax)
 

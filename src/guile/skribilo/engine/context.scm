@@ -21,23 +21,23 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo engine context)
-  :use-module (skribilo lib)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module (skribilo writer)
-  :use-module (skribilo utils keywords)
-  :use-module (skribilo utils strings)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo package base)
-  :autoload   (skribilo utils images)  (convert-image)
-  :autoload   (skribilo evaluator)     (evaluate-document)
-  :autoload   (skribilo output)        (output *document-being-output*)
-  :autoload   (skribilo color)         (color->rgb
+  #:use-module (skribilo lib)
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo utils keywords)
+  #:use-module (skribilo utils strings)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo package base)
+  #:autoload   (skribilo utils images)  (convert-image)
+  #:autoload   (skribilo evaluator)     (evaluate-document)
+  #:autoload   (skribilo output)        (output *document-being-output*)
+  #:autoload   (skribilo color)         (color->rgb
                                         document-used-colors)
-  :autoload   (skribilo config)        (skribilo-version)
-  :use-module (ice-9 optargs)
-  :use-module (ice-9 receive)
-  :export (context-engine
+  #:autoload   (skribilo config)        (skribilo-version)
+  #:use-module (ice-9 optargs)
+  #:use-module (ice-9 receive)
+  #:export (context-engine
            ConTeXt TeX))
 
 (skribilo-module-syntax)

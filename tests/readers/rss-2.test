@@ -18,9 +18,9 @@
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (tests rss-2)
-  :use-module (ice-9 match)
-  :use-module (skribilo reader)
-  :use-module (srfi srfi-64))
+  #:use-module (ice-9 match)
+  #:use-module (skribilo reader)
+  #:use-module (srfi srfi-64))
 
 (cond-expand (guile-2 (begin))
              (else    (use-modules (ice-9 syncase))))

@@ -21,21 +21,21 @@
 (define-module (skribilo reader rss-2)
 
   ;; We depend on `guile-library' (available in Debian).
-  :use-module (sxml simple)
-  :use-module (htmlprag)
+  #:use-module (sxml simple)
+  #:use-module (htmlprag)
 
-  :use-module (ice-9 match)
-  :use-module (srfi srfi-1)
-  :use-module (srfi srfi-13)
-  :use-module (srfi srfi-14)
-  :use-module (srfi srfi-19)
-  :use-module (srfi srfi-34)
-  :use-module (srfi srfi-35)
+  #:use-module (ice-9 match)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-14)
+  #:use-module (srfi srfi-19)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
 
-  :use-module (skribilo reader)
-  :use-module (skribilo utils syntax)
+  #:use-module (skribilo reader)
+  #:use-module (skribilo utils syntax)
 
-  :export (reader-specification))
+  #:export (reader-specification))
 
 (skribilo-module-syntax)
 

@@ -21,23 +21,23 @@
 ;;; USA.
 
 (define-module (skribilo sui)
-  :use-module (skribilo ast)
-  :autoload   (skribilo parameters) (*verbose* *destination-file*
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo parameters) (*verbose* *destination-file*
                                      *sui-path*)
-  :autoload   (skribilo reader)     (make-reader)
-  :autoload   (skribilo engine)     (find-engine)
-  :autoload   (skribilo evaluator)  (evaluate-document)
-  :use-module (skribilo condition)
-  :use-module (skribilo utils strings)
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils files)
+  #:autoload   (skribilo reader)     (make-reader)
+  #:autoload   (skribilo engine)     (find-engine)
+  #:autoload   (skribilo evaluator)  (evaluate-document)
+  #:use-module (skribilo condition)
+  #:use-module (skribilo utils strings)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils files)
 
-  :use-module (ice-9 match)
-  :use-module (srfi srfi-1)
-  :autoload   (srfi srfi-34)        (raise)
-  :use-module (srfi srfi-35)
+  #:use-module (ice-9 match)
+  #:use-module (srfi srfi-1)
+  #:autoload   (srfi srfi-34)        (raise)
+  #:use-module (srfi srfi-35)
 
-  :export (load-sui sui-ref->url sui-title sui-file sui-key
+  #:export (load-sui sui-ref->url sui-title sui-file sui-key
            sui-find-ref sui-search-ref sui-filter
            document-sui sui-referenced-file sui-marks sui-blocks))
 

@@ -19,14 +19,14 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package pie lout)
-  :use-module (skribilo package pie)
-  :use-module (skribilo ast)
-  :autoload   (skribilo output) (output)
-  :use-module (skribilo writer)
-  :use-module (skribilo engine)
-  :use-module (skribilo lib)
-  :use-module (skribilo utils syntax)
-  :autoload   (skribilo engine lout) (lout-color-specification))
+  #:use-module (skribilo package pie)
+  #:use-module (skribilo ast)
+  #:autoload   (skribilo output) (output)
+  #:use-module (skribilo writer)
+  #:use-module (skribilo engine)
+  #:use-module (skribilo lib)
+  #:use-module (skribilo utils syntax)
+  #:autoload   (skribilo engine lout) (lout-color-specification))
 
 (skribilo-module-syntax)
 

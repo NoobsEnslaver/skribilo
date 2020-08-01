@@ -20,16 +20,16 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package web-book2)
-  :use-module (skribilo ast)
-  :use-module (skribilo engine)
-  :use-module ((skribilo package base) :renamer (symbol-prefix-proc 'b:))
+  #:use-module (skribilo ast)
+  #:use-module (skribilo engine)
+  #:use-module ((skribilo package base) :renamer (symbol-prefix-proc 'b:))
 
-  :use-module (skribilo utils syntax)
-  :use-module (skribilo utils keywords)
+  #:use-module (skribilo utils syntax)
+  #:use-module (skribilo utils keywords)
 
-  :use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)
 
-  :replace (chapter section subsection subsubsection))
+  #:replace (chapter section subsection subsubsection))
 
 (skribilo-module-syntax)
 

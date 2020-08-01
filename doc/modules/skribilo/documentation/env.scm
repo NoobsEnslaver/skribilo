@@ -20,8 +20,8 @@
 ;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo documentation env)
-  :use-module (skribilo config)
-  :use-module (skribilo engine))
+  #:use-module (skribilo config)
+  #:use-module (skribilo engine))
 
 (define-public *serrano-url* "http://www-sop.inria.fr/members/Manuel.Serrano/")
 (define-public *serrano-mail* "manuel.serrano@inria.fr")
