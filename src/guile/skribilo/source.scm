@@ -1,7 +1,6 @@
 ;;; source.scm	-- Highlighting source files.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2008, 2009, 2010, 2018  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2008, 2009, 2010, 2018  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
 ;;;
 ;;;
@@ -222,33 +221,3 @@
       (if (procedure? f)
 	  (fontify f o)
 	  o)))
-
-;*---------------------------------------------------------------------*/
-;*    split-string-newline ...                                         */
-;*---------------------------------------------------------------------*/
-(define (split-string-newline str)
-   (let ((l (string-length str)))
-      (let loop ((i 0)
-		 (j 0)
-		 (r '()))
-	 (cond
-	    ((= i l)
-	     (if (= i j)
-		 (reverse! r)
-		 (reverse! (cons (substring str j i) r))))
-	    ((char=? (string-ref str i) #\newline)
-	     (loop (+ i 1)
-		   (+ i 1)
-		   (if (= i j)
-		       (cons 'eol r)
-		       (cons* 'eol (substring str j i) r))))
-	    ((and (char=? (string-ref str i) #\cr)
-		  (< (+ i 1) l)
-		  (char=? (string-ref str (+ i 1)) #\newline))
-	     (loop (+ i 2)
-		   (+ i 2)
-		   (if (= i j)
-		       (cons 'eol r)
-		       (cons* 'eol (substring str j i) r))))
-	    (else
-	     (loop (+ i 1) j r))))))
