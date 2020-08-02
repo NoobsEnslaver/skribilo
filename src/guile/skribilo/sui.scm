@@ -1,7 +1,7 @@
 ;;; sui.scm -- Skribe URL Indices
 ;;;
 ;;; Copyright (C) 2005, 2006, 2007, 2008, 2009, 2012,
-;;;    2015, 2018  Ludovic Courtès <ludo@gnu.org>
+;;;    2015, 2018, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright (C) 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -120,11 +120,11 @@
 		    (unwind-protect
                      (let ((sexp (read p)))
                        (match sexp
-                              (('sui (? string?) . _)
-                               (hash-set! *sui-table* path sexp))
-                              (else
-                               (raise (condition (&invalid-sui-error
-                                                  (sexp     sexp))))))
+                         (('sui (? string?) . _)
+                          (hash-set! *sui-table* path sexp))
+                         (_
+                          (raise (condition (&invalid-sui-error
+                                             (sexp     sexp))))))
                        sexp)
                      (close-input-port p)))))))))
 
@@ -146,7 +146,7 @@
    (match sexp
       (('sui (and title (? string?)) . _)
        title)
-      (else
+      (_
        (raise (condition (&invalid-sui-error
                           (sexp sexp)))))))
 
@@ -168,7 +168,7 @@
 		   (and (pair? (cdr rest))
 			(cadr rest))
 		   (loop (cdr rest))))))
-      (else
+      (_
        (raise (condition (&invalid-sui-error
                           (sexp sexp)))))))
 
@@ -194,7 +194,7 @@
 	     (subsubsection (sui-search-ref 'subsubsections refs (cadr subsubsection) class))
 	     (ident (sui-search-all-refs refs (cadr ident) class))
 	     (else '())))
-	 (else
+	 (_
           (raise (condition (&invalid-sui-error
                              (sexp sui))))))))
 
@@ -266,7 +266,7 @@
 			(cons (filter pred2 (cdar refs)) res))
 		  (loop (cdr refs) res))
 	      (reverse! res))))
-      (else
+      (_
        (raise (condition (&invalid-sui-error
                           (sexp sui)))))))
 

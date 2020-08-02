@@ -1,8 +1,7 @@
 ;;; api.scm  --  The style for documenting Scheme APIs.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2009, 2012,
-;;;   2015, 2018 Ludovic Courtès <ludo@gnu.org>
+;;;   2015, 2018, 2020 Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -392,7 +391,7 @@ def @SkribiloExample named @Title {} right x {
        o)
       (('define-simple-container (? (lambda (x) (eq? x id))))
        o)
-      (else
+      (_
        #f)))
 
 ;*---------------------------------------------------------------------*/
@@ -414,8 +413,7 @@ def @SkribiloExample named @Title {} right x {
 		    (make-engine? id (cdr exp))))
 	       (else
 		(make-engine? id exp)))))
-      (else
-       #f)))
+      (_ #f)))
 
 ;*---------------------------------------------------------------------*/
 ;*    make-engine-custom ...                                           */
@@ -427,8 +425,7 @@ def @SkribiloExample named @Title {} right x {
        custom)
       (((custom) _ ___)
        (primitive-eval custom))
-      (else
-       '()))))
+      (_ '()))))
 
 ;*---------------------------------------------------------------------*/
 ;*    define-markup-formals ...                                        */
@@ -454,7 +451,7 @@ def @SkribiloExample named @Title {} right x {
        '())
       (('define-simple-container _)
        '())
-      (else
+      (_
        (skribe-error 'define-markup-formals
 		     "Invalid 'define-markup' form"
 		     def))))
@@ -477,7 +474,7 @@ def @SkribiloExample named @Title {} right x {
        '((ident #f) (class #f)))
       (('define-simple-container _)
        '((ident #f) (class #f)))
-      (else
+      (_
        (skribe-error 'define-markup-options
 		     "Invalid 'define-markup' form"
 		     def))))
@@ -508,7 +505,7 @@ def @SkribiloExample named @Title {} right x {
        'node)
       (('define-simple-container _)
        'node)
-      (else
+      (_
        (skribe-error 'define-markup-rest
 		     "Invalid 'define-markup' form"
 		     def))))
@@ -570,7 +567,7 @@ def @SkribiloExample named @Title {} right x {
        (match exp
           (('quote (? symbol? sym))
 	   (string-append "'" (symbol->string sym)))
-	  (else
+	  (_
 	   (with-output-to-string (lambda () (write exp))))))))
 
 ;*---------------------------------------------------------------------*/

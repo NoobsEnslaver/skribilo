@@ -1,6 +1,6 @@
 ;;; latex.scm  --  LaTeX implementation of the `slide' package.
 ;;;
-;;; Copyright 2007  Ludovic Courtès <ludo@chbouib.org>
+;;; Copyright 2007, 2020  Ludovic CourtÃ¨s <ludo@chbouib.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -279,7 +279,7 @@
 			 (display (string-append "}]{" id "}"))
 			 (evaluate-document (slide-pause) e)
 			 (loop (cdr lbls) id))
-			(else
+			(_
 			 (display "\\adviplay[[rgb]{")
 			 (display c)
 			 (format #t "}]{~a}" lbl)

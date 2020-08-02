@@ -78,7 +78,7 @@
 	  (and (eq? def fun) exp))
 	 (('defvar var . _)
 	  (and (eq? var def) exp))
-	 (else #f)))))
+	 (_ #f)))))
 
 (define (init-lisp-keys)
   (unless %lisp-keys
@@ -120,7 +120,7 @@
 	  (and (eq? def fun) exp))
 	 (('define (? symbol? var) . _)
 	  (and (eq? var def) exp))
-	 (else #f)))))
+	 (_ #f)))))
 
 
 (define (init-scheme-keys)
@@ -165,8 +165,7 @@
 	  (and (eq? def fun) exp))
 	 (((or 'define 'define-module) (? symbol? var) . _)
 	  (and (eq? var def) exp))
-	 (else
-		#f)))))
+	 (_ #f)))))
 
 
 (define (init-stklos-keys)
@@ -221,7 +220,7 @@
 	 (and (eq? var def) exp))
 	(('markup-output mk . _)
 	 (and (eq? mk def) exp))
-	(else #f)))))
+	(_ #f)))))
 
 
 (define (init-skribe-keys)
@@ -283,7 +282,7 @@
 	 (((or 'define 'define-struct 'define-library)
 	   (? symbol? var) . _)
 	  (and (eq? var def) exp))
-	 (else #f)))))
+	 (_ #f)))))
 
 (define bigloo
   (new language
