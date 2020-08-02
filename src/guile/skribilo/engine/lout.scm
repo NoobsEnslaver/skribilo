@@ -1,8 +1,8 @@
 ;;; lout.scm  --  A Lout engine.
-;;; -*- coding: iso-8859-1 -*-
+;;; -*- coding: utf-8 -*-
 ;;;
 ;;; Copyright 2004, 2005, 2006, 2007, 2008, 2009, 2010,
-;;;  2012, 2015, 2018, 2020  Ludovic CourtËs <ludo@gnu.org>
+;;;  2012, 2015, 2018, 2020  Ludovic Court√®s <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -85,36 +85,53 @@
 ;*    lout-encoding ...                                                */
 ;*---------------------------------------------------------------------*/
 (define lout-encoding
-  `(,@lout-verbatim-encoding
-    (#\Á "{ @Char ccedilla }")
-    (#\« "{ @Char Ccdeilla }")
-    (#\‚ "{ @Char acircumflex }")
-    (#\¬ "{ @Char Acircumflex }")
-    (#\‡ "{ @Char agrave }")
-    (#\¿ "{ @Char Agrave }")
-    (#\È "{ @Char eacute }")
-    (#\… "{ @Char Eacute }")
-    (#\Ë "{ @Char egrave }")
-    (#\» "{ @Char Egrave }")
-    (#\Í "{ @Char ecircumflex }")
-    (#\  "{ @Char Ecircumflex }")
-    (#\˘ "{ @Char ugrave }")
-    (#\Ÿ "{ @Char Ugrave }")
-    (#\˚ "{ @Char ucircumflex }")
-    (#\€ "{ @Char Ucircumflex }")
-    (#\¯ "{ @Char oslash }")
-    (#\Ù "{ @Char ocircumflex }")
-    (#\‘ "{ @Char Ocircumflex }")
-    (#\ˆ "{ @Char odieresis }")
-    (#\÷ "{ @Char Odieresis }")
-    (#\Ó "{ @Char icircumflex }")
-    (#\Œ "{ @Char Icircumflex }")
-    (#\Ô "{ @Char idieresis }")
-    (#\œ "{ @Char Idieresis }")
-    (#\] "\"]\"")
-    (#\[ "\"[\"")
-    (#\ª "{ @Char guillemotright }")
-    (#\´ "{ @Char guillemotleft }")))
+  ;; XXX: As of Guile-Reader 0.6.3, characters like #\√ß are not properly
+  ;; read.  Use strings to work around it.
+  (let-syntax ((chr (lambda (s)
+                      (syntax-case s ()
+                        ((_ str replacement)
+                         #`(list #,(string-ref (syntax->datum #'str) 0)
+                                 replacement))))))
+    `(,@lout-verbatim-encoding
+      ,@(list (chr "√ß" "{ @Char ccedilla }")
+              (chr "√á" "{ @Char Ccdeilla }")
+              (chr "√¢" "{ @Char acircumflex }")
+              (chr "√Ç" "{ @Char Acircumflex }")
+              (chr "√†" "{ @Char agrave }")
+              (chr "√Ä" "{ @Char Agrave }")
+              (chr "√©" "{ @Char eacute }")
+              (chr "√â" "{ @Char Eacute }")
+              (chr "√®" "{ @Char egrave }")
+              (chr "√à" "{ @Char Egrave }")
+              (chr "√™" "{ @Char ecircumflex }")
+              (chr "√ä" "{ @Char Ecircumflex }")
+              (chr "√π" "{ @Char ugrave }")
+              (chr "√ô" "{ @Char Ugrave }")
+              (chr "√ª" "{ @Char ucircumflex }")
+              (chr "√õ" "{ @Char Ucircumflex }")
+              (chr "√∏" "{ @Char oslash }")
+              (chr "√¥" "{ @Char ocircumflex }")
+              (chr "√î" "{ @Char Ocircumflex }")
+              (chr "√∂" "{ @Char odieresis }")
+              (chr "√ñ" "{ @Char Odieresis }")
+              (chr "√Æ" "{ @Char icircumflex }")
+              (chr "√é" "{ @Char Icircumflex }")
+              (chr "√Ø" "{ @Char idieresis }")
+              (chr "√è" "{ @Char Idieresis }")
+              (chr "ƒÉ" "{ { { Times Base } @Font @Char \"breve\" } |0.5ro a }")
+              (chr "»ô" "{ { @Char \"cedilla\" } |0.5ro s }")
+              (chr "]" "\"]\"")
+              (chr "[" "\"[\"")
+              (chr "¬ª" "{ @Char guillemotright }")
+              (chr "¬´" "{ @Char guillemotleft }")
+              (chr "¬†" "~")                       ;no-break space
+              (chr "‚Äî" "---")
+              (chr "‚Äì" "--")
+              (chr "‚Äú" "``")
+              (chr "‚Äù" "''")
+              (chr "‚Äò" "`")
+              (chr "‚Äô" "'")
+              (chr "‚Ä¶" "...")))))
 
 
 ;; XXX:  This is just here for experimental purposes.
