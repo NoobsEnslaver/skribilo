@@ -189,10 +189,7 @@
   :options '(:title :author :ending)
   :action (lambda (doc e)
             (check-node-title-conflicts doc e)
-
-            (cond-expand
-             (guile-2 (set-port-encoding! (current-output-port) "UTF-8"))
-             (else #t))
+            (set-port-encoding! (current-output-port) "UTF-8")
 
             (let ((title     (markup-option doc :title))
                   (authors   (markup-option doc :author))

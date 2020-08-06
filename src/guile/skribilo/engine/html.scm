@@ -1161,14 +1161,11 @@
 ;*---------------------------------------------------------------------*/
 (define (&html-generic-document n title e)
   (define (set-output-encoding)
-    (cond-expand
-     (guile-2
-      ;; Make sure the output is suitably encoded.
-      (and=> (engine-custom e 'charset)
-             (lambda (charset)
-               (set-port-encoding! (current-output-port) charset)
-               (set-port-conversion-strategy! (current-output-port) 'error))))
-     (else #t)))
+    ;; Make sure the output is suitably encoded.
+    (and=> (engine-custom e 'charset)
+           (lambda (charset)
+             (set-port-encoding! (current-output-port) charset)
+             (set-port-conversion-strategy! (current-output-port) 'error))))
 
    (let* ((id (markup-ident n))
 	  (header (new markup

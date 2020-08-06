@@ -48,7 +48,7 @@
                                      index? resolve-the-index)
   #:autoload   (skribilo sui)       (load-sui sui-ref->url)
 
-  #:replace (symbol))
+  #:replace (symbol include))
 
 (skribilo-module-syntax)
 
@@ -72,12 +72,6 @@
   (unless (string? file)
     (invalid-argument-error 'include file 'file))
   (include-document file))
-
-(cond-expand
-  (guile-2
-   ;; On Guile 2.x, replace the 'include' core binding.
-   (module-replace! (current-module) '(include)))
-  (else #t))
 
 ;*---------------------------------------------------------------------*/
 ;*    document ...                                                     */

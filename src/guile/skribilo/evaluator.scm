@@ -58,21 +58,7 @@
   ;; Evaluate EXPR in the current module.  EXPR is an arbitrary S-expression
   ;; that may contain calls to the markup functions defined in a markup
   ;; package such as `(skribilo package base)', e.g., `(bold "hello")'.
-  (cond-expand
-   (guile-2 (eval expr module))
-   (else
-    (let ((opts (debug-options)))
-      (dynamic-wind
-        (lambda ()
-          ;; Force use of the debugging evaluator so that we can track source
-          ;; location.
-          (debug-enable 'debug)
-          (debug-enable 'backtrace))
-        (lambda ()
-          (eval expr module))
-        (lambda ()
-          ;; Restore previous evaluator options.
-          (debug-options opts)))))))
+  (eval expr module))
 
 
 ;;;

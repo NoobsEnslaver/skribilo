@@ -1,7 +1,7 @@
 ;;; latex.scm  --  LaTeX engine.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2007, 2009, 2012, 2015  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2007, 2009, 2012, 2015, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -519,14 +519,11 @@
 		     (begin (display dc) (newline))
 		     (display "\\documentclass{article}\n")))
 
-              (cond-expand
-               (guile-2
-                (let ((encoding (engine-custom e 'encoding)))
-                  (set-port-encoding! (current-output-port) encoding)
-                  (set-port-conversion-strategy! (current-output-port) 'error)
-                  (if (string-ci=? encoding "UTF-8") ; FIXME: other encodings?
-                      (display "\\usepackage[utf8]{inputenc}\n"))))
-               (else #t))
+              (let ((encoding (engine-custom e 'encoding)))
+                (set-port-encoding! (current-output-port) encoding)
+                (set-port-conversion-strategy! (current-output-port) 'error)
+                (when (string-ci=? encoding "UTF-8") ; FIXME: other encodings?
+                  (display "\\usepackage[utf8]{inputenc}\n")))
 
 	      (if (latex-color? e)
 		  (display (engine-custom e 'color-usepackage)))

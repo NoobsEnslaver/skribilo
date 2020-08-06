@@ -1,7 +1,6 @@
 ;;; location.scm -- Skribilo source location.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2007, 2009, 2010, 2012, 2013, 2015  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2007, 2009, 2010, 2012, 2013, 2015, 2020  Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
 ;;;
 ;;;
@@ -23,15 +22,12 @@
 (define-module (skribilo location)
   #:use-module (oop goops)
   #:use-module ((skribilo utils syntax) :select (skribilo-module-syntax))
-  #:autoload   (srfi srfi-13)  (string-prefix?)
   #:export (<location> location? ast-location
 	   location-file location-line location-column
            invocation-location
            source-properties->location
            location->string))
 
-;;; Author:  Ludovic Courtès
-;;;
 ;;; Commentary:
 ;;;
 ;;; An abstract data type to keep track of source locations.
@@ -80,10 +76,6 @@
 ;;;
 ;;; Getting an invocation's location.
 ;;;
-
-(cond-expand
- (guile-2 (use-modules (system vm frame)))
- (else    #t))
 
 (define (invocation-location . depth)
   ;; Return a location object denoting the place of invocation of this

@@ -141,28 +141,15 @@
 ;; We have this as a macro in order to avoid procedure calls in the
 ;; non-debugging case.  Unfortunately, the macro below duplicates BODY,
 ;; which has a negative impact on memory usage and startup time (XXX).
-(cond-expand
- (guile-2
-  (define-syntax with-debug
-    (lambda (s)
-      (syntax-case s ()
-        ((_ level label body ...)
-         (integer? (syntax->datum #'level))
-         #'(if (or (>= (*debug*) level)
-                   (memq label (*watched-symbols*)))
-               (%do-with-debug level label (lambda () body ...))
-               (begin body ...)))))))
- (else
-  (begin
-    (export %do-with-debug)
-    (define-macro (with-debug level label . body)
-      (if (number? level)
-          `(if (or (>= (*debug*) ,level)
-                   (memq ,label (*watched-symbols*)))
-               (%do-with-debug ,level ,label (lambda () ,@body))
-               (begin ,@body))
-          (error "with-debug: syntax error"))))))
-
+(define-syntax with-debug
+  (lambda (s)
+    (syntax-case s ()
+      ((_ level label body ...)
+       (integer? (syntax->datum #'level))
+       #'(if (or (>= (*debug*) level)
+                 (memq label (*watched-symbols*)))
+             (%do-with-debug level label (lambda () body ...))
+             (begin body ...))))))
 
 ; Example:
 

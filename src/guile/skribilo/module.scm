@@ -1,7 +1,7 @@
 ;;; module.scm  --  Execution environment for Skribilo documents.
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2009  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2009, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;;
 ;;;
 ;;; This file is part of Skribilo.
@@ -109,8 +109,7 @@
   ;;
   ;; Consequently, on Guile 2.x, we just let Guile choose a module name and
   ;; do the right thing.
-  (cond-expand ((not guile-2) set-module-name!)
-               (else          (lambda (m n) #t))))
+  (lambda (m n) #t))
 
 (define (make-skribe-user-module)
   "Return a new module that imports all the necessary bindings required for

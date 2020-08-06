@@ -71,49 +71,21 @@
      (lambda () ,expr1)
      (lambda () ,expr2)))
 
-(cond-expand
- ((not guile-2)
-  ;; In Guile 2.x these macros are defined in the core.
-  (begin
-    (define-macro (unless condition . exprs)
-      `(if (not ,condition)
-           ,(if (null? (cdr exprs))
-                (car exprs)
-                `(begin ,@exprs))))
+(define-syntax set-correct-file-encoding!
+  (syntax-rules ()
+    ((_)
+     (set-correct-file-encoding! (current-input-port)))
+    ((_ port)
+     ;; Use the encoding specified by the `coding:' comment.
+     (let ((e (false-if-exception (file-encoding port))))
+       (and (string? e)
+            (set-port-encoding! port e))))))
 
-    (define-macro (when condition . exprs)
-      `(if ,condition
-           ,(if (null? (cdr exprs))
-                (car exprs)
-                `(begin ,@exprs))))
-
-    (export when unless)))
- (else (begin)))
-
-(cond-expand
- (guile-2
-  (define-syntax set-correct-file-encoding!
-    (syntax-rules ()
-      ((_)
-       (set-correct-file-encoding! (current-input-port)))
-      ((_ port)
-       ;; Use the encoding specified by the `coding:' comment.
-       (let ((e (false-if-exception (file-encoding port))))
-         (and (string? e)
-              (set-port-encoding! port e))))))
-
-  (define-syntax default-to-utf-8
-    (syntax-rules ()
-      ((_ body ...)
-       (with-fluids ((%default-port-encoding "UTF-8"))
-         body ...)))))
-
- (else
-  (define-macro (set-correct-file-encoding! . p)
-    #f)
-
-  (define-macro (default-to-utf-8 . body)
-    `(begin ,@body))))
+(define-syntax default-to-utf-8
+  (syntax-rules ()
+    ((_ body ...)
+     (with-fluids ((%default-port-encoding "UTF-8"))
+       body ...))))
 
 
 ;;;

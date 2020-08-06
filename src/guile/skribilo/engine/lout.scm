@@ -1101,20 +1101,17 @@
 (markup-writer 'document
    :options '(:title :author :ending :keywords :env)
    :before (lambda (n e) ;; `e' is the engine
-             (cond-expand
-              (guile-2
-               ;; Make sure the output is suitably encoded.
-               (let ((encoding (engine-custom e 'encoding)))
-                 (set-port-encoding! (current-output-port) encoding)
-                 (set-port-conversion-strategy! (current-output-port) 'error)
-                 (cond ((string-ci=? encoding "ISO-8859-2")
-                        (display "@SysInclude { latin2 }\n"))
-                       ((not (string-ci=? encoding "ISO-8859-1"))
-                        (raise (condition
-                                (&invalid-argument-error
-                                 (proc-name 'lout)
-                                 (argument encoding))))))))
-              (else #t))
+             ;; Make sure the output is suitably encoded.
+             (let ((encoding (engine-custom e 'encoding)))
+               (set-port-encoding! (current-output-port) encoding)
+               (set-port-conversion-strategy! (current-output-port) 'error)
+               (cond ((string-ci=? encoding "ISO-8859-2")
+                      (display "@SysInclude { latin2 }\n"))
+                     ((not (string-ci=? encoding "ISO-8859-1"))
+                      (raise (condition
+                              (&invalid-argument-error
+                               (proc-name 'lout)
+                               (argument encoding)))))))
 
 	     (let* ((doc-type (let ((d (engine-custom e 'document-type)))
 				(if (string? d)

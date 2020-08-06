@@ -90,10 +90,7 @@
 
 (define (%procedure-arity proc)
   ;; Return the minimum number of required arguments for PROC.
-  (cond-expand (guile-2
-                (car (procedure-minimum-arity proc)))
-               (else
-                (car (procedure-property proc 'arity)))))
+  (car (procedure-minimum-arity proc)))
 
 (define (make-writer-predicate markup predicate class)
   (let* ((t2 (if class
