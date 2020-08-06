@@ -421,8 +421,8 @@ options."
 
           (setvbuf (*skribilo-output-port*)
                    (cond-expand
-                     (guile-2.0 _IOFBF)
-                     (else      'block))
+                     (guile-2.2 'block)           ;Guile 2.2 and 3.0
+                     (else      _IOFBF))
                    16384)
 
           (if input-file
