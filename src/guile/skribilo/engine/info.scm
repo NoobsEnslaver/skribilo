@@ -678,10 +678,11 @@
 ;*---------------------------------------------------------------------*/
 (markup-writer 'paragraph info-engine
   :action (lambda (n e)
-            (output-newline)
+            (unless (first-paragraph? n)
+              (output-newline))
             (output-flush *margin*)
-            (or (first-paragraph? n)
-                (display "   "))
+            (unless (first-paragraph? n)
+              (display "   "))
             (output (markup-body n) e)))
 
 ;*---------------------------------------------------------------------*/
