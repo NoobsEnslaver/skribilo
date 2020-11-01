@@ -96,7 +96,7 @@
 ;*    output ...                                                       */
 ;*---------------------------------------------------------------------*/
 (define (output-justified str)
-   ((car *justifiers*) 'output str))
+   ((*justifier*) 'output str))
 
 ;*---------------------------------------------------------------------*/
 ;*    output-token ...                                                 */
@@ -105,13 +105,13 @@
 ;*    contains #\spaces.                                               */
 ;*---------------------------------------------------------------------*/
 (define (output-token str)
-   ((car *justifiers*) 'output (string-replace-char str #\space #\bs)))
+   ((*justifier*) 'output (string-replace-char str #\space #\bs)))
 
 ;*---------------------------------------------------------------------*/
 ;*    output-newline ...                                               */
 ;*---------------------------------------------------------------------*/
 (define (output-newline)
-   ((car *justifiers*) 'newline))
+   ((*justifier*) 'newline))
 
 ;*---------------------------------------------------------------------*/
 ;*    output-flush ...                                                 */
@@ -126,13 +126,13 @@
 		 (lambda (x)
                    (display (text-string x))
                    (newline)))
-	     ((car *justifiers*) 'flush)))
+	     ((*justifier*) 'flush)))
 
 ;*---------------------------------------------------------------------*/
 ;*    justification-width ...                                          */
 ;*---------------------------------------------------------------------*/
 (define (justification-width)
-   ((car *justifiers*) 'width))
+   ((*justifier*) 'width))
 
 ;*---------------------------------------------------------------------*/
 ;*    with-justification ...                                           */
@@ -141,11 +141,10 @@
   (output-flush (*margin*))
   (parameterize ((*margin* (if margin
                                (+ (*margin*) margin)
-                               (*margin*))))
-    (set! *justifiers* (cons justifier *justifiers*))
+                               (*margin*)))
+                 (*justifier* justifier))
     (thunk)
-    (output-flush (*margin*))
-    (set! *justifiers* (cdr *justifiers*))))
+    (output-flush (*margin*))))
 
 ;*---------------------------------------------------------------------*/
 ;*    with-justification/noflush ...                                   */
@@ -153,12 +152,10 @@
 (define* (with-justification/noflush justifier thunk #:optional margin)
   (parameterize ((*margin* (if margin
                                (+ (*margin*) margin)
-                               (*margin*))))
-    (set! *justifiers* (cons justifier *justifiers*))
+                               (*margin*)))
+                 (*justifier* justifier))
     (thunk)
-    (let ((res ((car *justifiers*) 'flush)))
-      (set! *justifiers* (cdr *justifiers*))
-      res)))
+    ((*justifier*) 'flush)))
 
 ;*---------------------------------------------------------------------*/
 ;*    *spaces* ...                                                     */
@@ -415,11 +412,9 @@
 		   (else
 		    (error "justifier" "Invalid command" cmd))))))))
 
-;*---------------------------------------------------------------------*/
-;*    *justifiers* ...                                                 */
-;*---------------------------------------------------------------------*/
-(define *justifiers* (list (make-justifier *text-column-width*
-					   *text-justification*)))
+(define *justifier*
+  (make-parameter (make-justifier *text-column-width*
+				  *text-justification*)))
 
 
 ;;; justify.scm ends here
