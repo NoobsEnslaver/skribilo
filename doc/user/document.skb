@@ -1,7 +1,7 @@
 ;;; document.skb  --  Document and author
 ;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2008  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2008, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;; Copyright 2008  Christopher Allan Webber <cwebber@dustycloud.org>
 ;;;
@@ -56,6 +56,10 @@ or markups.  The keywords will not appear in the final document but only
 as meta-information (e.g., using the HTML `meta' tag) if the engine used
 supports it.")
 	      (:env "A counter environment.")
+	      (:info-dir-category "The name of a category for the
+\"directory\" mechanism of the GNU Info documentation system.")
+	      (:info-dir-entry "Name of the entry for the GNU Info
+directory.")
 	      (#!rest node... "The document nodes."))
 	    :see-also '(author chapter toc))
 

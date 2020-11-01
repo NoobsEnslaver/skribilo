@@ -1,7 +1,6 @@
 ;;; base.scm -- The base markup package of Skribe/Skribilo.
-;;; -*- coding: iso-8859-1 -*-
 ;;;
-;;; Copyright 2005, 2006, 2007, 2008, 2009, 2013, 2015, 2016, 2018 Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2005, 2006, 2007, 2008, 2009, 2013, 2015, 2016, 2018, 2020 Ludovic CourtÃ¨s <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -81,7 +80,9 @@
 			 :key
 			 (ident #f) (class "document")
 			 (title #f) (html-title #f) (author #f)
-			 (ending #f) (keywords '()) (env '()))
+			 (ending #f) (keywords '()) (env '())
+                         (info-dir-category #f)
+                         (info-dir-entry ""))
    (new document
       (markup 'document)
       (ident (or ident

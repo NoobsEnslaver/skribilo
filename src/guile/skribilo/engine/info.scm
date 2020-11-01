@@ -291,6 +291,16 @@
 	  (output-newline)
 	  (output-flush *margin*))))
 
+   (let ((category (markup-option obj :info-dir-category))
+         (entry    (markup-option obj :info-dir-entry))
+         (name     (basename (info-dest) ".info")))
+     (when category
+       (format #t "INFO-DIR-SECTION ~a~%" category)
+       (format #t "START-INFO-DIR-ENTRY~%")
+       (format #t "* ~a: (~a).      ~a~%"
+               name name (or entry ""))
+       (format #t "END-INFO-DIR-ENTRY~%")))
+
    ;; the main node
    (receive (next prev top)
       (node-next+prev+up obj e)
