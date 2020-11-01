@@ -313,7 +313,7 @@
 	  (output-newline)
 	  (info-authors authors)
 	  (output-newline)
-	  (output-flush *margin*))))
+	  (output-flush (*margin*)))))
 
    (let ((category (markup-option obj :info-dir-category))
          (entry    (markup-option obj :info-dir-entry))
@@ -653,7 +653,7 @@
   :action (lambda (n e)
             (let ((body (markup-body n)))
               (output-newline)
-              (output-flush *margin*)
+              (output-flush (*margin*))
               (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
@@ -672,7 +672,7 @@
   :options '(:title :info-node :number :toc :env :file)
   :action (lambda (n e)
             (let ((body (markup-body n)))
-              (output-flush *margin*)
+              (output-flush (*margin*))
               (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
@@ -688,7 +688,7 @@
   :options '(:title :info-node :number :toc :env :file)
   :action (lambda (n e)
             (let ((body (markup-body n)))
-              (output-flush *margin*)
+              (output-flush (*margin*))
               (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
@@ -704,7 +704,7 @@
   :action (lambda (n e)
             (unless (first-paragraph? n)
               (output-newline))
-            (output-flush *margin*)
+            (output-flush (*margin*))
             (unless (first-paragraph? n)
               (display "   "))
             (output (markup-body n) e)))
@@ -717,7 +717,7 @@
   :action (lambda (n e)
             (let ((body (markup-body n)))
               (output-newline)
-              (output-flush *margin*)
+              (output-flush (*margin*))
               (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
@@ -750,12 +750,12 @@
              :frame :rules :cellpadding :rulecolor)
   :action (lambda (n e)
             (let ((border (markup-option n :border)))
-              (output-flush *margin*)
+              (output-flush (*margin*))
               (if border
                   (border-table->info n)
                   (table->ascii n (lambda (obj)
                                     (output obj e))))
-              (output-flush *margin*))))
+              (output-flush (*margin*)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    info ::&the-bibliography ...                                     */
@@ -811,12 +811,11 @@
   :action (lambda (n e)
             ;; Skip a line and indent the program.
             (newline)
-            (set! *margin* (+ 2 *margin*))
             (with-justification
              (make-justifier *text-column-width* 'verbatim)
              (lambda ()
-               (output (markup-body n) e)))
-            (set! *margin* (- *margin* 2))))
+               (output (markup-body n) e))
+             2)))
 
 (markup-writer '&prog-line info-engine
   :action (lambda (n e)
@@ -825,7 +824,7 @@
               (and (number? num)
                    (output-justified (format #f "~3d: " num))))
             (output (markup-body n) e)
-            (output-flush *margin*)))
+            (output-flush (*margin*))))
 
 ;*---------------------------------------------------------------------*/
 ;*    info ::%image ...                                                */

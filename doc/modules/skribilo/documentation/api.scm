@@ -273,8 +273,7 @@ def @SkribiloExample named @Title {} right x {
               (let ((protos (markup-option n 'prototypes))
                     (opts   (markup-option n 'options))
                     (params (markup-option n 'parameters))
-                    (see    (markup-option n 'see-also))
-                    (margin *margin*))
+                    (see    (markup-option n 'see-also)))
                 (output (linebreak) e)
 
                 (with-justification
@@ -284,7 +283,7 @@ def @SkribiloExample named @Title {} right x {
                                (output "-- Markup: " e)
                                (output p e))
                              protos))
-                 (+ *margin* 1))
+                 1)
 
                 (and (pair? opts)
                      (output

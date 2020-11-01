@@ -1,6 +1,6 @@
 ;;; justify.scm  --  Producing justified text.
 ;;;
-;;; Copyright 2008  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2008, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2001  Manuel Serrano
 ;;;
 ;;;
@@ -90,7 +90,7 @@
 			  (lambda ()
 			     (output-justified str)))))
 
-(define *margin* 0)
+(define *margin* (make-parameter 0))
 
 ;*---------------------------------------------------------------------*/
 ;*    output ...                                                       */
@@ -137,28 +137,28 @@
 ;*---------------------------------------------------------------------*/
 ;*    with-justification ...                                           */
 ;*---------------------------------------------------------------------*/
-(define (with-justification justifier thunk . margin)
-   (output-flush *margin*)
-   (let ((old-margin *margin*))
-      (if (pair? margin) (set! *margin* (+ *margin* (car margin))))
-      (set! *justifiers* (cons justifier *justifiers*))
-      (thunk)
-      (output-flush *margin*)
-      (set! *justifiers* (cdr *justifiers*))
-      (set! *margin* old-margin)))
+(define* (with-justification justifier thunk #:optional margin)
+  (output-flush (*margin*))
+  (parameterize ((*margin* (if margin
+                               (+ (*margin*) margin)
+                               (*margin*))))
+    (set! *justifiers* (cons justifier *justifiers*))
+    (thunk)
+    (output-flush (*margin*))
+    (set! *justifiers* (cdr *justifiers*))))
 
 ;*---------------------------------------------------------------------*/
 ;*    with-justification/noflush ...                                   */
 ;*---------------------------------------------------------------------*/
-(define (with-justification/noflush justifier thunk . margin)
-   (let ((old-margin *margin*))
-      (if (pair? margin) (set! *margin* (+ *margin* (car margin))))
-      (set! *justifiers* (cons justifier *justifiers*))
-      (thunk)
-      (let ((res ((car *justifiers*) 'flush)))
-	 (set! *justifiers* (cdr *justifiers*))
-	 (set! *margin* old-margin)
-	 res)))
+(define* (with-justification/noflush justifier thunk #:optional margin)
+  (parameterize ((*margin* (if margin
+                               (+ (*margin*) margin)
+                               (*margin*))))
+    (set! *justifiers* (cons justifier *justifiers*))
+    (thunk)
+    (let ((res ((car *justifiers*) 'flush)))
+      (set! *justifiers* (cdr *justifiers*))
+      res)))
 
 ;*---------------------------------------------------------------------*/
 ;*    *spaces* ...                                                     */
