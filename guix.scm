@@ -45,7 +45,8 @@
      `(("pkg-config" ,(S "pkg-config"))
        ("autoconf" ,(S "autoconf"))
        ("automake" ,(S "automake"))
-       ("gettext" ,(S "gettext"))))
+       ("gettext" ,(S "gettext"))
+       ("git" ,(S "git-minimal"))))               ;for version numbers
     (inputs
      `(("guile" ,(S "guile"))
        ("imagemagick" ,(S "imagemagick"))         ;'convert'
