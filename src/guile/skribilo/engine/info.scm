@@ -143,18 +143,42 @@
                     children)))
     (newline)))
 
+(define (block-number n)
+  ;; Return the number of N, a chapter/section, as a string like "4.2.3.".
+  ;; Return #f if N or one of its parent nodes is unnumbered.
+  (let loop ((n n)
+             (numbers '()))
+    (cond ((not n)
+           (string-join (map number->string numbers) "."))
+          ((%block? n)
+           (let ((number (markup-option n :number)))
+             (and number
+                  (loop (ast-parent n) (cons number numbers)))))
+          (else
+           (loop (ast-parent n) numbers)))))
+
 ;*---------------------------------------------------------------------*/
 ;*    block-title ::%chapter ...                                       */
 ;*---------------------------------------------------------------------*/
-(define (block-title obj e)
+(define* (block-title obj e :key (number? #f))
+  (define number
+    (if number?
+        (lambda (title)
+          (let ((number (block-number obj)))
+            (if number
+                (string-append number ". " title)
+                title)))
+        (lambda (title)
+          title)))
+
   (or (let ((title (markup-option obj :info-node)))
-        (and title (ast->string title)))
+        (and title (number (ast->string title))))
       (let ((title    (markup-option obj :title))
             (subtitle (markup-option obj :subtitle)))
         (let ((title (if title title subtitle)))
-          (if (string? title)
-              title
-              (ast->string title))))))
+          (number (if (string? title)
+                      title
+                      (ast->string title)))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    check-node-title-conflicts ...                                   */
@@ -630,10 +654,10 @@
             (let ((body (markup-body n)))
               (output-newline)
               (output-flush *margin*)
-              (let ((t (block-title n e)))
+              (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
-                  (info-node t next prev top)
+                  (info-node (block-title n e) next prev top)
                   (print t)
                   (print (make-string (string-length t) #\=))))
               (node-menu n e)
@@ -649,10 +673,10 @@
   :action (lambda (n e)
             (let ((body (markup-body n)))
               (output-flush *margin*)
-              (let ((t (block-title n e)))
+              (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
-                  (info-node t next prev top)
+                  (info-node (block-title n e) next prev top)
                   (print t)
                   (print (make-string (string-length t) #\-))))
               (output body e))))
@@ -665,10 +689,10 @@
   :action (lambda (n e)
             (let ((body (markup-body n)))
               (output-flush *margin*)
-              (let ((t (block-title n e)))
+              (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
-                  (info-node t next prev top)
+                  (info-node (block-title n e) next prev top)
                   (print t)
                   (print (make-string (string-length t) #\~))))
               (output body e))))
@@ -694,10 +718,10 @@
             (let ((body (markup-body n)))
               (output-newline)
               (output-flush *margin*)
-              (let ((t (block-title n e)))
+              (let ((t (block-title n e :number? #t)))
                 (receive (next prev top)
                     (node-next+prev+up n e)
-                  (info-node t next prev top)
+                  (info-node (block-title n e) next prev top)
                   (print t)
                   (print (make-string (string-length t) #\*))))
               (node-menu n e)
