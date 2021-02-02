@@ -1,6 +1,6 @@
 ;;; info.scm  --  GNU Info engine.
 ;;;
-;;; Copyright 2008, 2009, 2012, 2015, 2018, 2020  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2008, 2009, 2012, 2015, 2018, 2020, 2021 Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2001, 2002  Manuel Serrano
 ;;;
 ;;;
@@ -210,7 +210,7 @@
 ;*    info ::%document ...                                             */
 ;*---------------------------------------------------------------------*/
 (markup-writer 'document info-engine
-  :options '(:title :author :ending)
+  :options '(:title :author :ending :info-dir-category :info-dir-entry)
   :action (lambda (doc e)
             (check-node-title-conflicts doc e)
             (set-port-encoding! (current-output-port) "UTF-8")
