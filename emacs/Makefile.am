@@ -1,5 +1,5 @@
 EXTRA_DIST     = skribe.el.in
-lisp_DATA      = skribe.el
+lisp_DATA      = skribe.el skribilo.el
 
 CLEANFILES     = $(lisp_DATA)
 
