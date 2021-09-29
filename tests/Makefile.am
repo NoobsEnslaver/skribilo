@@ -3,8 +3,11 @@ TESTS_ENVIRONMENT =									\
   GUILE_LOAD_COMPILED_PATH="$(top_builddir)/src/guile:$$GUILE_LOAD_COMPILED_PATH";	\
   export GUILE_AUTO_COMPILE GUILE_LOAD_COMPILED_PATH;
 
-TEST_LOG_COMPILER =							\
-  $(GUILE) -L $(top_srcdir)/src/guile -L $(top_builddir)/src/guile
+TEST_LOG_DRIVER =							\
+  $(GUILE) --no-auto-compile -e main					\
+      -L "$(top_srcdir)/src/guile" -L "$(top_builddir)/src/guile"	\
+      -L "$(srcdir)"							\
+      "$(top_srcdir)/build-aux/test-driver.scm"
 
 TESTS =						\
   ast.test					\

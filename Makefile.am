@@ -2,7 +2,9 @@ SUBDIRS = po src doc emacs tests
 
 ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = TODO THANKS README.Skribe ChangeLog.Skribe guix.scm
+EXTRA_DIST =						\
+  TODO THANKS README.Skribe ChangeLog.Skribe guix.scm	\
+  build-aux/test-driver.scm
 
 gen-ChangeLog:
 	if ! test -d "$(top_srcdir)/.git"; then				\
