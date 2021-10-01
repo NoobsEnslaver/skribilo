@@ -162,17 +162,17 @@ presents here the kind of documents that can be created with Skribilo.])
       (p [In this section we present how to introduce a simple
 computation into a document. For instance, the following sentence
 
-,(disp [Document creation date: ,(date->string (current-date))])
+,(disp [sqrt(2) = ,(sqrt 2)])
 
-is generated with the following piece of code (using ,(srfi-ref 19)):
+is generated with the following piece of code:
 
 ,(prgm :language skribe [
-\[Document creation date: \,(date->string (current-date))\]
+\[sqrt(2) =  \,(sqrt 2)\]
 ])
 
-Here, we use the Skribilo function ,(code "date") to compute the date to
-be inserted in the document. In general, any valid Scheme expression
-is authorized inside a ,(code ",(...)") construct,(footnote
+Here, we use the Scheme function ,(code "sqrt") to compute the square
+root to be inserted in the document. In general, any valid Scheme
+expression is authorized inside a ,(code ",(...)") construct,(footnote
 [Any valid GNU Guile Scheme code may be used inside ,(code ",(...)")
 expressions!]).])
 
