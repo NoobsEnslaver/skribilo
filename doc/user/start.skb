@@ -172,9 +172,7 @@ is generated with the following piece of code:
 
 Here, we use the Scheme function ,(code "sqrt") to compute the square
 root to be inserted in the document. In general, any valid Scheme
-expression is authorized inside a ,(code ",(...)") construct,(footnote
-[Any valid GNU Guile Scheme code may be used inside ,(code ",(...)")
-expressions!]).])
+expression is authorized inside a ,(code ",(...)") construct.])
 
       (p [Another example of
 such a computation is given below.
