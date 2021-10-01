@@ -42,41 +42,40 @@ syntax highlighting (or ``fontification'') through the Skribe Mode
 described below.])
 
   ;;*---------------------------------------------------------------------*/
-  ;;*    Skribe emacs mode                                                */
+  ;;*    Skribilo emacs mode                                              */
   ;;*---------------------------------------------------------------------*/
-  (section :title "Skribe Emacs Mode"
+  (section :title "Skribilo Emacs Mode"
 
+    (index "emacs" :note "skribilo mode")
     (index "emacs" :note "skribe mode")
 
-    (p [The Skribilo distribution contains a minor mode dedicated to
-Skribe edition originally written by Manuel Serrano.  This mode
-provides ,(emph "fontification") and indentation of Skribe programs.
-In this manual, we present the two most important key bindings
-specific to this mode:
+    (p [The Skribilo distribution contains an Emacs minor mode that
+provides ,(emph "fontification") and indentation of Skribilo
+documents. This is the preferred method for writing Skribilo documents
+using Emacs.])
 
-,(itemize (item [,(color :fg "#007700" (kbd "tab")) indents the
-current line.])
-(item [,(color :fg "#007700" (kbd "M-C-q")) indents a whole Skribe
-expression.]))])
-
-    (p [To use the Skribe/Skribilo Emacs mode, you need to tell Emacs
-that when the Emacs Lisp ,(tt "skribe-mode") function is needed it has
-to be loaded from the ,(tt "skribe.el") file:])
-
+    (p [To use the Skribilo Emacs mode, you need to tell Emacs that
+when the Emacs Lisp ,(tt "skribilo-mode") function is needed it has to
+be loaded from the ,(tt "skribilo.el") file:])
 
     (disp :verb #t
       (source :language lisp
-        [(autoload 'skribe-mode "skribe.el" "Skribe mode." t)]))
+        [(autoload 'skribilo-mode "skribilo.el" "Skribilo mode." t)]))
 
-    (p [The ,(tt "skribe.el") file must in the path described by the
-Emacs Lisp ,(tt "load-path") variable.])
+    (p [The ,(tt "skribilo.el") file must be in the path described by
+the Emacs Lisp ,(tt "load-path") variable.])
 
-    (p [The ,(code "skribe") mode is a minor mode. It is intended to
-be used with a Lisp or Scheme mode. Hence, to use the ,(code "skribe")
-mode you will have to use the following Emacs commands:])
+    (p [The ,(code "skribilo") mode is a minor mode. It is intended to
+be used with a Lisp or Scheme mode. Hence, to use the
+,(code "skribilo") mode you will have to use the following Emacs
+commands:])
 
     (disp :verb #t (source :language lisp [M-x scheme-mode
-M-x skribe-mode]))))
+M-x skribe-mode]))
+
+    (p [The Skribilo distribution also contains an older Emacs minor
+mode dedicated to Skribe, originally written by Manuel Serrano. This
+mode is now deprecated.])))
 
 ;;; Local Variables:
 ;;; ispell-local-dictionary: "american"
