@@ -29,6 +29,7 @@
   #:use-module (skribilo utils strings)
   #:use-module (skribilo utils syntax)
   #:use-module (skribilo package base)
+  #:use-module (skribilo parameters)
   #:autoload   (skribilo utils images)  (convert-image)
   #:autoload   (skribilo evaluator)     (evaluate-document)
   #:autoload   (skribilo output)        (output)
@@ -358,7 +359,7 @@
 	 :custom '((documentclass "\\documentclass{article}")
                    (encoding "UTF-8")
                    (class-has-chapters? #f)
-		   (usepackage "\\usepackage{epsfig}\n")
+                   (usepackage #f)
 		   (predocument "\\newdimen\\oldframetabcolsep\n\\newdimen\\oldcolortabcolsep\n\\newdimen\\oldpretabcolsep\n")
 		   (postdocument #f)
 		   (maketitle "\\date{}\n\\maketitle")
@@ -380,7 +381,9 @@
 		   (source-string-color "red")
 		   (source-bracket-color "red")
 		   (source-type-color "#00cf00")
+                   ;; images
 		   (image-format ("eps"))
+                   (image-engine 'epsfig)
 		   (index-page-ref #t))
 	 :symbol-table (latex-symbol-table 
 			(lambda (m)
@@ -532,6 +535,17 @@
 	      ;; usepackage
 	      (let ((pa (engine-custom e 'usepackage)))
 		 (if pa (begin (display pa) (newline))))
+              ;; image-engine
+              (case (engine-custom e 'image-engine)
+                [(epsfig)
+                   (engine-custom-set! e 'image-format '("eps"))
+                 (display "\\usepackage{epsfig}\n")]
+                [(graphicx)
+                   (engine-custom-set! e 'image-format '("png" "jpg"))
+                   (display "\\usepackage{graphicx}\n")
+                   (display "\\DeclareGraphicsExtensions{.png,.jpg}\n")
+                   (format #t "\\graphicspath{{~a/}}\n" (dirname (*destination-file*)))]
+                [else (skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])
 	      ;; predocument
 	      (let ((pd (engine-custom e 'predocument)))
 		 (when pd (display pd) (newline)))
@@ -1407,18 +1421,21 @@
 		     (height (markup-option n :height))
 		     (zoom (markup-option n :zoom))
 		     (efmt (engine-custom e 'image-format))
-		     (img (or url (convert-image file 
-						 (if (list? efmt) 
-						     efmt
-						     '("eps"))))))
+                     (img (or url (convert-image file efmt))))
 		 (if (not (string? img))
 		     (skribe-error 'latex "Invalid image" file)
-		     (begin
-			(format #t "\\epsfig{file=~a" (strip-ref-base img))
-			(if width (format #t ", width=~a" (latex-width width)))
-			(if height (format #t ", height=~apt" height))
-			(if zoom (format #t ", zoom=\"~a\"" zoom))
-			(display "}"))))))
+                     (case (engine-custom e 'image-engine)
+                       [(epsfig)
+                        (opt-format '(file width height zoom)
+                                     (list (strip-ref-base img) (latex-width width) height zoom)
+                                     "\\epsfig{~a}")]
+                       [(graphicx)
+                        (opt-format '(width height scale)
+                                     (list (latex-width width) height zoom)
+                                     "\\includegraphics[~a]")
+                        (format #t "{~a}" (strip-ref-base img))]
+                       [else
+                          (skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])))))
 
 ;*---------------------------------------------------------------------*/
 ;*    Ornaments ...                                                    */

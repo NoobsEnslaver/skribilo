@@ -20,8 +20,10 @@
 
 (define-module (skribilo utils strings)
   #:export (strip-ref-base string-canonicalize
-	   make-string-replace)
+            make-string-replace opt-format)
   #:autoload   (skribilo parameters) (*ref-base*)
+  #:autoload   (srfi srfi-1) (filter-map)
+  #:use-module (rnrs base)
   #:use-module (srfi srfi-13))
 
 
@@ -134,3 +136,13 @@
       (else
        (%make-general-string-replace lst)))))
 
+;; (opt-format '(a b c) '(1 2 3)) => "[a=1, b=2, c=3]"
+;; (opt-format '(a b c) '(1 #f 3)) => "[a=1, c=3]"
+;; (opt-format '(a b c) '(#f #f #f)) => "[]"
+(define* (opt-format keys values #:optional (template "[~a]") (port #t))
+  (assert (= (length keys) (length values)))
+  (let* ([pairs (filter-map
+                 (lambda (k v)
+                   (if v (format #f "~a=~a" k v) #f)) keys values)]
+         [string (string-join pairs ", ")])
+    (format port template string)))

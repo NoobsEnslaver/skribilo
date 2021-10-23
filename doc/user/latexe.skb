@@ -63,6 +63,7 @@ so on.])
 	   (hyperref "Enables/disables hypererrf.")
 	   (hyperref-usepackage "The LaTeX package for hyperref.")
 	   (image-format "The image formats for this engine.")
+           (image-engine "Engine used to handle images: epsfig or graphicx")
 	   (index-page-ref "Indexes use page references."))
 	 :source "skribilo/engine/latex.scm"))
    

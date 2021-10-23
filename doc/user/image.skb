@@ -63,12 +63,10 @@ command-line option of the ,(tt [skribilo]) compiler (see ,(numref :text
 ;*--- Image format ----------------------------------------------------*/
 (subsection :title "Image formats"
    (index "image" :note "conversion")
-
    (p [
 Images are unfortunately ,(emph "unportable"). The various Skribe output 
-formats support different image formats. For instance, HTML supports 
-,(code "gif") and ,(code "jpeg") while the LaTeX back-end only supports 
-,(code "ps"). Skribe tries, only when needed, to automatically 
+formats may support different image formats.
+Skribe tries, only when needed, to automatically
 ,(emph "convert") images to a format supported by the target
 to be produced. For this, it uses external tools. The default Skribe
 translation scheme is:])
@@ -99,4 +97,3 @@ searched in the ,(ref :mark "*image-path*" :text "image path").])
                :def '(define-markup (convert-image file formats) ...)
 	       :see-also '(*image-path*)
 	       :idx *function-index*)))
-   
