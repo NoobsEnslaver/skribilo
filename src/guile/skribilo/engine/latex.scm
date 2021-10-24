@@ -1719,7 +1719,7 @@
 (markup-writer '&source-string
    :action (lambda (n e)
 	      (let* ((cc (engine-custom e 'source-string-color))
-		     (n1 (markup-body n))
+                     (n1 (bold (markup-body n)))
 		     (n2 (if (and (engine-custom e 'source-color) cc)
 			     (color :fg cc n1)
 			     n1)))
