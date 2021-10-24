@@ -64,6 +64,7 @@ so on.])
 	   (hyperref-usepackage "The LaTeX package for hyperref.")
 	   (image-format "The image formats for this engine.")
            (image-engine "Engine used to handle images: epsfig or graphicx")
+           (toc-depth "Depth of table of contents: [0,3] or chapter|section|subsection|subsubsection")
 	   (index-page-ref "Indexes use page references."))
 	 :source "skribilo/engine/latex.scm"))
    

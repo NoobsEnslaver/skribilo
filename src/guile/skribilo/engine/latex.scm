@@ -384,6 +384,8 @@
                    ;; images
 		   (image-format ("eps"))
                    (image-engine 'epsfig)
+
+                   (toc-depth #f)
 		   (index-page-ref #t))
 	 :symbol-table (latex-symbol-table 
 			(lambda (m)
@@ -546,6 +548,11 @@
                    (display "\\DeclareGraphicsExtensions{.png,.jpg}\n")
                    (format #t "\\graphicspath{{~a/}}\n" (dirname (*destination-file*)))]
                 [else (skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])
+              (case (engine-custom e 'toc-depth)
+                [(chapter 0)       (display "\\setcounter{tocdepth}{0}\n")]
+                [(section 1)       (display "\\setcounter{tocdepth}{1}\n")]
+                [(subsection 2)    (display "\\setcounter{tocdepth}{2}\n")]
+                [(subsubsection 3) (display "\\setcounter{tocdepth}{3}\n")])
 	      ;; predocument
 	      (let ((pd (engine-custom e 'predocument)))
 		 (when pd (display pd) (newline)))
