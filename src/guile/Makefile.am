@@ -77,7 +77,8 @@ packages =								\
   skribilo/package/html-navtabs.scm skribilo/package/web-book2.scm	\
   skribilo/package/pie/lout.scm skribilo/package/eq/lout.scm		\
   skribilo/package/slide/base.scm skribilo/package/slide/latex.scm	\
-  skribilo/package/slide/html.scm skribilo/package/slide/lout.scm
+  skribilo/package/slide/html.scm skribilo/package/slide/lout.scm	\
+  skribilo/package/russian.scm
 
 # Generated files part of the distribution.
 SOURCES +=							\

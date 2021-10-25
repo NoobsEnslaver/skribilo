@@ -154,6 +154,7 @@
     ("letter.skr"       . (skribilo package letter))
     ("jfp.skr"          . (skribilo package jfp))
     ("french.skr"       . (skribilo package french))
+    ("russian.skr"       . (skribilo package russian))
     ("acmproc.skr"      . (skribilo package acmproc))))
 
 (define*-public (skribe-load file :rest args)
