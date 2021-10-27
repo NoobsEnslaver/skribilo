@@ -78,7 +78,8 @@ packages =								\
   skribilo/package/pie/lout.scm skribilo/package/eq/lout.scm		\
   skribilo/package/slide/base.scm skribilo/package/slide/latex.scm	\
   skribilo/package/slide/html.scm skribilo/package/slide/lout.scm	\
-  skribilo/package/babel-russian.scm skribilo/package/polyglossia-russian.scm
+  skribilo/package/babel-russian.scm skribilo/package/polyglossia-russian.scm \
+  skribilo/package/minted.scm
 
 # Generated files part of the distribution.
 SOURCES +=							\

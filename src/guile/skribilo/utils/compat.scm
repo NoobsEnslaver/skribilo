@@ -156,6 +156,7 @@
     ("french.skr"       . (skribilo package french))
     ("babel-russian.skr". (skribilo package babel-russian))
     ("polyglossia-russian.skr". (skribilo package polyglossia-russian))
+    ("minted.skr"       . (skribilo package minted))
     ("acmproc.skr"      . (skribilo package acmproc))))
 
 (define*-public (skribe-load file :rest args)

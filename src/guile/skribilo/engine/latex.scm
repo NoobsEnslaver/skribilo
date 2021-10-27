@@ -383,10 +383,11 @@
 		   (source-type-color "#00cf00")
                    ;; images
 		   (image-format ("eps"))
-                   (image-engine 'epsfig)
+                   (image-engine epsfig)
 
                    (toc-depth #f)
-		   (index-page-ref #t))
+		   (index-page-ref #t)
+                   (minted-output-dir #f))
 	 :symbol-table (latex-symbol-table 
 			(lambda (m)
 			   (format #f "\\begin{math}~a\\end{math}" m))))))
