@@ -1,5 +1,5 @@
 ;;; latex.scm  --  LaTeX engine.
-;;; -*- coding: iso-8859-1 -*-
+;;; -*- coding: utf-8; tab-width: 4; c-basic-offset: 2; indent-tabs-mode: t; -*-
 ;;;
 ;;; Copyright 2007, 2009, 2012, 2015, 2020  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
@@ -357,9 +357,9 @@
 	 :delegate (find-engine 'base)
 	 :filter (make-string-replace latex-encoding)
 	 :custom '((documentclass "\\documentclass{article}")
-                   (encoding "UTF-8")
-                   (class-has-chapters? #f)
-                   (usepackage #f)
+		   (encoding "UTF-8")
+		   (class-has-chapters? #f)
+		   (usepackage #f)
 		   (predocument "\\newdimen\\oldframetabcolsep\n\\newdimen\\oldcolortabcolsep\n\\newdimen\\oldpretabcolsep\n")
 		   (postdocument #f)
 		   (maketitle "\\date{}\n\\maketitle")
@@ -381,13 +381,13 @@
 		   (source-string-color "red")
 		   (source-bracket-color "red")
 		   (source-type-color "#00cf00")
-                   ;; images
+		   ;; images
 		   (image-format ("eps"))
-                   (image-engine epsfig)
+		   (image-engine epsfig)
 
-                   (toc-depth #f)
+		   (toc-depth #f)
 		   (index-page-ref #t)
-                   (minted-output-dir #f))
+		   (minted-output-dir #f))
 	 :symbol-table (latex-symbol-table 
 			(lambda (m)
 			   (format #f "\\begin{math}~a\\end{math}" m))))))
@@ -540,20 +540,20 @@
 		 (if pa (begin (display pa) (newline))))
               ;; image-engine
               (case (engine-custom e 'image-engine)
-                [(epsfig)
-                   (engine-custom-set! e 'image-format '("eps"))
-                 (display "\\usepackage{epsfig}\n")]
-                [(graphicx)
-                   (engine-custom-set! e 'image-format '("png" "jpg"))
-                   (display "\\usepackage{graphicx}\n")
-                   (display "\\DeclareGraphicsExtensions{.png,.jpg}\n")
-                   (format #t "\\graphicspath{{~a/}}\n" (dirname (*destination-file*)))]
-                [else (skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])
+		[(epsfig)
+		   (engine-custom-set! e 'image-format '("eps"))
+		 (display "\\usepackage{epsfig}\n")]
+		[(graphicx)
+		   (engine-custom-set! e 'image-format '("png" "jpg"))
+		   (display "\\usepackage{graphicx}\n")
+		   (display "\\DeclareGraphicsExtensions{.png,.jpg}\n")
+		   (format #t "\\graphicspath{{~a/}}\n" (dirname (*destination-file*)))]
+		[else (skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])
               (case (engine-custom e 'toc-depth)
-                [(chapter 0)       (display "\\setcounter{tocdepth}{0}\n")]
-                [(section 1)       (display "\\setcounter{tocdepth}{1}\n")]
-                [(subsection 2)    (display "\\setcounter{tocdepth}{2}\n")]
-                [(subsubsection 3) (display "\\setcounter{tocdepth}{3}\n")])
+		[(chapter 0)	   (display "\\setcounter{tocdepth}{0}\n")]
+		[(section 1)	   (display "\\setcounter{tocdepth}{1}\n")]
+		[(subsection 2)	   (display "\\setcounter{tocdepth}{2}\n")]
+		[(subsubsection 3) (display "\\setcounter{tocdepth}{3}\n")])
 	      ;; predocument
 	      (let ((pd (engine-custom e 'predocument)))
 		 (when pd (display pd) (newline)))
@@ -1429,21 +1429,21 @@
 		     (height (markup-option n :height))
 		     (zoom (markup-option n :zoom))
 		     (efmt (engine-custom e 'image-format))
-                     (img (or url (convert-image file efmt))))
+		     (img (or url (convert-image file efmt))))
 		 (if (not (string? img))
 		     (skribe-error 'latex "Invalid image" file)
-                     (case (engine-custom e 'image-engine)
-                       [(epsfig)
-                        (opt-format '(file width height zoom)
-                                     (list (strip-ref-base img) (latex-width width) height zoom)
-                                     "\\epsfig{~a}")]
-                       [(graphicx)
-                        (opt-format '(width height scale)
-                                     (list (latex-width width) height zoom)
-                                     "\\includegraphics[~a]")
-                        (format #t "{~a}" (strip-ref-base img))]
-                       [else
-                          (skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])))))
+		     (case (engine-custom e 'image-engine)
+		       [(epsfig)
+			(opt-format '(file width height zoom)
+				    (list (strip-ref-base img) (latex-width width) height zoom)
+				    "\\epsfig{~a}")]
+		       [(graphicx)
+			(opt-format '(width height scale)
+				    (list (latex-width width) height zoom)
+				    "\\includegraphics[~a]")
+			(format #t "{~a}" (strip-ref-base img))]
+		       [else
+			(skribe-error 'latex "Invalid image engine" (engine-custom e 'image-engine))])))))
 
 ;*---------------------------------------------------------------------*/
 ;*    Ornaments ...                                                    */
@@ -1720,7 +1720,7 @@
 (markup-writer '&source-string
    :action (lambda (n e)
 	      (let* ((cc (engine-custom e 'source-string-color))
-                     (n1 (bold (markup-body n)))
+		     (n1 (bold (markup-body n)))
 		     (n2 (if (and (engine-custom e 'source-color) cc)
 			     (color :fg cc n1)
 			     n1)))

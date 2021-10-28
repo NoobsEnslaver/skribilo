@@ -1,7 +1,7 @@
-;;; latexe.skb  --  Documentation of the LaTeX engine.
-;;; -*- coding: iso-8859-1 -*-
+;;; latexe.skb	--  Documentation of the LaTeX engine.
+;;; -*- coding: utf-8; tab-width: 4; c-basic-offset: 2; indent-tabs-mode: t; -*-
 ;;;
-;;; Copyright 2007, 2008, 2012  Ludovic Courtès <ludo@gnu.org>
+;;; Copyright 2007, 2008, 2012	Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Manuel Serrano
 ;;;
 ;;;
@@ -22,7 +22,7 @@
 
 
 ;*---------------------------------------------------------------------*/
-;*    Document                                                         */
+;*    Document							       */
 ;*---------------------------------------------------------------------*/
 (section :title "LaTeX Engine" :file #t :ident "latex-engine"
    (index "LaTeX" :note "Engine")
@@ -36,10 +36,10 @@ used to produce high-quality PostScript of PDF files for printing.])
       
       (doc-engine 'latex
 	 `((documentclass ,[A string declaring the LaTeX document class.])
-           (encoding ,[The encoding of the output document,(footnote
+	   (encoding ,[The encoding of the output document,(footnote
 [This option is supported when Guile 2.0+ is being used.]).])
-           (class-has-chapters? ,[A boolean indicating whether the
-document class has a ,(code [chapter]) markup.  If ,(code "#f"), then
+	   (class-has-chapters? ,[A boolean indicating whether the
+document class has a ,(code [chapter]) markup.	If ,(code "#f"), then
 Skribilo's ,(code [chapter]) is mapped to LaTeX' ,(code [section]), and
 so on.])
 	   (usepackage ,[The boolean ,(code "#f") if no package is used or a string declaring The LaTeX packages.])
@@ -63,19 +63,19 @@ so on.])
 	   (hyperref "Enables/disables hypererrf.")
 	   (hyperref-usepackage "The LaTeX package for hyperref.")
 	   (image-format "The image formats for this engine.")
-           (image-engine "Engine used to handle images: epsfig or graphicx")
-           (toc-depth "Depth of table of contents: [0,3] or chapter|section|subsection|subsubsection")
+	   (image-engine "Engine used to handle images: epsfig or graphicx")
+	   (toc-depth "Depth of table of contents: [0,3] or chapter|section|subsection|subsubsection")
 	   (index-page-ref "Indexes use page references.")
-           (minted-output-dir "Path for minted cache (if used), must be specified if --output-directory will be used on latex->pdf compilation"))
+	   (minted-output-dir "Path for minted cache (if used), must be specified if --output-directory will be used on latex->pdf compilation"))
 	 :source "skribilo/engine/latex.scm"))
    
    (subsection :title "LaTeX Document Class"
       
       (p [The default setting of the Skribilo LaTeX engine is to produce
-a document using the ,(code "article") document class.  In order to
+a document using the ,(code "article") document class.	In order to
 produce a document that uses a document class defining the ,(code
 "chapter") command (unlike the ,(code "article") class), the engine must
-be customized.  Changing this setting can be done with expressions such
+be customized.	Changing this setting can be done with expressions such
 as:
 
 ,(prgm :language skribe [ (let ((le (find-engine 'latex)))

@@ -1,4 +1,4 @@
-;;; -*- coding: utf-8 -*-
+;;; -*- coding: utf-8; tab-width: 4; c-basic-offset: 2; indent-tabs-mode: nil; -*-
 ;;; Easy configuring `xelatex' for working with cyryllic text
 ;;:
 ;;; This file is part of Skribilo.

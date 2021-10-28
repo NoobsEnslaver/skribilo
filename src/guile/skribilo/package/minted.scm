@@ -1,20 +1,37 @@
-;; -*- coding: utf-8; -*-
+;;; -*- coding: utf-8; tab-width: 4; c-basic-offset: 2; indent-tabs-mode: nil; -*-
+;;; Replacement of the built-in coloring and framing in the latex engine with
+;;; the ones provided by the minted package. Just include module.
+;;:
+;;; This file is part of Skribilo.
+;;;
+;;; Skribilo is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; Skribilo is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with Skribilo.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (skribilo package minted)
   #:export (skribe scheme stklos bigloo lisp c c-language java minted-lang)
   #:use-module (skribilo engine)
   #:use-module (skribilo ast)
-  #:use-module ((skribilo condition)    :select (invalid-argument-error))
-  #:use-module ((skribilo utils strings) :select (opt-format))
-  #:use-module ((skribilo lib)          :select (new))
-  #:use-module ((skribilo output)       :select (output))
-  #:use-module ((skribilo writer)       :select (markup-writer-get writer-before writer-after writer-action))
-  #:use-module ((skribilo source)       :select (<language> language-extractor language-fontifier))
-  #:use-module ((oop goops)             :select (make slot-set!))
-  #:use-module ((skribilo parameters)   :select (*destination-file*))
-  #:use-module ((skribilo source lisp)  :renamer (symbol-prefix-proc 'old:))
-  #:use-module ((skribilo source c)     :renamer (symbol-prefix-proc 'old:))
-  #:use-module ((skribilo utils syntax) :select (skribilo-module-syntax)))
+  #:use-module ((skribilo condition)        :select (invalid-argument-error))
+  #:use-module ((skribilo utils strings)    :select (opt-format))
+  #:use-module ((skribilo lib)              :select (new))
+  #:use-module ((skribilo output)           :select (output))
+  #:use-module ((skribilo writer)           :select (markup-writer-get writer-before writer-after writer-action))
+  #:use-module ((skribilo source)           :select (<language> language-extractor language-fontifier))
+  #:use-module ((oop goops)                 :select (make slot-set!))
+  #:use-module ((skribilo parameters)       :select (*destination-file*))
+  #:use-module ((skribilo source lisp)      :renamer (symbol-prefix-proc 'old:))
+  #:use-module ((skribilo source c)         :renamer (symbol-prefix-proc 'old:))
+  #:use-module ((skribilo utils syntax)     :select (skribilo-module-syntax)))
 
 (skribilo-module-syntax)
 
@@ -24,8 +41,8 @@
 (define (minted-fontifier name)
   (lambda (s)
     (new markup
-	 (markup 'source)
-	 (body (if (string-suffix? "\n" s)
+         (markup 'source)
+         (body (if (string-suffix? "\n" s)
                    s
                    (string-append s "\n")))
          (options `((:language ,name))))))
@@ -51,9 +68,9 @@
   ;; -------------- edit default writers ---------------
   (slot-set! old-prog-writer 'action
              (lambda (n e)
-	       (let ((ne (make-engine
-		          (gensym "latex")
-		          :filter #f))
+               (let ((ne (make-engine
+                          (gensym "latex")
+                          :filter #f))
                      (sources (search-down
                                (lambda (x)
                                  (and (markup? x)

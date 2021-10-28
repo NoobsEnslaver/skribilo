@@ -1,7 +1,8 @@
+;;; -*- coding: utf-8; tab-width: 8; indent-tabs-mode: t; -*-
 ;;; strings.scm	-- Convenience functions to manipulate strings.
 ;;;
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@unice.fr>
-;;; Copyright 2005, 2006, 2007  Ludovic Courtès <ludovic.courtes@laas.fr>
+;;; Copyright 2005, 2006, 2007	Ludovic CourtÐ¥s <ludovic.courtes@laas.fr>
 ;;;
 ;;; This file is part of Skribilo.
 ;;;
@@ -20,7 +21,7 @@
 
 (define-module (skribilo utils strings)
   #:export (strip-ref-base string-canonicalize
-            make-string-replace opt-format)
+	    make-string-replace opt-format)
   #:autoload   (skribilo parameters) (*ref-base*)
   #:autoload   (srfi srfi-1) (filter-map)
   #:use-module (rnrs base)
@@ -142,7 +143,7 @@
 (define* (opt-format keys values #:optional (template "[~a]") (port #t))
   (assert (= (length keys) (length values)))
   (let* ([pairs (filter-map
-                 (lambda (k v)
-                   (if v (format #f "~a=~a" k v) #f)) keys values)]
-         [string (string-join pairs ", ")])
+		 (lambda (k v)
+		   (if v (format #f "~a=~a" k v) #f)) keys values)]
+	 [string (string-join pairs ", ")])
     (format port template string)))
