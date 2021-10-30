@@ -1,4 +1,5 @@
-;;; source.scm	-- Highlighting source files.
+;;; -*- coding: utf-8; tab-width: 4; c-basic-offset: 2; indent-tabs-mode: t; -*-
+;;; source.scm  -- Highlighting source files.
 ;;;
 ;;; Copyright 2005, 2008, 2009, 2010, 2018  Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright 2003, 2004  Erick Gallesio - I3S-CNRS/ESSI <eg@essi.fr>
@@ -22,7 +23,7 @@
 (define-module (skribilo source)
   #:export (<language> language? language-extractor language-fontifier
            language-name
-	   source-read-lines source-read-definition source-fontify
+           source-read-lines source-read-definition source-fontify
 
            &source-error source-error?
            &no-extractor-error no-extractor-error?
@@ -75,10 +76,10 @@
                  (definition-not-found-error:definition c)
                  (language-name (definition-not-found-error:language c))))
 
-	(else
-	 (format (current-error-port)
+        (else
+         (format (current-error-port)
                  (G_ "undefined source error: ~A~%")
-		 c))))
+                 c))))
 
 (register-error-condition-handler! source-error? handle-source-error)
 
@@ -88,11 +89,11 @@
 ;;;
 
 (define-class <language> ()
-  (name	:init-keyword :name	 :init-value #f :getter language-name)
-  (fontifier	:init-keyword :fontifier :init-value #f
-		:getter language-fontifier)
-  (extractor	:init-keyword :extractor :init-value #f
-		:getter language-extractor))
+  (name :init-keyword :name      :init-value #f :getter language-name)
+  (fontifier    :init-keyword :fontifier :init-value #f
+                :getter language-fontifier)
+  (extractor    :init-keyword :extractor :init-value #f
+                :getter language-extractor))
 
 (define (language? obj)
   (is-a? obj <language>))
@@ -103,42 +104,35 @@
 ;*    source-read-lines ...                                            */
 ;*---------------------------------------------------------------------*/
 (define (source-read-lines file start stop tab)
-  (let ((p (search-path (*source-path*) file)))
-    (if (or (not (string? p)) (not (file-exists? p)))
-	(raise (condition (&file-search-error (file-name file)
-					      (path (*source-path*)))))
-	(with-input-from-file p
-	  (lambda ()
-            (set-correct-file-encoding!)
-	    (if (> (*verbose*) 0)
-		(format (current-error-port) "  [source file: ~S]\n" p))
-	    (let ((startl (if (string? start) (string-length start) -1))
-		  (stopl  (if (string? stop)  (string-length stop)  -1)))
-	      (let loop ((l      0) ;; In Guile, line nums are 0-origined.
-			 (armedp (not (or (integer? start) (string? start))))
-			 (s      (read-line))
-			 (r      '()))
-		(cond
-		 ((or (eof-object? s)
-		      (and (integer? stop) (> l stop))
-		      (and (string? stop)
-			   (= (string-prefix-length stop s) stopl)))
-		  (string-concatenate (reverse! r)))
-		 (armedp
-		  (loop (+ l 1)
-			#t
-			(read-line)
-			(cons* "\n" (untabify s tab) r)))
-		 ((and (integer? start) (>= l start))
-		  (loop (+ l 1)
-			#t
-			(read-line)
-			(cons* "\n" (untabify s tab) r)))
-		 ((and (string? start)
-		       (= (string-prefix-length start s) startl))
-		  (loop (+ l 1) #t (read-line) r))
-		 (else
-		  (loop (+ l 1) #f (read-line) r))))))))))
+  (with-file-input file
+     (lambda (ip)
+       (let ((startl (if (string? start) (string-length start) -1))
+             (stopl  (if (string? stop)  (string-length stop)  -1)))
+         (let loop ((l      0) ;; In Guile, line nums are 0-origined.
+                    (armedp (not (or (integer? start) (string? start))))
+                    (s      (read-line))
+                    (r      '()))
+           (cond
+            ((or (eof-object? s)
+                 (and (integer? stop) (> l stop))
+                 (and (string? stop)
+                      (= (string-prefix-length stop s) stopl)))
+             (string-concatenate (reverse! r)))
+            (armedp
+             (loop (+ l 1)
+                   #t
+                   (read-line)
+                   (cons* "\n" (untabify s tab) r)))
+            ((and (integer? start) (>= l start))
+             (loop (+ l 1)
+                   #t
+                   (read-line)
+                   (cons* "\n" (untabify s tab) r)))
+            ((and (string? start)
+                  (= (string-prefix-length start s) startl))
+             (loop (+ l 1) #t (read-line) r))
+            (else
+             (loop (+ l 1) #f (read-line) r))))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    untabify ...                                                     */
@@ -147,66 +141,53 @@
    (if (not tab)
        obj
        (let ((len (string-length obj))
-	     (tabl tab))
-	  (let loop ((i 0)
-		     (col 1))
-	     (cond
-		((= i len)
-		 (let ((nlen (- col 1)))
-		    (if (= len nlen)
-			obj
-			(let ((new (make-string col #\space)))
-			   (let liip ((i 0)
-				      (j 0)
-				      (col 1))
-			      (cond
-				 ((= i len)
-				  new)
-				 ((char=? (string-ref obj i) #\tab)
-				  (let ((next-tab (* (/ (+ col tabl)
-							    tabl)
-						       tabl)))
-				     (liip (+ i 1)
-					   next-tab
-					   next-tab)))
-				 (else
-				  (string-set! new j (string-ref obj i))
-				  (liip (+ i 1) (+ j 1) (+ col 1)))))))))
-		((char=? (string-ref obj i) #\tab)
-		 (loop (+ i 1)
-		       (* (/ (+ col tabl) tabl) tabl)))
-		(else
-		 (loop (+ i 1) (+ col 1))))))))
+             (tabl tab))
+          (let loop ((i 0)
+                     (col 1))
+             (cond
+                ((= i len)
+                 (let ((nlen (- col 1)))
+                    (if (= len nlen)
+                        obj
+                        (let ((new (make-string col #\space)))
+                           (let liip ((i 0)
+                                      (j 0)
+                                      (col 1))
+                              (cond
+                                 ((= i len)
+                                  new)
+                                 ((char=? (string-ref obj i) #\tab)
+                                  (let ((next-tab (* (/ (+ col tabl)
+                                                            tabl)
+                                                       tabl)))
+                                     (liip (+ i 1)
+                                           next-tab
+                                           next-tab)))
+                                 (else
+                                  (string-set! new j (string-ref obj i))
+                                  (liip (+ i 1) (+ j 1) (+ col 1)))))))))
+                ((char=? (string-ref obj i) #\tab)
+                 (loop (+ i 1)
+                       (* (/ (+ col tabl) tabl) tabl)))
+                (else
+                 (loop (+ i 1) (+ col 1))))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    source-read-definition ...                                       */
 ;*---------------------------------------------------------------------*/
+
 (define (source-read-definition file definition tab lang)
-   (let ((p (search-path (*source-path*) file)))
-      (cond
-	 ((not (language-extractor lang))
-          (raise (condition (&no-extractor-error
-                             (language lang)))))
-
-	 ((or (not p) (not (file-exists? p)))
-	  (raise (condition (&file-search-error (file-name file)
-						(path (*source-path*))))))
-
-	 (else
-	  (let ((ip (open-input-file p)))
-             (set-correct-file-encoding! ip)
-	     (if (> (*verbose*) 0)
-		 (format (current-error-port) "  [source file: ~S]\n" p))
-	     (if (not (input-port? ip))
-		 (raise (condition (&file-open-error (file-name p))))
-		 (unwind-protect
-		    (let ((s ((language-extractor lang) ip definition tab)))
-		       (if (not (string? s))
-                           (raise (condition (&definition-not-found-error
-                                              (definition definition)
-                                              (language   lang))))
-			   s))
-		    (close-input-port ip))))))))
+  (unless (language-extractor lang)
+    (raise (condition (&no-extractor-error
+                       (language lang)))))
+  (with-file-input file
+     (lambda (ip)
+       (let ((s ((language-extractor lang) ip definition tab)))
+         (if (not (string? s))
+             (raise (condition (&definition-not-found-error
+                                (definition definition)
+                                (language   lang))))
+             s)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    source-fontify ...                                               */
@@ -214,10 +195,23 @@
 (define (source-fontify o language)
    (define (fontify f o)
       (cond
-	 ((string? o) (f o))
-	 ((pair? o) (map (lambda (s) (if (string? s) (f s) (fontify f s))) o))
-	 (else o)))
+         ((string? o) (f o))
+         ((pair? o) (map (lambda (s) (if (string? s) (f s) (fontify f s))) o))
+         (else o)))
    (let ((f (language-fontifier language)))
       (if (procedure? f)
-	  (fontify f o)
-	  o)))
+          (fontify f o)
+          o)))
+
+;; ------------------------- Internal ------------------------
+(define (with-file-input file callback)
+  (let ([p (search-path (*source-path*) file)])
+    (when (or (not p) (not (file-exists? p)))
+      (raise (condition (&file-search-error (file-name file)
+                                            (path (*source-path*))))))
+    (with-input-from-file p
+      (lambda ()
+        (set-correct-file-encoding!)
+        (when (> (*verbose*) 0)
+          (format (current-error-port) "  [source file: ~S]\n" p))
+        (callback (current-input-port))))))

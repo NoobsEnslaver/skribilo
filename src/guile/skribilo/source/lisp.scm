@@ -1,3 +1,4 @@
+;;; -*- coding: utf-8; tab-width: 4; c-basic-offset: 2; indent-tabs-mode: t; -*-
 ;;; lisp.scm -- Lisp Family Fontification
 ;;;
 ;;; Copyright 2005, 2006, 2007, 2008, 2020  Ludovic Courtès  <ludo@gnu.org>
@@ -32,11 +33,11 @@
   #:export (skribe scheme stklos bigloo lisp))
 
 
-(define %lisp-keys	    #f)
+(define %lisp-keys          #f)
 (define %scheme-keys        #f)
-(define %skribe-keys	    #f)
-(define %stklos-keys	    #f)
-(define %lisp-keys	    #f)
+(define %skribe-keys        #f)
+(define %stklos-keys        #f)
+(define %lisp-keys          #f)
 
 
 
@@ -48,19 +49,19 @@
   (let Loop ((exp (read inp)))
     (unless (eof-object? exp)
       (if (def? exp)
-	  (let ((start (and (pair? exp) (source-property exp 'line)))
-		(stop  (port-line inp)))
-	    (source-read-lines (port-filename inp) start stop tab))
-	  (Loop (read inp))))))
+          (let ((start (and (pair? exp) (source-property exp 'line)))
+                (stop  (port-line inp)))
+            (source-read-lines (port-filename inp) start stop tab))
+          (Loop (read inp))))))
 
 (define (lisp-family-fontifier s)
   (lexer-init 'port (open-input-string s))
   (let loop ((token (lexer))
-	     (res   '()))
+             (res   '()))
     (if (eq? token 'eof)
-	(reverse! res)
-	(loop (lexer)
-	      (cons token res)))))
+        (reverse! res)
+        (loop (lexer)
+              (cons token res)))))
 
 
 ;;;
@@ -74,27 +75,27 @@
     tab
     (lambda (exp)
       (match exp
-	 (((or 'defun 'defmacro) fun _ . _)
-	  (and (eq? def fun) exp))
-	 (('defvar var . _)
-	  (and (eq? var def) exp))
-	 (_ #f)))))
+         (((or 'defun 'defmacro) fun _ . _)
+          (and (eq? def fun) exp))
+         (('defvar var . _)
+          (and (eq? var def) exp))
+         (_ #f)))))
 
 (define (init-lisp-keys)
   (unless %lisp-keys
     (set! %lisp-keys
       (append  ;; key
-	       (map (lambda (x) (cons x '&source-keyword))
-		    '(setq if let let* letrec cond case else progn lambda))
-	       ;; define
-	       (map (lambda (x) (cons x '&source-define))
-		    '(defun defclass defmacro)))))
+               (map (lambda (x) (cons x '&source-keyword))
+                    '(setq if let let* letrec cond case else progn lambda))
+               ;; define
+               (map (lambda (x) (cons x '&source-define))
+                    '(defun defclass defmacro)))))
   %lisp-keys)
 
 (define (lisp-fontifier s)
-  (parameterize ((*the-keys*	   (init-lisp-keys))
-		 (*bracket-highlight* #f)
-		 (*class-highlight*   #f))
+  (parameterize ((*the-keys*       (init-lisp-keys))
+                 (*bracket-highlight* #f)
+                 (*class-highlight*   #f))
     (lisp-family-fontifier s)))
 
 
@@ -112,33 +113,33 @@
 (define (scheme-extractor iport def tab)
   (definition-search
     iport
-    %skribilo-module-reader
+    read
     tab
     (lambda (exp)
       (match exp
-	 (((or 'define 'define-macro) (fun . _) . _)
-	  (and (eq? def fun) exp))
-	 (('define (? symbol? var) . _)
-	  (and (eq? var def) exp))
-	 (_ #f)))))
+     (((or 'define 'define-macro) (fun . _) . _)
+      (and (eq? def fun) exp))
+     (((or 'define 'define-syntax) (? symbol? var) . _)
+      (and (eq? var def) exp))
+     (_ #f)))))
 
 
 (define (init-scheme-keys)
   (unless %scheme-keys
     (set! %scheme-keys
       (append ;; key
-	      (map (lambda (x) (cons x '&source-keyword))
-		   '(set! if let let* letrec quote cond case else begin do lambda))
-	      ;; define
-	      (map (lambda (x) (cons x '&source-define))
-		 '(define define-syntax)))))
+              (map (lambda (x) (cons x '&source-keyword))
+                   '(set! if let let* letrec quote cond case else begin do lambda))
+              ;; define
+              (map (lambda (x) (cons x '&source-define))
+                 '(define define-syntax)))))
   %scheme-keys)
 
 
 (define (scheme-fontifier s)
-  (parameterize ((*the-keys*	   (init-scheme-keys))
-		 (*bracket-highlight* #f)
-		 (*class-highlight*   #f))
+  (parameterize ((*the-keys*       (init-scheme-keys))
+                 (*bracket-highlight* #f)
+                 (*class-highlight*   #f))
     (lisp-family-fontifier s)))
 
 
@@ -160,38 +161,38 @@
     tab
     (lambda (exp)
       (match exp
-	 (((or 'define 'define-generic 'define-method 'define-macro)
-	   (fun . _) . _)
-	  (and (eq? def fun) exp))
-	 (((or 'define 'define-module) (? symbol? var) . _)
-	  (and (eq? var def) exp))
-	 (_ #f)))))
+         (((or 'define 'define-generic 'define-method 'define-macro)
+           (fun . _) . _)
+          (and (eq? def fun) exp))
+         (((or 'define 'define-module) (? symbol? var) . _)
+          (and (eq? var def) exp))
+         (_ #f)))))
 
 
 (define (init-stklos-keys)
   (unless %stklos-keys
     (init-scheme-keys)
     (set! %stklos-keys (append %scheme-keys
-				;; Markups
-				(map (lambda (x) (cons x '&source-key))
-				     '(select-module import export))
-				;; Key
-				(map (lambda (x) (cons x '&source-keyword))
-				     '(case-lambda dotimes match-case match-lambda))
-				;; Define
-				(map (lambda (x) (cons x '&source-define))
-				     '(define-generic define-class
-				       define-macro define-method define-module))
-				;; error
-				(map (lambda (x) (cons x '&source-error))
-				     '(error call/cc)))))
+                                ;; Markups
+                                (map (lambda (x) (cons x '&source-key))
+                                     '(select-module import export))
+                                ;; Key
+                                (map (lambda (x) (cons x '&source-keyword))
+                                     '(case-lambda dotimes match-case match-lambda))
+                                ;; Define
+                                (map (lambda (x) (cons x '&source-define))
+                                     '(define-generic define-class
+                                       define-macro define-method define-module))
+                                ;; error
+                                (map (lambda (x) (cons x '&source-error))
+                                     '(error call/cc)))))
   %stklos-keys)
 
 
 (define (stklos-fontifier s)
-  (parameterize ((*the-keys*	   (init-stklos-keys))
-		 (*bracket-highlight* #t)
-		 (*class-highlight*   #t))
+  (parameterize ((*the-keys*       (init-stklos-keys))
+                 (*bracket-highlight* #t)
+                 (*class-highlight*   #t))
     (lisp-family-fontifier s)))
 
 
@@ -213,47 +214,47 @@
     tab
     (lambda (exp)
       (match exp
-	(((or 'define 'define-macro 'define-markup 'define-public)
-	  (fun . _) . _)
-	 (and (eq? def fun) exp))
-	(('define (? symbol? var) . _)
-	 (and (eq? var def) exp))
-	(('markup-output mk . _)
-	 (and (eq? mk def) exp))
-	(_ #f)))))
+        (((or 'define 'define-macro 'define-markup 'define-public)
+          (fun . _) . _)
+         (and (eq? def fun) exp))
+        (('define (? symbol? var) . _)
+         (and (eq? var def) exp))
+        (('markup-output mk . _)
+         (and (eq? mk def) exp))
+        (_ #f)))))
 
 
 (define (init-skribe-keys)
   (unless %skribe-keys
     (init-stklos-keys)
     (set! %skribe-keys (append %stklos-keys
-				;; Markups
-				(map (lambda (x) (cons x '&source-markup))
-				     '(bold it emph tt color ref index underline
-				       roman figure center pre flush hrule
-				       linebreak image kbd code var samp
-				       sc sf sup sub
-				       itemize description enumerate item
-				       table tr td th item prgm author
-				       prgm hook font
-				       document chapter section subsection
-				       subsubsection paragraph p handle resolve
-				       processor abstract margin toc
-				       table-of-contents current-document
-				       current-chapter current-section
-				       document-sections* section-number
-				       footnote print-index include skribe-load
-				       slide))
-				;; Define
-				(map (lambda (x) (cons x '&source-define))
-				     '(define-markup)))))
+                                ;; Markups
+                                (map (lambda (x) (cons x '&source-markup))
+                                     '(bold it emph tt color ref index underline
+                                       roman figure center pre flush hrule
+                                       linebreak image kbd code var samp
+                                       sc sf sup sub
+                                       itemize description enumerate item
+                                       table tr td th item prgm author
+                                       prgm hook font
+                                       document chapter section subsection
+                                       subsubsection paragraph p handle resolve
+                                       processor abstract margin toc
+                                       table-of-contents current-document
+                                       current-chapter current-section
+                                       document-sections* section-number
+                                       footnote print-index include skribe-load
+                                       slide))
+                                ;; Define
+                                (map (lambda (x) (cons x '&source-define))
+                                     '(define-markup)))))
   %skribe-keys)
 
 
 (define (skribe-fontifier s)
-  (parameterize ((*the-keys*	   (init-skribe-keys))
-		 (*bracket-highlight* #t)
-		 (*class-highlight*   #t))
+  (parameterize ((*the-keys*       (init-skribe-keys))
+                 (*bracket-highlight* #t)
+                 (*class-highlight*   #t))
     (lisp-family-fontifier s)))
 
 
@@ -275,14 +276,14 @@
     tab
     (lambda (exp)
       (match exp
-	 (((or 'define 'define-inline 'define-generic
-	       'define-method 'define-macro 'define-expander)
-	   (fun . _) . _)
-	  (and (eq? def fun) exp))
-	 (((or 'define 'define-struct 'define-library)
-	   (? symbol? var) . _)
-	  (and (eq? var def) exp))
-	 (_ #f)))))
+         (((or 'define 'define-inline 'define-generic
+               'define-method 'define-macro 'define-expander)
+           (fun . _) . _)
+          (and (eq? def fun) exp))
+         (((or 'define 'define-struct 'define-library)
+           (? symbol? var) . _)
+          (and (eq? var def) exp))
+         (_ #f)))))
 
 (define bigloo
   (new language
