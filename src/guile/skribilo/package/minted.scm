@@ -80,9 +80,12 @@
 
 
                  (let ((line (markup-option n :line))
-                       (extra (markup-option n :minted-opts)))
+                       (extra (markup-option n :minted-opts))
+                       (inline (markup-option n :inline)))
 
-                   (display "\\begin{minted}")
+                   (if inline
+                       (display "\\mintinline")
+                       (display "\\begin{minted}"))
                    (cond
                     ((and (number? line) extra)
                      (format #t "[linenos, firstnumber=~a, ~a]" line extra))
@@ -96,9 +99,16 @@
                      (display "[linenos]"))
                     (else
                      (display "[]")))
-                   (format #t "{~a}\n" (markup-option (car sources) :language))
-                   (output (markup-body n) ne)
-                   (format #t "\\end{minted}\n")))))
+                   (if inline
+                       (begin
+                         (format #t "{~a}{" (markup-option (car sources) :language))
+                         (output (markup-body n) ne)
+                         (display "}"))
+                       (begin
+                         (format #t "{~a}\n" (markup-option (car sources) :language))
+                         (output (markup-body n) ne)
+                         (format #t "\\end{minted}\n")))
+                   ))))
   (slot-set! old-prog-writer 'after #f)
   (slot-set! old-prog-writer 'before #f)
 
