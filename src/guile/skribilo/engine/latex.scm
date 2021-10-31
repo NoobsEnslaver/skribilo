@@ -1425,7 +1425,8 @@
    :action (lambda (n e)
 	      (let* ((file (markup-option n :file))
 		     (url (markup-option n :url))
-		     (width (markup-option n :width))
+		     (width* (markup-option n :width))
+                     (width (if (number? width*) (latex-width width*) width*))
 		     (height (markup-option n :height))
 		     (zoom (markup-option n :zoom))
 		     (efmt (engine-custom e 'image-format))
@@ -1435,11 +1436,11 @@
 		     (case (engine-custom e 'image-engine)
 		       [(epsfig)
 			(opt-format '(file width height zoom)
-				    (list (strip-ref-base img) (latex-width width) height zoom)
+				    (list (strip-ref-base img) width height zoom)
 				    "\\epsfig{~a}")]
 		       [(graphicx)
 			(opt-format '(width height scale)
-				    (list (latex-width width) height zoom)
+				    (list width height zoom)
 				    "\\includegraphics[~a]")
 			(format #t "{~a}" (strip-ref-base img))]
 		       [else
